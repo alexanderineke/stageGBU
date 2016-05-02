@@ -25,10 +25,6 @@ class Audio extends \yii\db\ActiveRecord {
         return implode(', ', array_values(CHtml::listData($this->tags, 'id', 'name')));
     }
 
-    public static function model($className = __CLASS__) {
-        return parent::model($className);
-    }
-
     /**
      * @inheritdoc
      */
@@ -56,14 +52,15 @@ class Audio extends \yii\db\ActiveRecord {
     public function attributeLabels() {
         return [
             'id' => 'ID',
-            'user_id' => 'User ID',
-            'title' => 'Title',
-            'description' => 'Description',
-            'year' => 'Year',
-            'owner' => 'Owner',
-            'created_on' => 'Created On',
-            'modified_on' => 'Modified On',
-            'published' => 'Published',
+            'user_id' => 'Naam van Uploader',
+            'title' => 'Titel',
+            'description' => 'Omschrijving',
+            'year' => 'Jaar',
+            'owner' => 'Eigenaar',
+            'created_on' => 'Aanmaakdatum',
+            'modified_on' => 'Laatste wijzigingsdatum',
+            'published' => 'Gepubliceerd',
+            'file' => 'Bestand',
         ];
     }
 
