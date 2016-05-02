@@ -78,4 +78,30 @@ class Audio extends \yii\db\ActiveRecord {
         ];
     }
 
+    public function search($params) {
+        $query = Audio::find();
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        $query
+                ->andFilterWhere(['like', 'id', $this->id])
+                ->andFilterWhere(['like', 'user_id', $this->user_id])
+                ->andFilterWhere(['like', 'title', $this->title])
+                ->andFilterWhere(['like', 'description', $this->description])
+                ->andFilterWhere(['like', 'year', $this->year])
+                ->andFilterWhere(['like', 'owner', $this->owner])
+                ->andFilterWhere(['like', 'published', $this->published]);
+
+        return $dataProvider;
+    }
+
 }
