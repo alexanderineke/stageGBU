@@ -39,7 +39,7 @@ class AudioFile extends \yii\db\ActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'audio' => array(self::BELONGS_TO, 'Audio', 'audio_id'),
+            'audio' => [self::BELONGS_TO, 'Audio', 'audio_id'],
         );
     }
 
@@ -103,7 +103,7 @@ class AudioFile extends \yii\db\ActiveRecord {
             $fileContents = file_get_contents(Yii::app()->basePath . '/../uploads/' . $file['location'] . '/' . $file['file']);
             file_put_contents(Yii::app()->basePath . '/../uploads/audio/' . $folder_name . '/' . $fileInfo['filename'] . '.mp3', $fileContents);
 
-            $this->updateAll(array('state' => 0), 'audio_id=' . $audio_id);
+            $this->updateAll(['state' => 0], 'audio_id=' . $audio_id);
 
             //Insert de nieuwe doucment
             $attributes['audio_id'] = $audio_id;
@@ -113,12 +113,13 @@ class AudioFile extends \yii\db\ActiveRecord {
             $attributes['state'] = 1;
             $this->setIsNewRecord(true);
             $this->attributes = $attributes;
-            if (!$this->insert()){
+            if (!$this->insert()) {
                 $errorOccured = true;
             }
         }
-        if (!$errorOccured){
+        if (!$errorOccured) {
             return true;
         }
     }
+
 }

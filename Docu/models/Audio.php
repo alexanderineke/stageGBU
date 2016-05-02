@@ -68,10 +68,10 @@ class Audio extends \yii\db\ActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return [
-            'user' => array(self::BELONGS_TO, 'User', 'user_id'),
-            'tags' => array(self::MANY_MANY, 'Tag', 'tbl_audio_tag(audio_id, tag_id)'),
-            'audio_tags' => array(self::HAS_MANY, 'AudioTag', 'audio_id'),
-            'audios' => array(self::HAS_MANY, 'AudioFile', 'audio_id', 'condition' => 'state=1'),
+            'user' => [self::BELONGS_TO, 'User', 'user_id'],
+            'tags' => [self::MANY_MANY, 'Tag', 'tbl_audio_tag(audio_id, tag_id)'],
+            'audio_tags' => [self::HAS_MANY, 'AudioTag', 'audio_id'],
+            'audios' => [self::HAS_MANY, 'AudioFile', 'audio_id', 'condition' => 'state=1'],
         ];
     }
 
