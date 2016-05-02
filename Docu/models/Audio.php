@@ -63,7 +63,7 @@ class Audio extends \yii\db\ActiveRecord {
             'file' => 'Bestand',
         ];
     }
-
+/*
     public function relations() {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
@@ -73,6 +73,23 @@ class Audio extends \yii\db\ActiveRecord {
             'audio_tags' => [self::HAS_MANY, 'AudioTag', 'audio_id'],
             'audios' => [self::HAS_MANY, 'AudioFile', 'audio_id', 'condition' => 'state=1'],
         ];
+    }
+    */
+    public function getUser(){
+        return $this->BELONGS_TO(User::className(), ['id' => 'user_id']);
+    }
+    
+    public function getTags(){
+        return $this->hasMany(Tag::className(),['id' => 'tag_id'])
+                ->viaTable('tbl_audio_tag', ['audio_id' => 'id']);
+    }
+    
+    public function getAudio_tags(){
+        $this->HasMany(AudioTag::className(),['id' => 'audio_id']);
+    }
+    
+    public function getAudios(){
+        $this->hasMany(AudioFile::className(), ['id' => 'audio_id']);
     }
 
     public function search($params) {
