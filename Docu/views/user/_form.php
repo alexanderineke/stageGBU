@@ -15,10 +15,12 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
-
+    
+    <?= $form->field($model, 'repeat_password')->passwordInput(['maxlength' => true]) ?>
+    
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'roles')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'roles')->dropDownList($items) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
