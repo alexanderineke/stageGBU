@@ -17,21 +17,29 @@ use Yii;
  * @property string $modified_on
  * @property integer $published
  */
-class Audio extends \yii\db\ActiveRecord
-{
+class Audio extends \yii\db\ActiveRecord {
+
+    public $tag_search, $count, $tagName;
+
+    public function getTagsHelper() {
+        return implode(', ', array_values(CHtml::listData($this->tags, 'id', 'name')));
+    }
+
+    public static function model($className = __CLASS__) {
+        return parent::model($className);
+    }
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return '{{%audio}}';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['user_id', 'title', 'created_on', 'modified_on', 'published'], 'required'],
             [['user_id', 'year', 'published'], 'integer'],
@@ -45,8 +53,7 @@ class Audio extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'user_id' => 'User ID',
@@ -59,4 +66,16 @@ class Audio extends \yii\db\ActiveRecord
             'published' => 'Published',
         ];
     }
+
+    public function relations() {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return [
+            'user' => array(self::BELONGS_TO, 'User', 'user_id'),
+            'tags' => array(self::MANY_MANY, 'Tag', 'tbl_audio_tag(audio_id, tag_id)'),
+            'audio_tags' => array(self::HAS_MANY, 'AudioTag', 'audio_id'),
+            'audios' => array(self::HAS_MANY, 'AudioFile', 'audio_id', 'condition' => 'state=1'),
+        ];
+    }
+
 }
