@@ -76,20 +76,84 @@ class AudioTag extends \yii\db\ActiveRecord {
 
     public function add($audio_id, $tagIds) {
         $inDB = [];
-        foreach (AudioTag::find()->where(['audio_id' => $audio_id])->andFilterWhere(['tag_id' => $tagIds])->exists() as $i) {
+        foreach (AudioTag::find()
+                ->where(['audio_id' => $audio_id])
+                ->andFilterWhere(['tag_id' => $tagIds])
+                ->exists() as $i) {
             $inDB[] = $i->tag_id;
         }
         $notInDB = array_diff($tagIds, $inDB);
 
         $v = 0;
+        /*
+          foreach ($notInDB as $i) {
+          $sql->createCommand()
+          ->insert('tbl_audio_tag', [
+          'audio_id' => ':audio_id',
+          'tag_id' => ':tag_id',
+          'state' => 1])
+          ->execute();
+          $parameters = [':audio_id'=>$audio_id,
+          ':tag_id'=>$i];
+          if(Yii::app()->db->createCommand($sql)->execute($parameters)){
+          $v++;
+          }
+          }
+         */
         foreach ($notInDB as $i) {
             $sql->createCommand()
                     ->insert('tbl_audio_tag', [
-                        'audio_id' => '',
-                        'tag_id' => '',
+                        'audio_id' => $audio_id,
+                        'tag_id' => $i,
                         'state' => 1])
                     ->execute();
+            $v++;
+            if ($v == sizeof($notInDB)) {
+                return true;
+            }
         }
     }
 
+    public function check($audio_id, $tagIds) {
+        $query = AudioTag::find()
+                ->andFilterWhere(['audio_id' =>$audio_id])
+                ->andFilterWhere(['tag_id' =>$tagIds])
+                ->andFilterWhere(['state' =>1]);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+        return $dataProvider;
+    }
+    
+        public function deleteTags($audio_id, $tagIds) {
+        $query = AudioTag::find()
+                ->andFilterWhere(['audio_id' =>$audio_id])
+                ->andFilterWhere(['tag_id' =>$tagIds])
+                ->andFilterWhere(['state' =>1])
+                ->delete()
+                ->execute();
+        return $query;
+    }
+    
+        public function getTagg($audio_id) {
+        $query = AudioTag::find()
+                ->select(['tag_id'])
+                ->andFilterWhere(['audio_id' =>$audio_id])
+                ->andFilterWhere(['state' =>1])
+                ->limit(1);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+        return $dataProvider;
+    }
 }

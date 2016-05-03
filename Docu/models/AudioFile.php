@@ -35,14 +35,10 @@ class AudioFile extends \yii\db\ActiveRecord {
         ];
     }
 
-    public function relations() {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
-        return array(
-            'audio' => [self::BELONGS_TO, 'Audio', 'audio_id'],
-        );
+        public function getAudio(){
+        return $this->Belongs_to(Audio::className(), ['id' => 'audio_id']);
     }
-
+    
     /**
      * @inheritdoc
      */
