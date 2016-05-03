@@ -5,10 +5,18 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\User */
 
-$this->title = 'Update User: ' . ' ' . $model->id;
+$this->title = 'Bewerk gebruiker: ' . ' ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
+
+$this->menu=[
+        ['label'=>'Acties','visible'=>Yii::app()->user->checkAccess('moderator')],
+	['label'=>'Lijst van gebruikers','url'=>['index'],'icon'=>'list','visible'=>Yii::app()->user->checkAccess('moderator')],
+	['label'=>'Maak gebruiker aan','url'=>['create'],'icon'=>'file','visible'=>Yii::app()->user->checkAccess('moderator')],
+	['label'=>'Bekijk gebruiker','url'=>['view','id'=>$model->id],'icon'=>'eye-open','visible'=>Yii::app()->user->checkAccess('moderator')],
+	['label'=>'Beheer gebruiker','url'=>['admin'],'icon'=>'list-alt','visible'=>Yii::app()->user->checkAccess('admin')],
+];
 ?>
 <div class="user-update">
 

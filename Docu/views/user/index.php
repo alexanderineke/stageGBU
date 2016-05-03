@@ -7,8 +7,17 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\Search */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Users';
+$this->title = 'Gebruikers';
 $this->params['breadcrumbs'][] = $this->title;
+
+// nog niet zeker correct
+$this->params['menu'][] = [
+        ['label'=>'Acties','visible'=>Yii::app()->user->checkAccess('moderator')],
+	['label'=>'Maak gebruiker aan','url'=>['create'],'icon'=>'file','visible'=>Yii::app()->user->checkAccess('moderator')],
+	['label'=>'Beheer gebruikers','url'=>['admin'],'icon'=>'list-alt','visible'=>Yii::app()->user->checkAccess('admin')],
+];
+//
+
 ?>
 <div class="user-index">
 
@@ -27,7 +36,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'username',
-            'password',
             'email:email',
             'roles',
 
