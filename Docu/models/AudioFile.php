@@ -106,6 +106,7 @@ class AudioFile extends \yii\db\ActiveRecord {
             $this->updateAll(['state' => 0], 'audio_id=' . $audio_id);
 
             //Insert de nieuwe doucment
+            /*
             $attributes['audio_id'] = $audio_id;
             $attributes['file'] = $fileInfo['filename'];
             $attributes['location'] = $folder_name;
@@ -113,6 +114,13 @@ class AudioFile extends \yii\db\ActiveRecord {
             $attributes['state'] = 1;
             $this->setIsNewRecord(true);
             $this->attributes = $attributes;
+             */
+             $this->audio_id = $audio_id;
+            $this->file = $fileInfo['filename'];
+            $this->location = $folder_name;
+            $this->format = '.mp3';
+            $this->state = 1;
+            $this->setIsNewRecord(true);
             if (!$this->insert()) {
                 $errorOccured = true;
             }

@@ -37,10 +37,10 @@ class Audio extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-            [['user_id', 'title', 'created_on', 'modified_on', 'published'], 'required'],
+            [['user_id', 'title', 'published'], 'required'],
             [['user_id', 'year', 'published'], 'integer'],
             [['description'], 'string'],
-            [['created_on', 'modified_on'], 'safe'],
+            [['description'], 'safe'],
             [['title'], 'string', 'max' => 64],
             [['owner'], 'string', 'max' => 45]
         ];
@@ -76,7 +76,7 @@ class Audio extends \yii\db\ActiveRecord {
     }
     */
     public function getUser(){
-        return $this->BELONGS_TO(User::className(), ['id' => 'user_id']);
+        return $this->Belongs_to(User::className(), ['id' => 'user_id']);
     }
     
     public function getTags(){
@@ -84,12 +84,12 @@ class Audio extends \yii\db\ActiveRecord {
                 ->viaTable('tbl_audio_tag', ['audio_id' => 'id']);
     }
     
-    public function getAudio_tags(){
+    public function getAudioTags(){
         $this->HasMany(AudioTag::className(),['id' => 'audio_id']);
     }
     
     public function getAudios(){
-        $this->hasMany(AudioFile::className(), ['id' => 'audio_id']);
+        $this->hasMany(AudioFile::className(), ['id' => 'audio_id'])->andWhere('state=1');
     }
 
     public function search($params) {
