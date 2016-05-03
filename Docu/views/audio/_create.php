@@ -14,8 +14,14 @@ $form = ActiveForm::begin([
 
 <?php echo $form->errorSummary($model); ?>
 
-<?php echo $form->field($model,'title',array('class'=>'span5','maxlength'=>64))->textInput(); ?>
+<?php echo $form->field($model, 'title')->textInput(['class' => 'span5', 'maxlength' => 64]); ?>
 
 <?php
-    //Hier moet de dropzone komen
+//Hier moet de dropzone komen
 ?>
+
+<div class='form-actions'>
+    <?= Html::submitButton('Maak aan', ['class' => 'btn btn-primary']) ?>
+</div>
+
+<?php ActiveForm::end(); ?>
