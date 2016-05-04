@@ -92,13 +92,11 @@ class Audio extends \yii\db\ActiveRecord {
         $this->hasMany(AudioFile::className(), ['id' => 'audio_id'])->andWhere('state=1');
     }
 
-    public function search($params) {
+    public function search() {
         $query = Audio::find();
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-
-        $this->load($params);
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails

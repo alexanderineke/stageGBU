@@ -52,13 +52,11 @@ class AudioFile extends \yii\db\ActiveRecord {
         ];
     }
 
-    public function search($params) {
+    public function search() {
         $query = AudioFile::find();
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-
-        $this->load($params);
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails

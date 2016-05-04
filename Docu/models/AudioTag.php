@@ -51,13 +51,11 @@ class AudioTag extends \yii\db\ActiveRecord {
         ];
     }
 
-    public function search($params) {
+    public function search() {
         $query = AudioTag::find();
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-
-        $this->load($params);
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
