@@ -1,8 +1,54 @@
 <?php
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+use yii\helpers\Html;
 
+$this->title = 'Beheer';
+$this->params['breadcrumbs'][] = ['label' => 'Audio', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
+
+$this->params['menu'][] = [
+    ['label' => 'Acties', 'visible' => Yii::app()->user->checkAccess('moderator')],
+    ['label' => 'Lijst van audio', 'icon' => 'list', 'url' => ['index'], 'visible' => Yii::app()->user->checkAccess('moderator')],
+    ['label' => 'Maak audio bestanden aan', 'icon' => 'file', 'url' => ['create'], 'visible' => Yii::app()->user->checkAccess('user')],
+];
+
+Yii::app()->clientScript->registerScript('search', "
+$('.search-button').click(function(){
+	$('.search-form').toggle();
+	return false;
+});
+$('.search-form form').submit(function(){
+	$.fn.yiiGridView.update('audio-grid', {
+		data: $(this).serialize()
+	});
+	return false;
+});
+");
+?>
+
+<h1>Beheer audio bestanden</h1>
+
+<p>
+    U kan optioneel een vergelijk symbool (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
+    of <b>=</b>) gebruiken in uw zoekopdracht.
+</p>
+
+<?= Html::a('Geavanceerd zoeken', '#', ['class' => 'btn btn-primary']) ?>
+<div class="search-form" style="display: none">
+    <?php $this->render('_search', ['model' => $model], true); ?>
+</div>
+
+<?= GridView::widget([
+    'id' => 'audio-grid',
+    'dataProvider' => $model->search(),
+    'filter' => $model,
+    'columns' => [
+        ['name' => 'title',
+         'filter'=> Html::activeInput('text', $model, 'title', ['placeholder'=>'Zoek op titel...','class' => $username]) 
+        ],
+        ['name' => 'created_on'],
+        ['name' => 'modified_on'],
+        ['class' => 'btn btn-primary'],
+    ],
+])
+?>

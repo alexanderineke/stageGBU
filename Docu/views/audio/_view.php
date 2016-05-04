@@ -1,8 +1,5 @@
-<?php
-
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
+<li class="view">
+	<a href="<?php echo CHtml::normalizeUrl(array('audio/view', 'id'=>$data->id)); ?>">
+	<?php echo CHtml::encode($data->title); ?>
+	</a>
+</li>
