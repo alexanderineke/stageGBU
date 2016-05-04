@@ -2,20 +2,24 @@
 
 use yii\helpers\Html;
 
-/* @var $this yii\web\View */
-/* @var $model app\models\Audio */
-
-$this->title = 'Update Audio: ' . ' ' . $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Audios', 'url' => ['index']];
+$this->title = 'Bewerk';
+$this->params['breadcrumbs'][] = ['label' => 'Audio', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = $this->title;
+
+echo Menu::widget([
+    'items' => [
+        ['label' => 'Acties', 'visible' => Yii::app()->user->checkAccess('moderator')],
+        ['label' => 'Lijst van audio bestanden', 'url' => ['index'], 'icon' => 'list', 'visible' => Yii::app()->user->checkAccess('moderator')],
+        ['label' => 'Maak audio bestanden aan', 'url' => ['create'], 'icon' => 'file', 'visible' => Yii::app()->user->checkAccess('user')],
+        ['label' => 'Bekijk audio bestand', 'url' => ['vieuw', 'id'=>$model->id], 'icon' => 'eye-open', 'visible' => Yii::app()->user->checkAccess('moderator')],
+        ['label' => 'Beheer audio bestanden', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::app()->user->checkAccess('admin')],
+    ],
+]);
 ?>
-<div class="audio-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+<h1>Bewerk audio bestanden <?php echo $model->$id; ?></h1>
 
-    <?= $this->render('_form', [
+    <?= $this->render('_update', [
         'model' => $model,
     ]) ?>
-
-</div>

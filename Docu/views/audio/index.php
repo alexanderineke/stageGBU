@@ -2,41 +2,51 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\data\Pagination;
 
-/* @var $this yii\web\View */
-/* @var $searchModel app\models\Search */
-/* @var $dataProvider yii\data\ActiveDataProvider */
-
-$this->title = 'Audios';
+$this->title = 'Audio';
 $this->params['breadcrumbs'][] = $this->title;
+
+
+echo Menu::widget([
+    'items' => [
+        ['label' => 'Acties', 'visible' => Yii::app()->user->checkAccess('moderator')],
+        ['label' => 'Maak audio bestanden aan', 'url' => ['create'], 'icon' => 'file', 'visible' => Yii::app()->user->checkAccess('user')],
+        ['label' => 'Beheer audio bestanden', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::app()->user->checkAccess('admin')],
+    ],
+]);
+
+function objectToTagString($tags) {
+    $string = [];
+    foreach ($tags as $tag) {
+        $string[] = $tag["name"];
+    }
+    return implode(", ", $string);
+}
+
+function fileLocation($id, $title) {
+    return Html::a($title, ['audio/view', 'id' => $id]);
+}
 ?>
-<div class="audio-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+<h1>Audio</h1>
 
-    <p>
-        <?= Html::a('Create Audio', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'user_id',
-            'title',
-            'description:ntext',
-            'year',
-            // 'owner',
-            // 'created_on',
-            // 'modified_on',
-            // 'published',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
-
-</div>
+<?=
+GridView::widget([
+    'id' => 'audio-grid',
+    'type' => 'striped bordered',
+    'dataProvider' => $model->search(),
+    'columns' => [
+        ['class' => 'yii\grid\SerialColumn'],
+        ['name'=>'title', 'header'=>'Naam audiobestand','value'=>'fileLocation($data->id, $data->title)', 'type'=>'raw'],
+        ['name'=>'tag_search', 'header'=>'Tags', 'value'=>'objectToTagString($data->tags)'],
+        ['name'=>'year', 'header'=>'Jaar'],
+        ['class' => 'yii\grid\ActionColumn'],
+    ],
+    'enableHistory'=>true,
+    'pager'=> [
+        'prevPageLabel' => '&laquo;',
+        'nextPageLabel' => '&raquo;',
+    ],
+    ]);
+?>
