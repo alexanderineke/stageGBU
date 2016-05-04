@@ -46,18 +46,18 @@ $this->params['menu'][] = [
             <?php foreach ($model->collections as $collection) { ?>
                 <article class="span4 collection-thumb">
                     <div class="row">
-                                <?php if ($collection->thumb || !Yii::app()->user->isGuest) { ?>
-                                    <div class="span1">
-                                        <?php
-                                        if ($collection->thumb) {
-                                            echo CHtml::image('uploads/afbeeldingen/' . $collection->thumb->location . '/thumb/' . $collection->thumb->file . $collection->thumb->format, $collection->title, ['class' => 'img-polaroid collection-thumb-img']);
-                                        }
-                                        ?>
-                                        <?php if (!Yii::app()->user->isGuest) { ?>
-                                            <?php echo CHtml::link("<i class=\"icon-trash icon-white\"></i>", Yii::app()->createUrl("collection/deletecollection", ["id" => $_GET["id"], "collection" => $collection->id]), ["class" => "btn btn-primary"]); ?>
-                                        <?php } ?>
-                                    </div>
+                        <?php if ($collection->thumb || !Yii::app()->user->isGuest) { ?>
+                            <div class="span1">
+                                <?php
+                                if ($collection->thumb) {
+                                    echo CHtml::image('uploads/afbeeldingen/' . $collection->thumb->location . '/thumb/' . $collection->thumb->file . $collection->thumb->format, $collection->title, ['class' => 'img-polaroid collection-thumb-img']);
+                                }
+                                ?>
+                                <?php if (!Yii::app()->user->isGuest) { ?>
+                                    <?php echo CHtml::link("<i class=\"icon-trash icon-white\"></i>", Yii::app()->createUrl("collection/deletecollection", ["id" => $_GET["id"], "collection" => $collection->id]), ["class" => "btn btn-primary"]); ?>
                                 <?php } ?>
+                            </div>
+                        <?php } ?>
                         <a href="<?php echo Yii::app()->createUrl("collection/view", ["id" => $collection->id]); ?>"  class="span3">
                             <h3 class="collection-thumb-title"><?php echo $collection->title; ?></h3>
                             <p><?php echo substr(strip_tags($collection->description), 0, 70); ?>...</p>
@@ -65,11 +65,96 @@ $this->params['menu'][] = [
                         </a>
                     </div>
                 </article>
-        <?php } ?>
+            <?php } ?>
         </div>
     <?php } ?>
+        
+<h3>Documenten</h3>
+<?php
+$arr = [];
+foreach ($model->documents as $key => $value) {
+    $arr[] = $value;
+}
 
+$dataProv = new CArrayDataProvider($arr);
+$this->widget('bootstrap.widgets.TbGridView', [
+    'type' => 'striped bordered condensed',
+    'dataProvider' => $dataProv,
+    'pager' => ['class' => 'bootstrap.widgets.TbPager', 'prevPageLabel' => '&laquo;', 'nextPageLabel' => '&raquo;'],
+    'columns' =>
+    (!Yii::app()->user->isGuest ?
+            [ //Ingelogd
+        [
+            'name' => 'title',
+            'header' => 'Titel',
+            'type' => 'raw',
+            'value' => 'CHtml::link( $data->title, Yii::app()->createUrl("document/view",array("id"=>$data->id)))',
+        ],
+        [
+            'name' => 'Acties',
+            'type' => 'raw',
+            'htmlOptions' => [
+                'style' => 'width: 100px; text-align: center;',
+            ],
+            'value' => 'CHtml::link( "<i class=\"icon-trash icon-white\"></i>", Yii::app()->createUrl("collection/deletedocument",array("id"=>$_GET["id"], "document"=>$data->id)))',
+        ]
+            ] :
+            [ //Niet ingelogd
+        [
+            'name' => 'title',
+            'header' => 'Titel',
+            'type' => 'raw',
+            'value' => 'CHtml::link( $data->title, Yii::app()->createUrl("document/view",array("id"=>$data->id)))',
+        ]
+            ]
+    ),
+        ]
+);
+?>
     
+<h3>Afbeeldingen</h3>
+<?php
+$arr = [];
+foreach ($model->images as $key => $value) {
+    $arr[] = $value;
+}
+
+$dataProv = new CArrayDataProvider($arr);
+$this->widget('bootstrap.widgets.TbGridView', [
+    'type' => 'striped bordered condensed',
+    'dataProvider' => $dataProv,
+    'pager' => ['class' => 'bootstrap.widgets.TbPager', 'prevPageLabel' => '&laquo;', 'nextPageLabel' => '&raquo;'],
+    'columns' =>
+    (!Yii::app()->user->isGuest ?
+            [ //Ingelogd
+        [
+            'name' => 'title',
+            'header' => 'Titel',
+            'type' => 'raw',
+            'value' => 'CHtml::link( $data->title, Yii::app()->createUrl("image/view",array("id"=>$data->id)))',
+        ],
+        [
+            'name' => 'Acties',
+            'type' => 'raw',
+            'htmlOptions' => [
+                'style' => 'width: 100px; text-align: center;',
+            ],
+            'value' => 'CHtml::link( "<i class=\"icon-trash icon-white\"></i>", Yii::app()->createUrl("collection/deleteimage",array("id"=>$_GET["id"], "image"=>$data->id)))',
+        ]
+    ] :
+            [ //Niet ingelogd
+        [
+            'name' => 'title',
+            'header' => 'Titel',
+            'type' => 'raw',
+            'value' => 'CHtml::link( $data->title, Yii::app()->createUrl("image/view",array("id"=>$data->id)))',
+        ]
+    ]
+    ),
+        ]
+);
+?>
+<?php /*
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
@@ -93,5 +178,6 @@ $this->params['menu'][] = [
             'published',
         ],
     ]) ?>
+*/ ?>
 
 </div>
