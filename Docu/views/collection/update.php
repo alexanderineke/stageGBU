@@ -5,10 +5,19 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Collection */
 
-$this->title = 'Update Collection: ' . ' ' . $model->title;
+$this->title = 'Bewerk collectie: ' . ' ' . $model->title;
 $this->params['breadcrumbs'][] = ['label' => 'Collections', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = 'Bewerk';
+
+$this->params['menu'][] = [
+   	['label'=>'Acties','visible'=>Yii::app()->user->checkAccess('moderator')],
+	['label'=>'Maak collectie aan','url'=>['create'],'icon'=>'file','visible'=>Yii::app()->user->checkAccess('moderator')],
+        ['label'=>'Lijst van collecties','url'=>['index'],'icon'=>'list','visible'=>Yii::app()->user->checkAccess('moderator')],
+	['label'=>'Beheer collecties','url'=>['admin'],'icon'=>'list-alt','visible'=>Yii::app()->user->checkAccess('admin')],
+];
+
+
 ?>
 <div class="collection-update">
 

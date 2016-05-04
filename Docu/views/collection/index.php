@@ -7,8 +7,14 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\Search */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Collections';
+$this->title = 'Collecties';
 $this->params['breadcrumbs'][] = $this->title;
+        
+$this->params['menu'][] = [
+        ['label'=>'Acties','visible'=>Yii::app()->user->checkAccess('moderator')],
+	['label'=>'Maak collectie aan','url'=>['create'],'icon'=>'file','visible'=>Yii::app()->user->checkAccess('moderator')],
+        ['label'=>'Beheer collecties','url'=>['admin'],'icon'=>'list-alt','visible'=>Yii::app()->user->checkAccess('admin')],
+];
 ?>
 <div class="collection-index">
 
@@ -19,22 +25,12 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Create Collection', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?= GridView::widget([
+    <?=
+    GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'user_id',
-            'title',
-            'description:ntext',
-            'created_on',
-            // 'modified_on',
-            // 'published',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+        'itemView' => '_view',
+    ]);
+    ?>
 
 </div>

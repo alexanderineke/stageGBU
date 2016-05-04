@@ -15,7 +15,7 @@ $this->params['menu'][] = [
 	['label'=>'Lijst van gebruikers','url'=>['index'],'icon'=>'list','visible'=>Yii::app()->user->checkAccess('moderator')],
 	['label'=>'Beheer gebruikers','url'=>['admin'],'icon'=>'list-alt','visible'=>Yii::app()->user->checkAccess('admin')],
 ];
-//
+
 ?>
 <div class="user-create">
 

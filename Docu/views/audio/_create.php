@@ -18,6 +18,19 @@ $form = ActiveForm::begin([
 
 <?php
 //Hier moet de dropzone komen
+
+echo $form->field($model, 'picture')->widget(DropZone::className, [
+    'options' => [
+        'url'=>'upload',
+        'maxFilesize' => '200',
+        'addRemoveLinks'=>true,
+    ],
+    'clientEvents' => [
+        'complete' => "function(file) { console.log(file) }",
+        'removedfile' => "function(file) {alert(file.name + ' is removed') }",
+    ],
+]);
+
 ?>
 
 <div class='form-actions'>

@@ -15,19 +15,19 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <?= $form->field($model, 'id')->textInput(['class' => 'span5']) ?>
 
-    <?= $form->field($model, 'user_id') ?>
+    <?= $form->field($model, 'user_id')->textInput(['class' => 'span5']) ?>
 
-    <?= $form->field($model, 'title') ?>
+    <?= $form->field($model, 'title')->textInput(['class' => 'span5', 'maxlength'=> 64]) ?>
 
-    <?= $form->field($model, 'description') ?>
+    <?= $form->field($model, 'description')->textarea(['rows' => 6, 'cols' => 50, 'class' => 'span8'])  ?>
 
-    <?= $form->field($model, 'created_on') ?>
+    <?= $form->field($model, 'created_on')->textInput(['class' => 'span5']) ?>
 
-    <?php // echo $form->field($model, 'modified_on') ?>
+    <?= $form->field($model, 'modified_on')->textInput(['class' => 'span5']) ?>
 
-    <?php // echo $form->field($model, 'published') ?>
+    <?= $form->field($model, 'published')->textInput(['class' => 'span5']) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

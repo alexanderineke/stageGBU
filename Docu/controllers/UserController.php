@@ -103,6 +103,18 @@ class UserController extends Controller
         return $this->redirect(['index']);
     }
 
+    
+    public function actionAdmin() {
+        $model = new User('search');
+        $model->unsetAttributes();  // clear any default values
+        if (isset($_GET['User']))
+            $model->attributes = $_GET['User'];
+
+        $this->render('admin', [
+            'model' => $model,
+        ]);
+    }
+
     /**
      * Finds the User model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -110,7 +122,7 @@ class UserController extends Controller
      * @return User the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function loadModel($id)
     {
         if (($model = User::findOne($id)) !== null) {
             return $model;
