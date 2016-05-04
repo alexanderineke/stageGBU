@@ -66,7 +66,6 @@ class Collection extends \yii\db\ActiveRecord {
             return $dataProvider;
         }
         $query
-                
                 ->andFilterWhere(['like', 'id', $this->id])
                 ->andFilterWhere(['like', 'user_id', $this->user_id])
                 ->andFilterWhere(['like', 'title', $this->title])
@@ -74,6 +73,7 @@ class Collection extends \yii\db\ActiveRecord {
                 ->andFilterWhere(['like', 'created_on', $this->year])
                 ->andFilterWhere(['like', 'modified_on', $this->owner])
                 ->andFilterWhere(['like', 'published', $this->published]);
+        
         return $dataProvider;
     }
 
