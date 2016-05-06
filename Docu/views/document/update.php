@@ -5,17 +5,24 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Document */
 
-$this->title = 'Update Document: ' . ' ' . $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Documents', 'url' => ['index']];
+$this->title = 'Bewerk';
+$this->params['breadcrumbs'][] = ['label' => 'Documenten', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = $this-title;
+
+echo Menu::widget([
+    'items' => [
+        ['label' => 'Acties', 'visible' => Yii::app()->user->checkAccess('moderator')],
+        ['label' => 'Lijst van documenten', 'url' => ['index'], 'icon' => 'list', 'visible' => Yii::app()->user->checkAccess('moderator')],
+        ['label' => 'Maak audio documenten aan', 'url' => ['create'], 'icon' => 'file', 'visible' => Yii::app()->user->checkAccess('user')],
+        ['label' => 'Bekijk document', 'url' => ['view', 'id'=>$model->id], 'icon' => 'eye-open', 'visible' => Yii::app()->user->checkAccess('moderator')],
+        ['label' => 'Beheer document', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::app()->user->checkAccess('admin')],
+    ],
+]);
 ?>
-<div class="document-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+<h1>Bewerk document <?= $model-id; ?></h1>
 
-    <?= $this->render('_form', [
+    <?= $this->render('_update', [
         'model' => $model,
     ]) ?>
-
-</div>

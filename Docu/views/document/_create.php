@@ -2,25 +2,27 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
+
 $form = ActiveForm::begin([
-            'id' => 'audio-form',
-            'action' => ['audio/process'],
+            'id' => 'document-form',
+            'action' => ['document/process'],
             'enableAjaxValidation' => false,
             'method' => 'get',
             'options' => ['enctype' => 'multipart/form-data'],
         ]);
 ?>
 
-<p class="help-block">Velden met een <span class="required">*</span> zijn verplicht</p>
+<p class="help-block">Velden met een <span class="required">*</span> zijn verplicht.</p>
 
 <?= $form->errorSummary($model); ?>
 
 <?= $form->field($model, 'title')->textInput(['class' => 'span5', 'maxlength' => 64]); ?>
 
 <?php
-//Hier moet de dropzone komen
-
 echo \kato\DropZone::widget([
+    'model' => $model,
+    'attribute' => 'file',
+    'url' => $this->createUrl('document/upload'),
     'options' => [
         'maxFilesize' => '200',
         'dictDefaultMessage' => 'Plaats hier het bestand dat u wilt uploaden',
@@ -28,8 +30,7 @@ echo \kato\DropZone::widget([
         'dictInvalidFileType' => 'Dit bestands formaat wordt niet ondersteund. Converteer het a.u.b. naar MP3.',
         'dictFileTooBig' => 'Het bestand dat u probeert te uploaden is te groot.',
         'clickable' => true,
-        'accept' => ['audio/mpeg3', 'audio/x-mpeg-3', 'audio/mpeg', 'audio/mp3'],
-        'url' => $this->createUrl('audio/batchupload'),
+        'accept' => ['application/pdf', 'application/x-pdf'],
     ],
     'clientEvents' => [
         'complete' => "function(file){console.log(file)}",
@@ -37,8 +38,7 @@ echo \kato\DropZone::widget([
     ],
 ]);
 ?>
-
-<div class='form-actions'>
+<div class="form-actions">
     <?= Html::submitButton('Maak aan', ['class' => 'btn btn-primary']) ?>
 </div>
 

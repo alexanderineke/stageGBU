@@ -9,35 +9,41 @@ use yii\grid\GridView;
 
 $this->title = 'Documents';
 $this->params['breadcrumbs'][] = $this->title;
+
+$this->params['menu'][] = [
+    ['label' => 'Acties', 'visible' => Yii::app()->user->checkAccess('moderator')],
+    ['label' => 'Maak Documenten aan', 'icon' => 'file', 'url' => ['create'], 'visible' => Yii::app()->user->checkAccess('user')],
+    ['label' => 'Beheer documenten', 'icon' => 'file', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::app()->user->checkAccess('admin')],
+];
+
+function objectToTagString($tags) {
+    $string = [];
+    foreach ($tags as $tag) {
+        $string[] = $tag["name"];
+    } return implode(", ", $string);
+}
+
+function fileLocation($id, $title) {
+    return Html::a($title, ['document/view', 'id' => $id]);
+}
 ?>
-<div class="document-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+<h1>Documenten</h1>
 
-    <p>
-        <?= Html::a('Create Document', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'user_id',
-            'title',
-            'description:ntext',
-            'content:ntext',
-            // 'year',
-            // 'owner',
-            // 'created_on',
-            // 'modified_on',
-            // 'published',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
-
-</div>
+<?=
+GridView::widget([
+    'id' => 'document-grid',
+    'type' => 'striped bordered',
+    'dataProvider' => $model->search(),
+    'columns' => [
+        ['name' => 'title', 'header' => 'Naam document', 'value' => 'fileLocation($data->id, $data->title)', 'type' => 'raw'],
+        ['name' => 'tag_search', 'header' => 'Tags', 'value' => 'objectToTagString($data->tags)'],
+        ['name' => 'year', 'header' => 'Jaar'],
+    ],
+    'enableHistory' => true,
+    'pager' => [
+        'prevPageLabel' => '&laquo;',
+        'nextPageLabel' => '&raquo;',
+    ],
+])
+?>

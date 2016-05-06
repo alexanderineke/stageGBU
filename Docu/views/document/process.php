@@ -1,13 +1,9 @@
 <?php
-
 use yii\helpers\Html;
 
-
-/* @var $this yii\web\View */
-/* @var $model app\models\Document */
-
-$this->title = 'Create Document';
-$this->params['breadcrumbs'][] = ['label' => 'Documents', 'url' => ['index']];
+$this->title = 'Verwerken';
+$this->params['breadcrumbs'][] = ['label' => 'Documenten', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Meerdere aanmaken', 'url' => []];
 $this->params['breadcrumbs'][] = $this->title;
 
 $this->params['menu'][] = [
@@ -17,8 +13,10 @@ $this->params['menu'][] = [
 ];
 ?>
 
-<h1>Maak documenten aan</h1>
+<h1>Verwerk document <?= $file['file']; ?></h1>
 
-    <?= $this->render('_create', [
+    <?= $this->render('_process', [
         'model' => $model,
+        'file' => $file,
+        'collection_list' => $collection_list,
     ]) ?>
