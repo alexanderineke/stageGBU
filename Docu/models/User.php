@@ -98,8 +98,8 @@ class User extends \yii\db\ActiveRecord {
 
         $query
                 ->andFilterWhere(['like', 'id', $this->id])
-                ->andFilterWhere(['like', 'username', $this->user_id])
-                ->andFilterWhere(['like', 'email', $this->title]);
+                ->andFilterWhere(['like', 'username', $this->username])
+                ->andFilterWhere(['like', 'email', $this->email]);
         return $dataProvider;
     }
 

@@ -34,7 +34,8 @@ class ImageTemp extends \yii\db\ActiveRecord
             [['create_date'], 'safe'],
             [['user_id'], 'integer'],
             [['file', 'location'], 'string', 'max' => 255],
-            [['format'], 'string', 'max' => 4]
+            [['format'], 'string', 'max' => 4],
+            [['id', 'create_date', 'user_id', 'file', 'format', 'location'], 'safe', 'on' => 'search']
         ];
     }
 
@@ -46,10 +47,49 @@ class ImageTemp extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'create_date' => 'Create Date',
-            'user_id' => 'User ID',
+            'user_id' => 'User',
             'file' => 'File',
             'format' => 'Format',
             'location' => 'Location',
         ];
     }
+    
+     public function search($params) {
+        $query = ImageTemp::find();
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        $query
+                ->andFilterWhere(['like', 'id', $this->id])
+                ->andFilterWhere(['like', 'create_date', $this->create_date])
+                ->andFilterWhere(['like', 'user_id', $this->user_id])
+                ->andFilterWhere(['like', 'file', $this->file])
+                ->andFilterWhere(['like', 'format', $this->format])
+                ->andFilterWhere(['like', 'location', $this->location]);
+                
+        return $dataProvider;
+    }
+    public function addTempFile($filename, $location) {
+        $sql = "insert into tbl_image_temp (user_id, create_date, file, format, location) values (:user_id, NOW(), :file, :format, :location)";
+        $parameters = [":user_id" => Yii::app()->user->getId(),
+            ":file" => $filename,
+            ":format" => 'pdf',
+            ":location" => $location];
+        if (Yii::app()->db->createCommand($sql)->execute($parameters)) {
+            $id = Yii::app()->db->getLastInsertID();
+        } else {
+            $id = false;
+        }
+        return $id;
+    }
+
 }

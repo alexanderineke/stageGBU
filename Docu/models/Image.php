@@ -19,54 +19,85 @@ use Yii;
  *
  * @property User $user
  */
-class Image extends \yii\db\ActiveRecord
-{
+class Image extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return '{{%image}}';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['user_id', 'title', 'created_on', 'modified_on', 'published'], 'required'],
+            [['user_id', 'title', 'published'], 'required'],
             [['user_id', 'year', 'published'], 'integer'],
             [['description'], 'string'],
             [['created_on', 'modified_on'], 'safe'],
             [['title'], 'string', 'max' => 64],
-            [['owner'], 'string', 'max' => 45]
+            [['owner'], 'string', 'max' => 45],
+            [['id', 'user_id', 'title', 'description', 'year', 'owner'], 'safe', 'on' => 'search']
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
-            'user_id' => 'User ID',
-            'title' => 'Title',
-            'description' => 'Description',
-            'year' => 'Year',
-            'owner' => 'Owner',
-            'created_on' => 'Created On',
-            'modified_on' => 'Modified On',
-            'published' => 'Published',
+            'user_id' => 'Naam van uploader',
+            'title' => 'Titel',
+            'description' => 'Omschrijving',
+            'tags' => 'Steekwoorden',
+            'year' => 'Jaar',
+            'owner' => 'Eigenaar',
+            'created_on' => 'Aanmaakdatum',
+            'modified_on' => 'Laatste wijzigingsdatum',
+            'published' => 'Gepubliceerd',
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getUser()
-    {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+    public function search($params) {
+        $query = Image::find();
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        $query
+                ->andFilterWhere(['like', 'id', $this->id])
+                ->andFilterWhere(['like', 'user_id', $this->user_id])
+                ->andFilterWhere(['like', 'title', $this->title])
+                ->andFilterWhere(['like', 'description', $this->description])
+                ->andFilterWhere(['like', 'year', $this->year])
+                ->andFilterWhere(['like', 'owner', $this->owner])
+                ->andFilterWhere(['like', 'published', $this->published]);
+
+        return $dataProvider;
     }
+
+    public function getUser() {
+        return $this->Belongs_to(User::className(), ['id' => 'user_id']);
+    }
+
+    public function getTags() {
+        return $this->hasMany(Tag::className(), ['id' => 'user_id'])
+                        ->viaTable('tbl_image_tag', ['image_id' => 'id']);
+    }
+
+    public function getImages() {
+        return $this->hasMany(ImageFile::className(), ['id' => 'image_id'])->andWhere('state=1');
+    }
+
 }
