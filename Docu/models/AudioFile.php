@@ -31,7 +31,8 @@ class AudioFile extends \yii\db\ActiveRecord {
             [['audio_id', 'file', 'format', 'location'], 'required'],
             [['audio_id', 'state'], 'integer'],
             [['file', 'location'], 'string', 'max' => 255],
-            [['format'], 'string', 'max' => 4]
+            [['format'], 'string', 'max' => 4],
+            [['id, audio_id, file, format, location'], 'safe', 'on'=>'search']
         ];
     }
 

@@ -40,7 +40,7 @@ class Audio extends \yii\db\ActiveRecord {
             [['user_id', 'title', 'published'], 'required'],
             [['user_id', 'year', 'published'], 'integer'],
             [['description'], 'string'],
-            [['description'], 'safe'],
+            [['tag_search, id, user_id, title, description, year, owner, published'], 'safe','on'=>'search'],
             [['title'], 'string', 'max' => 64],
             [['owner'], 'string', 'max' => 45]
         ];

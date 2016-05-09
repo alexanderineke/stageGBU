@@ -30,7 +30,8 @@ class DocumentFile extends ActiveRecord {
             [['document_id', 'file', 'format', 'location'], 'required'],
             [['document_id', 'state'], 'integer'],
             [['file', 'location'], 'string', 'max' => 255],
-            [['format'], 'string', 'max' => 4]
+            [['format'], 'string', 'max' => 4],
+            [['id, document_id, file, format, location, state'], 'safe', 'on' => 'seach']
         ];
     }
 
@@ -175,4 +176,5 @@ class DocumentFile extends ActiveRecord {
         }
         return true;
     }
+
 }

@@ -27,7 +27,7 @@ class DocumentTemp extends \yii\db\ActiveRecord {
     public function rules() {
         return [
             [['create_date', 'user_id', 'file', 'format', 'location'], 'required'],
-            [['create_date'], 'safe'],
+            [['id, create_date, user_id, file, format, location'], 'safe', 'on' => 'search'],
             [['user_id'], 'integer'],
             [['file', 'location'], 'string', 'max' => 255],
             [['format'], 'string', 'max' => 4]

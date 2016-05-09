@@ -27,7 +27,8 @@ class AudioTag extends \yii\db\ActiveRecord {
     public function rules() {
         return [
             [['audio_id', 'tag_id'], 'required'],
-            [['audio_id', 'tag_id', 'state'], 'integer']
+            [['audio_id', 'tag_id', 'state'], 'integer'],
+            [['id, audio_id, tag_id, state'], 'safe', 'on'=>'search']
         ];
     }
 

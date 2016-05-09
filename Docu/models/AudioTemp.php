@@ -29,7 +29,7 @@ class AudioTemp extends \yii\db\ActiveRecord {
     public function rules() {
         return [
             [['create_date', 'user_id', 'file', 'format', 'location'], 'required'],
-            [['create_date'], 'safe'],
+            [['id, create_date, user_id, file, format, location'], 'safe'],
             [['user_id'], 'integer'],
             [['file', 'location'], 'string', 'max' => 255],
             [['format'], 'string', 'max' => 4]

@@ -25,7 +25,8 @@ class DocumentTag extends \yii\db\ActiveRecord {
     public function rules() {
         return [
             [['document_id', 'tag_id'], 'required'],
-            [['document_id', 'tag_id', 'state'], 'integer']
+            [['document_id', 'tag_id', 'state'], 'integer'],
+            [['id, document_id, tag_id, state'], 'safe', 'on' => 'search']
         ];
     }
 
