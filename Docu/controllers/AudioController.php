@@ -82,10 +82,10 @@ class AudioController extends Controller {
         $rnd = rand(0, 9999);
         $folderName = date("d M Y");
         $fileName = "{$rnd}_{$uploadedFile}";
-        if (!is_dir(Yii::app()->basePath . '/../uploads/' . $folderName)) {
-            mkdir(Yii::app()->basePath . '/../uploads/' . $folderName);
+        if (!is_dir(yii::getAlias('@app' . '/../uploads/' . $folderName))) {
+            mkdir(yii::getAlias('@app' . '/../uploads/' . $folderName));
         }
-        if ($uploadedFile->saveAs(Yii::app()->basePath . '/../uploads/' . $folderName . '/' . $fileName)) {
+        if ($uploadedFile->saveAs(yii::getAlias('@app' . '/../uploads/' . $folderName . '/' . $fileName))) {
             $id = $model->addTempFile($fileName, $folderName);
             if ($id) {
                 Yii::app()->user->setState('filesToProcess', array($id));
@@ -101,8 +101,8 @@ class AudioController extends Controller {
         $rnd = rand(0, 9999);
         $folderName = date("d M Y");
         $fileName = "{$rnd}_{$uploadedFile}";
-        if (!is_dir(Yii::app()->basePath . '/../uploads/' . $folderName)) {
-            mkdir(Yii::app()->basePath . '/../uploads/' . $folderName);
+        if (!is_dir(yii::getAlias('@app' . '/../uploads/' . $folderName))) {
+            mkdir(yii::getAlias('@app' . '/../uploads/' . $folderName));
         }
         if ($uploadedFile->saveAs(Yii::app()->basePath . '/../uploads/' . $folderName . '/' . $fileName)) {
             $id = $model->addTempFile($fileName, $folderName);
@@ -110,7 +110,7 @@ class AudioController extends Controller {
                 $fileQueue = Yii::app()->user->getState('filesToProcess');
                 array_push($fileQueue, $id);
                 Yii::app()->user->setState('filesToProcess', $fileQueue);
-            } else{
+            } else {
                 throw new HttpException(400, 'Upload niet gelukt.');
             }
         }
@@ -212,11 +212,11 @@ class AudioController extends Controller {
                 $file = $model->audios[0];
             } else {
                 $audioTempModel = AudioTemp::findOne($fileQueue[0]);
-                $file = $audioTempModel - getAttributes(['file', 'format', 'location']);
+                $file = $audioTempModel->getAttributes(['file', 'format', 'location']);
             }
         } else {
             $audioTempModel = AudioTemp::findOne($fileQueue[0]);
-            $file = $audioTempModel - getAttributes(['file', 'format', 'location']);
+            $file = $audioTempModel->getAttributes(['file', 'format', 'location']);
         }
 
         if (isset($_POST['Audio']['included_file'])) {

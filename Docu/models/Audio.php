@@ -76,7 +76,7 @@ class Audio extends \yii\db\ActiveRecord {
     }
     */
     public function getUser(){
-        return $this->Belongs_to(User::className(), ['id' => 'user_id']);
+        return $this->Belongs_to(\yii\web\User::className(), ['id' => 'user_id']);
     }
     
     public function getTags(){

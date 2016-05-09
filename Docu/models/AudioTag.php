@@ -114,9 +114,11 @@ class AudioTag extends \yii\db\ActiveRecord {
 
     public function check($audio_id, $tagIds) {
         $query = AudioTag::find()
-                ->andFilterWhere(['audio_id' =>$audio_id])
-                ->andFilterWhere(['tag_id' =>$tagIds])
-                ->andFilterWhere(['state' =>1]);
+                ->andFilterWhere(['audio_id' => $audio_id])
+                ->andFilterWhere(['tag_id' => $tagIds])
+                ->andFilterWhere(['state' => 1])
+                ->all()
+                ->execute();
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -127,23 +129,26 @@ class AudioTag extends \yii\db\ActiveRecord {
         }
         return $dataProvider;
     }
-    
-        public function deleteTags($audio_id, $tagIds) {
+
+    public function deleteTags($audio_id, $tagIds) {
         $query = AudioTag::find()
-                ->andFilterWhere(['audio_id' =>$audio_id])
-                ->andFilterWhere(['tag_id' =>$tagIds])
-                ->andFilterWhere(['state' =>1])
+                ->andFilterWhere(['audio_id' => $audio_id])
+                ->andFilterWhere(['tag_id' => $tagIds])
+                ->andFilterWhere(['state' => 1])
+                ->all()
                 ->delete()
                 ->execute();
         return $query;
     }
-    
-        public function getTagg($audio_id) {
+
+    public function getTagg($audio_id) {
         $query = AudioTag::find()
                 ->select(['tag_id'])
-                ->andFilterWhere(['audio_id' =>$audio_id])
-                ->andFilterWhere(['state' =>1])
-                ->limit(1);
+                ->andFilterWhere(['audio_id' => $audio_id])
+                ->andFilterWhere(['state' => 1])
+                ->limit(1)
+                ->all()
+                ->execute();
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -154,4 +159,5 @@ class AudioTag extends \yii\db\ActiveRecord {
         }
         return $dataProvider;
     }
+
 }
