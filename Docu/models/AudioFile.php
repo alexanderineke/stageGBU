@@ -82,21 +82,21 @@ class AudioFile extends \yii\db\ActiveRecord {
             //Bestandsnamen, bestandslocaties
             $tags = Tag::findOne($tag_id);
             $folder_name = preg_replace('/[^a-z0-9-_\.]/', '', strtolower($tags->name));
-            $fileInfo = pathinfo(yii::getAlias('@app' . '/../uploads/' . $file['location'] . '/' . $file['file']));
+            $fileInfo = pathinfo(Yii::getAlias('@app' . '/../uploads/' . $file['location'] . '/' . $file['file']));
 
             //Map voor audio files
-            if (!is_dir(yii::getAlias('@app' . '/../uploads/audio/'))) {
-                mkdir(yii::getAlias('@app' . '/../uploads/audio/'));
+            if (!is_dir(Yii::getAlias('@app' . '/../uploads/audio/'))) {
+                mkdir(Yii::getAlias('@app' . '/../uploads/audio/'));
             }
 
             //Map voor normale versie
-            if (!is_dir(yii::getAlias('@app' . '/../uploads/audio/' . $folder_name . '/'))) {
-                mkdir(yii::getAlias('@app' . '/../uploads/audio/' . $folder_name . '/'));
+            if (!is_dir(Yii::getAlias('@app' . '/../uploads/audio/' . $folder_name . '/'))) {
+                mkdir(Yii::getAlias('@app' . '/../uploads/audio/' . $folder_name . '/'));
             }
 
             //Schrijf bestand weg
-            $fileContents = file_get_contents(yii::getAlias('@app' . '/../uploads/' . $file['location'] . '/' . $file['file']));
-            file_put_contents(yii::getAlias('@app' . '/../uploads/audio/' . $folder_name . '/' . $fileInfo['filename'] . '.mp3', $fileContents));
+            $fileContents = file_get_contents(Yii::getAlias('@app' . '/../uploads/' . $file['location'] . '/' . $file['file']));
+            file_put_contents(Yii::getAlias('@app' . '/../uploads/audio/' . $folder_name . '/' . $fileInfo['filename'] . '.mp3', $fileContents));
 
             $this->updateAll(['state' => 0], 'audio_id=' . $audio_id);
 

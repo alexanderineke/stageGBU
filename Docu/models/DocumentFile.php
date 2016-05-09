@@ -141,23 +141,23 @@ class DocumentFile extends ActiveRecord {
         if ($file) {
             $tags = Tag::findOne($tag_id);
             $folder_name = preg_replace('/[^a-z0-9-_\.]/', '', strtolower($tags->name));
-            $fileInfo = pathinfo(yii::getAlias('@app' . '/../uploads/' . $file['location'] . '/' . $file['file']));
+            $fileInfo = pathinfo(Yii::getAlias('@app' . '/../uploads/' . $file['location'] . '/' . $file['file']));
             $file_name = $fileInfo['filename'];
 
-            if (!is_dir(yii::getAlias('@app' . '/../uploads/documenten/'))) {
-                mkdir(yii::getAlias('@app' . '/../uploads/documenten/'));
+            if (!is_dir(Yii::getAlias('@app' . '/../uploads/documenten/'))) {
+                mkdir(Yii::getAlias('@app' . '/../uploads/documenten/'));
             }
 
-            if (!is_dir(yii::getAlias('@app' . '/../uploads/documenten/' . $folder_name . '/'))) {
-                mkdir(yii::getAlias('@app' . '/../uploads/documenten/' . $folder_name . '/'));
+            if (!is_dir(Yii::getAlias('@app' . '/../uploads/documenten/' . $folder_name . '/'))) {
+                mkdir(Yii::getAlias('@app' . '/../uploads/documenten/' . $folder_name . '/'));
             }
 
             if (!$this->genThumbs($file, $folder_name, $file_name)) {
                 return false;
             }
 
-            $fileContents = file_get_contents(yii::getAlias('@app' . '/../uploads/' . $file['location'] . '/' . $file['file']));
-            if (!$fileContents || !file_put_contents(yii::getAlias('@app' . '/../uploads/documenten/' . $folder_name . '/' . $file_name . '.pdf', $fileContents))) {
+            $fileContents = file_get_contents(Yii::getAlias('@app' . '/../uploads/' . $file['location'] . '/' . $file['file']));
+            if (!$fileContents || !file_put_contents(Yii::getAlias('@app' . '/../uploads/documenten/' . $folder_name . '/' . $file_name . '.pdf', $fileContents))) {
                 return false;
             }
             echo 'sweet';
