@@ -7,13 +7,13 @@ $this->params['breadcrumbs'][] = ['label' => 'Collecion', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 $this->params['menu'][] = [
-    ['label' => 'Acties', 'visible' => Yii::app()->user->checkAccess('moderator')],
-    ['label' => 'Maak collectie aan', 'icon' => 'file', 'url' => ['create'], 'visible' => Yii::app()->user->checkAccess('moderator')],
-    ['label' => 'Lijst van collecties', 'icon' => 'list', 'url' => ['index'], 'visible' => Yii::app()->user->checkAccess('moderator')],
-    ['label' => 'Uitgelichte collecties', 'icon' => 'eye-open', 'url' => ['view&id=17'], 'visible' => Yii::app()->user->checkAccess('moderator')],
+    ['label' => 'Acties', 'visible' => Yii::$app->user->getIndentity('moderator')],
+    ['label' => 'Maak collectie aan', 'icon' => 'file', 'url' => ['create'], 'visible' => Yii::$app->user->getIndentity('moderator')],
+    ['label' => 'Lijst van collecties', 'icon' => 'list', 'url' => ['index'], 'visible' => Yii::$app->user->getIndentity('moderator')],
+    ['label' => 'Uitgelichte collecties', 'icon' => 'eye-open', 'url' => ['view&id=17'], 'visible' => Yii::$app->user->getIndentity('moderator')],
 ];
 
-Yii::app()->clientScript->registerScript('search', "
+Yii::$app->clientScript->registerScript('search', "
 $('.search-button').click(function(){
 	$('.search-form').toggle();
 	return false;

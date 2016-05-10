@@ -11,11 +11,11 @@ $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' 
 $this->params['breadcrumbs'][] = 'Update';
 
 $this->menu=[
-        ['label'=>'Acties','visible'=>Yii::app()->user->checkAccess('moderator')],
-	['label'=>'Lijst van gebruikers','url'=>['index'],'icon'=>'list','visible'=>Yii::app()->user->checkAccess('moderator')],
-	['label'=>'Maak gebruiker aan','url'=>['create'],'icon'=>'file','visible'=>Yii::app()->user->checkAccess('moderator')],
-	['label'=>'Bekijk gebruiker','url'=>['view','id'=>$model->id],'icon'=>'eye-open','visible'=>Yii::app()->user->checkAccess('moderator')],
-	['label'=>'Beheer gebruiker','url'=>['admin'],'icon'=>'list-alt','visible'=>Yii::app()->user->checkAccess('admin')],
+        ['label'=>'Acties','visible'=>Yii::$app->user->getIndentity('moderator')],
+	['label'=>'Lijst van gebruikers','url'=>['index'],'icon'=>'list','visible'=>Yii::$app->user->getIndentity('moderator')],
+	['label'=>'Maak gebruiker aan','url'=>['create'],'icon'=>'file','visible'=>Yii::$app->user->getIndentity('moderator')],
+	['label'=>'Bekijk gebruiker','url'=>['view','id'=>$model->id],'icon'=>'eye-open','visible'=>Yii::$app->user->getIndentity('moderator')],
+	['label'=>'Beheer gebruiker','url'=>['admin'],'icon'=>'list-alt','visible'=>Yii::$app->user->getIndentity('admin')],
 ];
 ?>
 <div class="user-update">

@@ -11,9 +11,9 @@ $this->title = 'Documents';
 $this->params['breadcrumbs'][] = $this->title;
 
 $this->params['menu'][] = [
-    ['label' => 'Acties', 'visible' => Yii::app()->user->checkAccess('moderator')],
-    ['label' => 'Maak Documenten aan', 'icon' => 'file', 'url' => ['create'], 'visible' => Yii::app()->user->checkAccess('user')],
-    ['label' => 'Beheer documenten', 'icon' => 'file', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::app()->user->checkAccess('admin')],
+    ['label' => 'Acties', 'visible' => Yii::$app->user->getIndentity('moderator')],
+    ['label' => 'Maak Documenten aan', 'icon' => 'file', 'url' => ['create'], 'visible' => Yii::$app->user->getIndentity('user')],
+    ['label' => 'Beheer documenten', 'icon' => 'file', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::$app->user->getIndentity('admin')],
 ];
 
 function objectToTagString($tags) {

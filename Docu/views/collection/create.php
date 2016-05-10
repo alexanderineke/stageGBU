@@ -11,9 +11,9 @@ $this->params['breadcrumbs'][] = ['label' => 'Collections', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 $this->params['menu'][] = [
-   	['label'=>'Acties','visible'=>Yii::app()->user->checkAccess('moderator')],
-	['label'=>'Lijst van collecties','url'=>['index'],'icon'=>'list','visible'=>Yii::app()->user->checkAccess('moderator')],
-	['label'=>'Beheer collecties','url'=>['admin'],'icon'=>'list-alt','visible'=>Yii::app()->user->checkAccess('admin')],
+   	['label'=>'Acties','visible'=>Yii::$app->user->getIndentity('moderator')],
+	['label'=>'Lijst van collecties','url'=>['index'],'icon'=>'list','visible'=>Yii::$app->user->getIndentity('moderator')],
+	['label'=>'Beheer collecties','url'=>['admin'],'icon'=>'list-alt','visible'=>Yii::$app->user->getIndentity('admin')],
 ];
 ?>
 <div class="collection-create">

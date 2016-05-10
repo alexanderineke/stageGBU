@@ -3,11 +3,11 @@
 class Tweet
 {
     public function give(){
-        $tweets = Yii::app()->cache->get('frontpage_tweets');
+        $tweets = Yii::$app->cache->get('frontpage_tweets');
         if (!$tweets) {
             $tweets = $this->get();
             $tweets = $this->format($tweets);
-            Yii::app()->cache->set('frontpage_tweets', $tweets, '60');
+            Yii::$app->cache->set('frontpage_tweets', $tweets, '60');
         }
 
         return $tweets;
@@ -15,19 +15,19 @@ class Tweet
 
     protected function get(){
         $oauth = new \TwitterOAuth\Api(
-            Yii::app()->params['twitter']['consumer_key'],
-            Yii::app()->params['twitter']['consumer_secret'],
-            Yii::app()->params['twitter']['oauth_token'],
-            Yii::app()->params['twitter']['oauth_secret']
+            Yii::$app->params['twitter']['consumer_key'],
+            Yii::$app->params['twitter']['consumer_secret'],
+            Yii::$app->params['twitter']['oauth_token'],
+            Yii::$app->params['twitter']['oauth_secret']
         );
 
         $timeline = json_decode($oauth->oAuthRequest(
             'https://api.twitter.com/1.1/statuses/user_timeline.json', 
             'GET', 
             [
-                'screen_name'=> Yii::app()->params['twitter']['user'], 
+                'screen_name'=> Yii::$app->params['twitter']['user'], 
                 'include_entities'=>'true',
-                'count'=> Yii::app()->params['twitter']['amount']
+                'count'=> Yii::$app->params['twitter']['amount']
             ]
         ));
 

@@ -94,7 +94,7 @@ class AudioTag extends \yii\db\ActiveRecord {
           ->execute();
           $parameters = [':audio_id'=>$audio_id,
           ':tag_id'=>$i];
-          if(Yii::app()->db->createCommand($sql)->execute($parameters)){
+          if(Yii::$app->db->createCommand($sql)->execute($parameters)){
           $v++;
           }
           }

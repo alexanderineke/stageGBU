@@ -35,11 +35,11 @@ function objectToTagStringAudio($tags) { //Vertaalt de verschillende tags naar 1
 }
 
 if ($imageSearch->totalItemCount != 0) {
-    Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/assets/css/grid/grid.css');
-    Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/assets/css/grid/component.css');
-    Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/assets/css/grid/default.css');
-    Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl . '/assets/js/grid.js', CClientScript::POS_END);
-    $cs = Yii::app()->getClientScript();
+    Yii::$app->clientScript->registerCssFile(Yii::$app->theme->baseUrl . '/assets/css/grid/grid.css');
+    Yii::$app->clientScript->registerCssFile(Yii::$app->theme->baseUrl . '/assets/css/grid/component.css');
+    Yii::$app->clientScript->registerCssFile(Yii::$app->theme->baseUrl . '/assets/css/grid/default.css');
+    Yii::$app->clientScript->registerScriptFile(Yii::$app->theme->baseUrl . '/assets/js/grid.js', CClientScript::POS_END);
+    $cs = Yii::$app->getClientScript();
     $cs->registerScript('image-grid', 'Grid.init();');
 
     $results[] = [
@@ -63,15 +63,15 @@ if ($imageSearch->totalItemCount != 0) {
     ];
 }
 
-if (($documentSearch->totalItemCount != 0 && !Yii::app()->request->isAjaxRequest) || Yii::app()->request->isAjaxRequest) {
-    Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/assets/css/justifiedGallery.min.css');
-    Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/assets/css/swipebox.min.css');
-    Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl . '/assets/js/jquery.swipebox.min.js', CClientScript::POS_END);
-    $cs = Yii::app()->getClientScript();
+if (($documentSearch->totalItemCount != 0 && !Yii::$app->request->isAjaxRequest) || Yii::$app->request->isAjaxRequest) {
+    Yii::$app->clientScript->registerCssFile(Yii::$app->theme->baseUrl . '/assets/css/justifiedGallery.min.css');
+    Yii::$app->clientScript->registerCssFile(Yii::$app->theme->baseUrl . '/assets/css/swipebox.min.css');
+    Yii::$app->clientScript->registerScriptFile(Yii::$app->theme->baseUrl . '/assets/js/jquery.swipebox.min.js', CClientScript::POS_END);
+    $cs = Yii::$app->getClientScript();
     if ($documentSearch->getTotalItemCount() < 3) {
         $cs->registerScript('document-gallery', '$(".documentList").find("a.swipebox").swipebox();');
     } else {
-        Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl . '/assets/js/jquery.justifiedGallery.min.js', CClientScript::POS_END);
+        Yii::$app->clientScript->registerScriptFile(Yii::$app->theme->baseUrl . '/assets/js/jquery.justifiedGallery.min.js', CClientScript::POS_END);
         $cs->registerScript('document-gallery', '$(".documentList").justifiedGallery({rowHeight : 240, margins: 2, cssAnimation: true }).on("jg.complete", function () { $(this).find("a.swipebox").swipebox(); });');
     }
 
@@ -91,7 +91,7 @@ if (($documentSearch->totalItemCount != 0 && !Yii::app()->request->isAjaxRequest
         //     'dataProvider'=>$documentSearch,
         //     'filter'=>$documentModel,
         //     'columns'=>array(
-        //         array('name'=>'title', 'header'=>'Naam document', 'value'=>'CHtml::link($data->title, Yii::app()->createUrl("document/view",array("id"=>$data->id)))', 'type'=>'raw', 'filter'=>CHtml::activeTextField($documentModel, 'title', array('placeholder'=>'Zoek op titel..'))),
+        //         array('name'=>'title', 'header'=>'Naam document', 'value'=>'CHtml::link($data->title, Yii::$app->createUrl("document/view",array("id"=>$data->id)))', 'type'=>'raw', 'filter'=>CHtml::activeTextField($documentModel, 'title', array('placeholder'=>'Zoek op titel..'))),
         //         array('name'=>'tag_search', 'header'=>'Steekwoorden', 'value'=>'objectToTagString($data->id)', 'filter'=>CHtml::activeTextField($documentModel, 'tag_search', array('placeholder'=>'Zoek op steekwoord..'))), //Omdat een result meerdere tags kan hebben moeten we deze verwerken.
         //         array('name'=>'created_on', 'header'=>'Toegevoegd op', 'value'=>'($data->created_on !== "0000-00-00 00:00:00" ? strftime("%e %B %Y", strtotime($data->created_on)) : "Datum niet beschikbaar")', 'filter'=>''),
         //     ), 
@@ -107,7 +107,7 @@ if (($documentSearch->totalItemCount != 0 && !Yii::app()->request->isAjaxRequest
     ];
 }
 
-if (($audioSearch->totalItemCount != 0 && !Yii::app()->request->isAjaxRequest) || Yii::app()->request->isAjaxRequest) {
+if (($audioSearch->totalItemCount != 0 && !Yii::$app->request->isAjaxRequest) || Yii::$app->request->isAjaxRequest) {
     $results[] = [
         'label' => '<i class="icon-headphones icon-white"></i> Audio <span class="badge">' . $audioSearch->totalItemCount . '</span>',
         'id' => 'audio-grid-tab',
@@ -116,7 +116,7 @@ if (($audioSearch->totalItemCount != 0 && !Yii::app()->request->isAjaxRequest) |
             'dataProvider' => $audioSearch,
             'filter' => $audioModel,
             'columns' => [
-                ['name' => 'title', 'header' => 'Naam document', 'value' => 'CHtml::link($data->title, Yii::app()->createUrl("audio/view",array("id"=>$data->id)))', 'type' => 'raw', 'filter' => CHtml::activeTextField($audioModel, 'title', ['placeholder' => 'Zoek op titel..'])],
+                ['name' => 'title', 'header' => 'Naam document', 'value' => 'CHtml::link($data->title, Yii::$app->createUrl("audio/view",array("id"=>$data->id)))', 'type' => 'raw', 'filter' => CHtml::activeTextField($audioModel, 'title', ['placeholder' => 'Zoek op titel..'])],
                 ['name' => 'tag_search', 'header' => 'Steekwoorden', 'value' => 'objectToTagStringAudio($data->id)', 'filter' => CHtml::activeTextField($audioModel, 'tag_search', ['placeholder' => 'Zoek op steekwoord..'])], //Omdat een result meerdere tags kan hebben moeten we deze verwerken.
                 ['name' => 'created_on', 'header' => 'Toegevoegd op', 'value' => '($data->created_on !== "0000-00-00 00:00:00" ? strftime("%e %B %Y", strtotime($data->created_on)) : "Datum niet beschikbaar")', 'filter' => ''],
             ],

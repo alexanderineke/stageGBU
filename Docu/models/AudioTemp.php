@@ -80,7 +80,7 @@ class AudioTemp extends \yii\db\ActiveRecord {
     public function addTempFile($filename, $location) {
         $sql->createCommand()
                 ->insert('tbl_audio_temp', [
-                    'user_id' => Yii::app()->user->getId(),
+                    'user_id' => Yii::$app->user->getId(),
                     'create_date' => 'NOW()',
                     'file' => $filename,
                     'format' => 'pdf',

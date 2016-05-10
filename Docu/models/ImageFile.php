@@ -82,47 +82,47 @@ class ImageFile extends \yii\db\ActiveRecord
             //Bestandsnamen, bestandslocaties
             $tags = Tag::model()->find('id=?', [$tag_id]);
             $folder_name = preg_replace('/[^a-z0-9-_\.]/', '', strtolower($tags->name));
-            $fileInfo = pathinfo(Yii::app()->basePath . '/../uploads/' . $file['location'] . '/' . $file['file']);
+            $fileInfo = pathinfo(Yii::$app->basePath . '/../uploads/' . $file['location'] . '/' . $file['file']);
 
             //Map voor afbeeldingen
-            if (!is_dir(Yii::app()->basePath . '/../uploads/afbeeldingen/')) {
-                mkdir(Yii::app()->basePath . '/../uploads/afbeeldingen/');
+            if (!is_dir(Yii::$app->basePath . '/../uploads/afbeeldingen/')) {
+                mkdir(Yii::$app->basePath . '/../uploads/afbeeldingen/');
             }
 
             //Map voor de normale versie (max: 750x500)
-            if (!is_dir(Yii::app()->basePath . '/../uploads/afbeeldingen/' . $folder_name . '/')) {
-                mkdir(Yii::app()->basePath . '/../uploads/afbeeldingen/' . $folder_name . '/');
+            if (!is_dir(Yii::$app->basePath . '/../uploads/afbeeldingen/' . $folder_name . '/')) {
+                mkdir(Yii::$app->basePath . '/../uploads/afbeeldingen/' . $folder_name . '/');
             }
 
             //Map voor de thumbnail (fixed: 100x100)
-            if (!is_dir(Yii::app()->basePath . '/../uploads/afbeeldingen/' . $folder_name . '/thumb/')) {
-                mkdir(Yii::app()->basePath . '/../uploads/afbeeldingen/' . $folder_name . '/thumb/');
+            if (!is_dir(Yii::$app->basePath . '/../uploads/afbeeldingen/' . $folder_name . '/thumb/')) {
+                mkdir(Yii::$app->basePath . '/../uploads/afbeeldingen/' . $folder_name . '/thumb/');
             }
 
             //Map voor de full versie
-            if (!is_dir(Yii::app()->basePath . '/../uploads/afbeeldingen/' . $folder_name . '/full/')) {
-                mkdir(Yii::app()->basePath . '/../uploads/afbeeldingen/' . $folder_name . '/full/');
+            if (!is_dir(Yii::$app->basePath . '/../uploads/afbeeldingen/' . $folder_name . '/full/')) {
+                mkdir(Yii::$app->basePath . '/../uploads/afbeeldingen/' . $folder_name . '/full/');
             }
 
             //Genereer normale versie
-            $thumb = Yii::app()->phpThumb->create(Yii::app()->basePath . '/../uploads/' . $file['location'] . '/' . $file['file']);
+            $thumb = Yii::$app->phpThumb->create(Yii::$app->basePath . '/../uploads/' . $file['location'] . '/' . $file['file']);
             $thumb->resize(750, 500);
-            if (!$thumb->save(Yii::app()->basePath . '/../uploads/afbeeldingen/' . $folder_name . '/' . $fileInfo['filename'] . '.jpg', 'JPG')) {
+            if (!$thumb->save(Yii::$app->basePath . '/../uploads/afbeeldingen/' . $folder_name . '/' . $fileInfo['filename'] . '.jpg', 'JPG')) {
                 $errorOccured = true;
             }
             //Genereer thumbnail versie
-            $thumb = Yii::app()->phpThumb->create(Yii::app()->basePath . '/../uploads/' . $file['location'] . '/' . $file['file']);
+            $thumb = Yii::$app->phpThumb->create(Yii::$app->basePath . '/../uploads/' . $file['location'] . '/' . $file['file']);
             $thumb->adaptiveResize(100, 100);
-            if (!$thumb->save(Yii::app()->basePath . '/../uploads/afbeeldingen/' . $folder_name . '/thumb/' . $fileInfo['filename'] . '.jpg', 'JPG')) {
+            if (!$thumb->save(Yii::$app->basePath . '/../uploads/afbeeldingen/' . $folder_name . '/thumb/' . $fileInfo['filename'] . '.jpg', 'JPG')) {
                 $errorOccured = true;
             }
             //Genereer full versie
-            $thumb = Yii::app()->phpThumb->create(Yii::app()->basePath . '/../uploads/' . $file['location'] . '/' . $file['file']);
-            if (!$thumb->save(Yii::app()->basePath . '/../uploads/afbeeldingen/' . $folder_name . '/full/' . $fileInfo['filename'] . '.jpg', 'JPG')) {
+            $thumb = Yii::$app->phpThumb->create(Yii::$app->basePath . '/../uploads/' . $file['location'] . '/' . $file['file']);
+            if (!$thumb->save(Yii::$app->basePath . '/../uploads/afbeeldingen/' . $folder_name . '/full/' . $fileInfo['filename'] . '.jpg', 'JPG')) {
                 $errorOccured = true;
             }
             //Up into the clouds~
-            // $fileContents = file_get_contents(Yii::app()->basePath.'/../uploads/'.$file['location'].'/'.$file['file']);
+            // $fileContents = file_get_contents(Yii::$app->basePath.'/../uploads/'.$file['location'].'/'.$file['file']);
             // require_once 'google-api-php-client/src/Google_Client.php';
             // require_once 'google-api-php-client/src/contrib/Google_StorageService.php';
             // $client = new Google_Client();

@@ -11,12 +11,12 @@ $this->params['breadcrumbs'][] = ['label' => 'Collections', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 $this->params['menu'][] = [
-   	['label'=>'Acties','visible'=>Yii::app()->user->checkAccess('moderator')],
-	['label'=>'Lijst van collecties','url'=>['index'],'icon'=>'list','visible'=>Yii::app()->user->checkAccess('moderator')],
-	['label'=>'Maak collectie aan','url'=>['create'],'icon'=>'file','visible'=>Yii::app()->user->checkAccess('moderator')],
-        ['label'=>'Bewerk collectie','url'=>['update','id'=>$model->id],'icon'=>'pencil','visible'=>Yii::app()->user->checkAccess('moderator')],
-        ['label'=>'Verwijder collectie','url'=>'#','icon'=>'trash','linkOptions'=>['submit'=>['delete','id'=>$model->id],'confirm'=>'Weet je zeker dat je deze collectie wilt verwijderen?'],'visible'=>Yii::app()->user->checkAccess('admin')],
-        ['label'=>'Beheer collectie','url'=>['admin'],'icon'=>'list-alt','visible'=>Yii::app()->user->checkAccess('admin')],
+   	['label'=>'Acties','visible'=>Yii::$app->user->getIndentity('moderator')],
+	['label'=>'Lijst van collecties','url'=>['index'],'icon'=>'list','visible'=>Yii::$app->user->getIndentity('moderator')],
+	['label'=>'Maak collectie aan','url'=>['create'],'icon'=>'file','visible'=>Yii::$app->user->getIndentity('moderator')],
+        ['label'=>'Bewerk collectie','url'=>['update','id'=>$model->id],'icon'=>'pencil','visible'=>Yii::$app->user->getIndentity('moderator')],
+        ['label'=>'Verwijder collectie','url'=>'#','icon'=>'trash','linkOptions'=>['submit'=>['delete','id'=>$model->id],'confirm'=>'Weet je zeker dat je deze collectie wilt verwijderen?'],'visible'=>Yii::$app->user->getIndentity('admin')],
+        ['label'=>'Beheer collectie','url'=>['admin'],'icon'=>'list-alt','visible'=>Yii::$app->user->getIndentity('admin')],
         
 ];
 
@@ -46,19 +46,19 @@ $this->params['menu'][] = [
             <?php foreach ($model->collections as $collection) { ?>
                 <article class="span4 collection-thumb">
                     <div class="row">
-                        <?php if ($collection->thumb || !Yii::app()->user->isGuest) { ?>
+                        <?php if ($collection->thumb || !Yii::$app->user->isGuest) { ?>
                             <div class="span1">
                                 <?php
                                 if ($collection->thumb) {
                                     echo CHtml::image('uploads/afbeeldingen/' . $collection->thumb->location . '/thumb/' . $collection->thumb->file . $collection->thumb->format, $collection->title, ['class' => 'img-polaroid collection-thumb-img']);
                                 }
                                 ?>
-                                <?php if (!Yii::app()->user->isGuest) { ?>
-                                    <?php echo CHtml::link("<i class=\"icon-trash icon-white\"></i>", Yii::app()->createUrl("collection/deletecollection", ["id" => $_GET["id"], "collection" => $collection->id]), ["class" => "btn btn-primary"]); ?>
+                                <?php if (!Yii::$app->user->isGuest) { ?>
+                                    <?php echo CHtml::link("<i class=\"icon-trash icon-white\"></i>", Yii::$app->createUrl("collection/deletecollection", ["id" => $_GET["id"], "collection" => $collection->id]), ["class" => "btn btn-primary"]); ?>
                                 <?php } ?>
                             </div>
                         <?php } ?>
-                        <a href="<?php echo Yii::app()->createUrl("collection/view", ["id" => $collection->id]); ?>"  class="span3">
+                        <a href="<?php echo Yii::$app->createUrl("collection/view", ["id" => $collection->id]); ?>"  class="span3">
                             <h3 class="collection-thumb-title"><?php echo $collection->title; ?></h3>
                             <p><?php echo substr(strip_tags($collection->description), 0, 70); ?>...</p>
                             <small class="collection-thumb-items"><?php echo (count($collection->documents) + count($collection->images) + count($collection->collections)); ?> items</small>
@@ -82,13 +82,13 @@ $this->widget('bootstrap.widgets.TbGridView', [
     'dataProvider' => $dataProv,
     'pager' => ['class' => 'bootstrap.widgets.TbPager', 'prevPageLabel' => '&laquo;', 'nextPageLabel' => '&raquo;'],
     'columns' =>
-    (!Yii::app()->user->isGuest ?
+    (!Yii::$app->user->isGuest ?
             [ //Ingelogd
         [
             'name' => 'title',
             'header' => 'Titel',
             'type' => 'raw',
-            'value' => 'CHtml::link( $data->title, Yii::app()->createUrl("document/view",array("id"=>$data->id)))',
+            'value' => 'CHtml::link( $data->title, Yii::$app->createUrl("document/view",array("id"=>$data->id)))',
         ],
         [
             'name' => 'Acties',
@@ -96,7 +96,7 @@ $this->widget('bootstrap.widgets.TbGridView', [
             'htmlOptions' => [
                 'style' => 'width: 100px; text-align: center;',
             ],
-            'value' => 'CHtml::link( "<i class=\"icon-trash icon-white\"></i>", Yii::app()->createUrl("collection/deletedocument",array("id"=>$_GET["id"], "document"=>$data->id)))',
+            'value' => 'CHtml::link( "<i class=\"icon-trash icon-white\"></i>", Yii::$app->createUrl("collection/deletedocument",array("id"=>$_GET["id"], "document"=>$data->id)))',
         ]
             ] :
             [ //Niet ingelogd
@@ -104,7 +104,7 @@ $this->widget('bootstrap.widgets.TbGridView', [
             'name' => 'title',
             'header' => 'Titel',
             'type' => 'raw',
-            'value' => 'CHtml::link( $data->title, Yii::app()->createUrl("document/view",array("id"=>$data->id)))',
+            'value' => 'CHtml::link( $data->title, Yii::$app->createUrl("document/view",array("id"=>$data->id)))',
         ]
             ]
     ),
@@ -125,13 +125,13 @@ $this->widget('bootstrap.widgets.TbGridView', [
     'dataProvider' => $dataProv,
     'pager' => ['class' => 'bootstrap.widgets.TbPager', 'prevPageLabel' => '&laquo;', 'nextPageLabel' => '&raquo;'],
     'columns' =>
-    (!Yii::app()->user->isGuest ?
+    (!Yii::$app->user->isGuest ?
             [ //Ingelogd
         [
             'name' => 'title',
             'header' => 'Titel',
             'type' => 'raw',
-            'value' => 'CHtml::link( $data->title, Yii::app()->createUrl("image/view",array("id"=>$data->id)))',
+            'value' => 'CHtml::link( $data->title, Yii::$app->createUrl("image/view",array("id"=>$data->id)))',
         ],
         [
             'name' => 'Acties',
@@ -139,7 +139,7 @@ $this->widget('bootstrap.widgets.TbGridView', [
             'htmlOptions' => [
                 'style' => 'width: 100px; text-align: center;',
             ],
-            'value' => 'CHtml::link( "<i class=\"icon-trash icon-white\"></i>", Yii::app()->createUrl("collection/deleteimage",array("id"=>$_GET["id"], "image"=>$data->id)))',
+            'value' => 'CHtml::link( "<i class=\"icon-trash icon-white\"></i>", Yii::$app->createUrl("collection/deleteimage",array("id"=>$_GET["id"], "image"=>$data->id)))',
         ]
     ] :
             [ //Niet ingelogd
@@ -147,7 +147,7 @@ $this->widget('bootstrap.widgets.TbGridView', [
             'name' => 'title',
             'header' => 'Titel',
             'type' => 'raw',
-            'value' => 'CHtml::link( $data->title, Yii::app()->createUrl("image/view",array("id"=>$data->id)))',
+            'value' => 'CHtml::link( $data->title, Yii::$app->createUrl("image/view",array("id"=>$data->id)))',
         ]
     ]
     ),

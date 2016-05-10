@@ -93,42 +93,42 @@ class DocumentFile extends ActiveRecord {
         $thumb->clear();
 
         $dimensions = calcDimensions(1024, $original);
-        exec('gs -q -o "' . dirname(Yii::app()->request->scriptFile) . '/uploads/documenten/' . $folder_name . '/' . $file_name . '_b.jpg" -dLastPage=1 -sDEVICE=jpeg -dJPEGQ=100 -dPDFFitPage -g' . $dimensions['width'] . 'x' . $dimensions['height'] . ' -dGraphicsAlphaBits=4 -dTextAlphaBits=4 "' . dirname(Yii::app()->request->scriptFile) . '/uploads/' . $file['location'] . '/' . $file['file'] . '"', $output);
+        exec('gs -q -o "' . dirname(Yii::$app->request->scriptFile) . '/uploads/documenten/' . $folder_name . '/' . $file_name . '_b.jpg" -dLastPage=1 -sDEVICE=jpeg -dJPEGQ=100 -dPDFFitPage -g' . $dimensions['width'] . 'x' . $dimensions['height'] . ' -dGraphicsAlphaBits=4 -dTextAlphaBits=4 "' . dirname(Yii::app()->request->scriptFile) . '/uploads/' . $file['location'] . '/' . $file['file'] . '"', $output);
 
         $dimensions = calcDimensions(800, $original);
-        $thumb = new Imagick(dirname(Yii::app()->request->scriptFile) . '/uploads/documenten/' . $folder_name . '/' . $file_name . '_b.jpg');
+        $thumb = new Imagick(dirname(Yii::$app->request->scriptFile) . '/uploads/documenten/' . $folder_name . '/' . $file_name . '_b.jpg');
         $thumb->resizeImage($dimensions['width'], $dimensions['height'], imagick::FILTER_LANCZOS, 1);
-        if (!$thumb->writeImage(dirname(Yii::app()->request->scriptFile) . '/uploads/documenten/' . $folder_name . '/' . $file_name . '_c.jpg')) {
+        if (!$thumb->writeImage(dirname(Yii::$app->request->scriptFile) . '/uploads/documenten/' . $folder_name . '/' . $file_name . '_c.jpg')) {
             return false;
         }
 
         $dimensions = calcDimensions(640, $original);
         $thumb->resizeImage($dimensions['width'], $dimensions['height'], imagick::FILTER_LANCZOS, 1);
-        if (!$thumb->writeImage(dirname(Yii::app()->request->scriptFile) . '/uploads/documenten/' . $folder_name . '/' . $file_name . '_z.jpg')) {
+        if (!$thumb->writeImage(dirname(Yii::$app->request->scriptFile) . '/uploads/documenten/' . $folder_name . '/' . $file_name . '_z.jpg')) {
             return false;
         }
 
         $dimensions = calcDimensions(500, $original);
         $thumb->resizeImage($dimensions['width'], $dimensions['height'], imagick::FILTER_LANCZOS, 1);
-        if (!$thumb->writeImage(dirname(Yii::app()->request->scriptFile) . '/uploads/documenten/' . $folder_name . '/' . $file_name . '.jpg')) {
+        if (!$thumb->writeImage(dirname(Yii::$app->request->scriptFile) . '/uploads/documenten/' . $folder_name . '/' . $file_name . '.jpg')) {
             return false;
         }
 
         $dimensions = calcDimensions(320, $original);
         $thumb->resizeImage($dimensions['width'], $dimensions['height'], imagick::FILTER_LANCZOS, 1);
-        if (!$thumb->writeImage(dirname(Yii::app()->request->scriptFile) . '/uploads/documenten/' . $folder_name . '/' . $file_name . '_n.jpg')) {
+        if (!$thumb->writeImage(dirname(Yii::$app->request->scriptFile) . '/uploads/documenten/' . $folder_name . '/' . $file_name . '_n.jpg')) {
             return false;
         }
 
         $dimensions = calcDimensions(240, $original);
         $thumb->resizeImage($dimensions['width'], $dimensions['height'], imagick::FILTER_LANCZOS, 1);
-        if (!$thumb->writeImage(dirname(Yii::app()->request->scriptFile) . '/uploads/documenten/' . $folder_name . '/' . $file_name . '_m.jpg')) {
+        if (!$thumb->writeImage(dirname(Yii::$app->request->scriptFile) . '/uploads/documenten/' . $folder_name . '/' . $file_name . '_m.jpg')) {
             return false;
         }
 
         $dimensions = calcDimensions(100, $original);
         $thumb->resizeImage($dimensions['width'], $dimensions['height'], imagick::FILTER_LANCZOS, 1);
-        if (!$thumb->writeImage(dirname(Yii::app()->request->scriptFile) . '/uploads/documenten/' . $folder_name . '/' . $file_name . '_t.jpg')) {
+        if (!$thumb->writeImage(dirname(Yii::$app->request->scriptFile) . '/uploads/documenten/' . $folder_name . '/' . $file_name . '_t.jpg')) {
             return false;
         }
 

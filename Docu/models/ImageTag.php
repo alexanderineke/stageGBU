@@ -80,7 +80,7 @@ class ImageTag extends \yii\db\ActiveRecord
             $sql = "insert into tbl_image_tag (image_id, tag_id, state) values (:image_id, :tag_id, 1)";
             $parameters = [":image_id" => $image_id,
                 ":tag_id" => $i];
-            if (Yii::app()->db->createCommand($sql)->execute($parameters)) {
+            if (Yii::$app->db->createCommand($sql)->execute($parameters)) {
                 $v++;
             }
         }

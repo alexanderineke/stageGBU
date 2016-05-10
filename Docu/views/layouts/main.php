@@ -40,10 +40,10 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'Gebruikers', 'url' => ['/user'], 'visible'=>Yii::app()->user->checkAccess('user')],
-            ['label' => 'Afbeeldingen', 'url' => ['/image'], 'visible'=>Yii::app()->user->checkAccess('moderator')],
-            ['label' => 'Inloggen', 'url' => ['/site/login'], 'visible'=>Yii::app()->user->isGuest],
-            ['label' => 'Uitloggen ('.Yii::app()->user->identity->username.')', 'url' => ['/site/logout'], 'visible'=>!Yii::app()->user->isGuest],
+            ['label' => 'Gebruikers', 'url' => ['/user'], 'visible'=>Yii::$app->user->getIndentity('user')],
+            ['label' => 'Afbeeldingen', 'url' => ['/image'], 'visible'=>Yii::$app->user->getIndentity('moderator')],
+            ['label' => 'Inloggen', 'url' => ['/site/login'], 'visible'=>Yii::$app->user->isGuest],
+            ['label' => 'Uitloggen ('.Yii::$app->user->identity->username.')', 'url' => ['/site/logout'], 'visible'=>!Yii::$app->user->isGuest],
             /*
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/site/login']]

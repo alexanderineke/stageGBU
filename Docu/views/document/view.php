@@ -13,12 +13,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
 echo Menu::widget([
     'items' => [
-        ['label' => 'Acties', 'visible' => Yii::app()->user->checkAccess('moderator')],
-        ['label' => 'Lijst van documenten', 'url' => ['index'], 'icon' => 'list', 'visible' => Yii::app()->user->checkAccess('moderator')],
-        ['label' => 'Maak document aan', 'url' => ['create'], 'icon' => 'file', 'visible' => Yii::app()->user->checkAccess('user')],
-        ['label' => 'Bewerk document', 'url' => ['update', 'id' => $model->id], 'icon' => 'pencil', 'visible' => Yii::app()->user->checkAccess('moderator')],
-        ['label' => 'Verwijder document', 'url' => '#', 'icon' => 'trash', 'linkOptions' => ['submit' => ['delete', 'id' => $model->id], 'confirm' => 'Weet je zeker dat je deze document wilt verwijderen?'], 'visible' => Yii::app()->user->checkAccess('admin')],
-        ['label' => 'Beheer document', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::app()->user->checkAccess('admin')],
+        ['label' => 'Acties', 'visible' => Yii::$app->user->getIndentity('moderator')],
+        ['label' => 'Lijst van documenten', 'url' => ['index'], 'icon' => 'list', 'visible' => Yii::$app->user->getIndentity('moderator')],
+        ['label' => 'Maak document aan', 'url' => ['create'], 'icon' => 'file', 'visible' => Yii::$app->user->getIndentity('user')],
+        ['label' => 'Bewerk document', 'url' => ['update', 'id' => $model->id], 'icon' => 'pencil', 'visible' => Yii::$app->user->getIndentity('moderator')],
+        ['label' => 'Verwijder document', 'url' => '#', 'icon' => 'trash', 'linkOptions' => ['submit' => ['delete', 'id' => $model->id], 'confirm' => 'Weet je zeker dat je deze document wilt verwijderen?'], 'visible' => Yii::$app->user->getIndentity('admin')],
+        ['label' => 'Beheer document', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::$app->user->getIndentity('admin')],
     ],
 ]);
 ?>
@@ -27,9 +27,10 @@ echo Menu::widget([
 
 <?php
 $tags = '';
-foreach ($model->tags as $i => $tag)
+foreach ($model->tags as $i => $tag) {
     $tags .= $tag->name . ', ';
-$tags = substr($tags, 0, -2);
+    $tags = substr($tags, 0, -2);
+}
 ?>
 
 <?php

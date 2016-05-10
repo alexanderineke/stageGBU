@@ -12,11 +12,11 @@ $this->params['breadcrumbs'][] = $this-title;
 
 echo Menu::widget([
     'items' => [
-        ['label' => 'Acties', 'visible' => Yii::app()->user->checkAccess('moderator')],
-        ['label' => 'Lijst van documenten', 'url' => ['index'], 'icon' => 'list', 'visible' => Yii::app()->user->checkAccess('moderator')],
-        ['label' => 'Maak audio documenten aan', 'url' => ['create'], 'icon' => 'file', 'visible' => Yii::app()->user->checkAccess('user')],
-        ['label' => 'Bekijk document', 'url' => ['view', 'id'=>$model->id], 'icon' => 'eye-open', 'visible' => Yii::app()->user->checkAccess('moderator')],
-        ['label' => 'Beheer document', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::app()->user->checkAccess('admin')],
+        ['label' => 'Acties', 'visible' => Yii::$app->user->getIndentity('moderator')],
+        ['label' => 'Lijst van documenten', 'url' => ['index'], 'icon' => 'list', 'visible' => Yii::$app->user->getIndentity('moderator')],
+        ['label' => 'Maak audio documenten aan', 'url' => ['create'], 'icon' => 'file', 'visible' => Yii::$app->user->getIndentity('user')],
+        ['label' => 'Bekijk document', 'url' => ['view', 'id'=>$model->id], 'icon' => 'eye-open', 'visible' => Yii::$app->user->getIndentity('moderator')],
+        ['label' => 'Beheer document', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::$app->user->getIndentity('admin')],
     ],
 ]);
 ?>
