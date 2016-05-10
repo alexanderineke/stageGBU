@@ -83,11 +83,11 @@ class ImageController extends Controller {
         $rnd = rand(0, 9999);
         $folderName = date("d M Y");
         $fileName = "{$rnd}_{$uploadedFile}";
-        if (!is_dir(Yii::app()->basePath . '/../uploads/' . $folderName)) {
-            mkdir(Yii::app()->basePath . '/../uploads/' . $folderName);
-        }
-        if ($uploadedFile->saveAs(Yii::app()->basePath . '/../uploads/' . $folderName . '/' . $fileName)) {
-            $id = $model->addTempFile($fileName, $folderName);
+       if (!is_dir(yii::getAlias('@app' . '/../uploads/' . $folderName))) {
+       mkdir(yii::getAlias('@app' . '/../uploads/' . $folderName));
+       
+       }
+        if ($uploadedFile->saveAs(yii::getAlias('@app' . '/../uploads/' . $folderName . '/' . $fileName))) {
             if ($id) {
                 $fileQueue = Yii::app()->user->getState('filesToProcess');
                 array_push($fileQueue, $id);

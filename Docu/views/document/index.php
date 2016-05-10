@@ -28,7 +28,7 @@ function fileLocation($id, $title) {
 }
 ?>
 
-<h1>Documenten</h1>
+<h1><?= Html::encode($this->title) ?></h1>
 
 <?=
 GridView::widget([
