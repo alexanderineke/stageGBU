@@ -10,7 +10,7 @@ use app\models\Audio;
 /**
  * Search represents the model behind the search form about `app\models\Audio`.
  */
-class Search extends Audio
+class Search
 {
     /**
      * @inheritdoc
