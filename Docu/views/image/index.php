@@ -9,14 +9,12 @@ use yii\grid\GridView;
 
 $this->title = 'Afbeeldingen';
 $this->params['breadcrumbs'][] = $this->title;
-
-echo Menu::widget([
-    'items' => [
-        ['label' => 'Acties', 'visible' => Yii::app()->user->checkAccess('moderator')],
-        ['label' => 'Maak afbeeldingen aan', 'url' => ['create'], 'icon' => 'file', 'visible' => Yii::app()->user->checkAccess('user')],
-        ['label' => 'Beheer afbeeldingen', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::app()->user->checkAccess('admin')],
-    ],
-]);
+        
+$this->params['menu'][] = [
+        ['label' => 'Acties', 'visible' => Yii::app()->user->getIndentity('moderator')],
+        ['label' => 'Maak afbeeldingen aan', 'url' => ['create'], 'icon' => 'file', 'visible' => Yii::app()->user->getIndentity('user')],
+        ['label' => 'Beheer afbeeldingen', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::app()->user->getIndentity('admin')],
+   ];
 ?>
 <div class="image-index">
 

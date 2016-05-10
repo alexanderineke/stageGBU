@@ -12,12 +12,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
 echo Menu::widget([
     'items' => [
-        ['label' => 'Acties', 'visible' => Yii::app()->user->checkAccess('moderator')],
-        ['label' => 'Lijst van afbeeldingen', 'url' => ['index'], 'icon' => 'list', 'visible' => Yii::app()->user->checkAccess('moderator')],
-        ['label' => 'Maak afbeeldingen aan', 'url' => ['create'], 'icon' => 'file', 'visible' => Yii::app()->user->checkAccess('user')],
-        ['label' => 'Bewerk afbeelding', 'url' => ['update','id'=>$model->id], 'pencil' => 'eye-open', 'visible' => Yii::app()->user->checkAccess('moderator')],
-        ['label' => 'Verwijder afbeelding', 'url' => '#', 'icon' => 'trash', 'linkOptions' => ['submit' => ['delete', 'id' => $model->id]], 'confirm' => 'Weet je zeker dat je deze afbeelding wilt verwijderen?'],'visible'=>Yii::app()->user->checkAccess('admin'),
-        ['label' => 'Beheer afbeeldingen', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::app()->user->checkAccess('admin')],
+        [['label' => 'Acties', 'visible'] => Yii::$app->user->getIdentity('moderator')],
+        [['label' => 'Lijst van afbeeldingen', 'url'] => ['index'], 'icon' => 'list', 'visible' => Yii::$app->user->getIdentity('moderator')],
+        [['label' => 'Maak afbeeldingen aan', 'url'] => ['create'], 'icon' => 'file', 'visible' => Yii::$app->user->getIdentity('user')],
+        [['label' => 'Bewerk afbeelding', 'url'] => ['update','id'=>$model->id], 'pencil' => 'eye-open', 'visible' => Yii::$app->user->getIdentity('moderator')],
+        [['label' => 'Verwijder afbeelding', 'url'] => '#', 'icon' => 'trash', 'linkOptions' => ['submit' => ['delete', 'id' => $model->id]], 'confirm' => 'Weet je zeker dat je deze afbeelding wilt verwijderen?'],'visible'=>Yii::$app->user->getIdentity('admin'),
+        [['label' => 'Beheer afbeeldingen', 'url'] => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::$app->user->getIdentity('admin')],
     ],
 ]);
 ?>

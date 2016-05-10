@@ -31,7 +31,7 @@ class AudioController extends Controller {
     public function behaviors() {
         return [
             'acces' => [
-                'class' => AccessControl::className(),
+                'class' => \yii\filters\AccessControl::className(),
                 'only' => ['index', 'view', 'update', 'create', 'process', 'upload', 'batchupload', 'admin', 'delete'],
                 'rules' => [
                     [

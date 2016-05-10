@@ -3,12 +3,20 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Image;
+use app\models;
+use app\models\Audio;
 use app\models\Search;
+use app\models\AudioTag;
+use app\models\AudioFile;
+use app\models\AudioTemp;
+use app\models\Collection;
+use yii\helpers\ArrayHelper;
+use yii\web\UploadedFile;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\HttpException;
 use yii\filters\VerbFilter;
-
+use yii\data\ActiveDataProvider;
 /**
  * ImageController implements the CRUD actions for Image model.
  */
@@ -64,13 +72,13 @@ class ImageController extends Controller {
         $rnd = rand(0, 9999);
         $folderName = date("d M Y");
         $fileName = "{$rnd}_{$uploadedFile}";
-        if (!is_dir(Yii::app()->basePath . '/../uploads/' . $folderName)) {
-            mkdir(Yii::app()->basePath . '/../uploads/' . $folderName);
+        if (!is_dir(yii::getAlias('@app' . '/../uploads/' . $folderName))) {
+            mkdir(yii::getAlias('@app' . '/../uploads/' . $folderName));
         }
-        if ($uploadedFile->saveAs(Yii::app()->basePath . '/../uploads/' . $folderName . '/' . $fileName)) {
+        if ($uploadedFile->saveAs(yii::getAlias('@app' . '/../uploads/' . $folderName . '/' . $fileName))) {
             $id = $model->addTempFile($fileName, $folderName);
             if ($id) {
-                Yii::app()->user->setState('filesToProcess', [$id]);
+                Yii::$app->user->setState('filesToProcess', [$id]);
             } else {
                 throw new HttpException(400, 'Upload niet gelukt.');
             }
@@ -83,15 +91,15 @@ class ImageController extends Controller {
         $rnd = rand(0, 9999);
         $folderName = date("d M Y");
         $fileName = "{$rnd}_{$uploadedFile}";
-       if (!is_dir(yii::getAlias('@app' . '/../uploads/' . $folderName))) {
-       mkdir(yii::getAlias('@app' . '/../uploads/' . $folderName));
+       if (!is_dir(Yii::getAlias('@app' . '/../uploads/' . $folderName))) {
+       mkdir(Yii::getAlias('@app' . '/../uploads/' . $folderName));
        
        }
-        if ($uploadedFile->saveAs(yii::getAlias('@app' . '/../uploads/' . $folderName . '/' . $fileName))) {
+        if ($uploadedFile->saveAs(Yii::getAlias('@app' . '/../uploads/' . $folderName . '/' . $fileName))) {
             if ($id) {
-                $fileQueue = Yii::app()->user->getState('filesToProcess');
+                $fileQueue = Yii::$app->user->getState('filesToProcess');
                 array_push($fileQueue, $id);
-                Yii::app()->user->setState('filesToProcess', $fileQueue);
+                Yii::$app->user->setState('filesToProcess', $fileQueue);
             } else {
                 throw new HttpException(400, 'Upload niet gelukt.');
             }
@@ -102,13 +110,13 @@ class ImageController extends Controller {
         $model = $this->loadModel($id);
 
         if (isset($_POST['Image'])) {
-            $fileQueue = yii::app()->user->getState('filesToProcess');
+            $fileQueue = Yii::$app->user->getState('filesToProcess');
             if ($fileQueue) {
                 $imageTempModel = ImageTemp::findOne($fileQueue[0]);
                 $file = $imageTempModel->getAttributes(['file', 'format', 'location']);
             }
 
-            $model->setAttribute('user_id', yii::app()->user->getId());
+            $model->setAttribute('user_id', Yii::$app->user->getId());
             $model->setAttribute('modified_on', \yii\db\Expression('NOW()'));
             $model->attributes = $_POST['Image'];
 
@@ -120,25 +128,25 @@ class ImageController extends Controller {
                         if ($fileQueue) {
                             if (ImageFile::model()->saveImage($model->id, $this->tags[0], $file)) {
                                 array_shift($fileQueue);
-                                yii::app()->user->setState('filesToProcess', $fileQueue);
+                                Yii::$app->user->setState('filesToProcess', $fileQueue);
                                 $this->redirect(['view', 'id' => $model->id]);
                             } else {
-                                yii::app()->user - setFlash('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
+                                Yii::$app->user - setFlash('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
                             }
                         } else {
                             $this - redirect(['view', 'id' => $model->id]);
                         }
                     } else {
-                        yii::app()->user->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
+                        Yii::$app->user->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
                     }
                 } else {
-                    Yii::app()->user->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
+                    Yii::$app->user->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
                 }
             } else {
-                Yii::app()->user->setFlash('error', "De steekwoorden zijn ongeldig. Probeert u het alstublieft nog eens.");
+                Yii::$app->user->setFlash('error', "De steekwoorden zijn ongeldig. Probeert u het alstublieft nog eens.");
             }
         } else {
-            Yii::app()->user->setState('filesToProcess', []);
+            Yii::$app->user->setState('filesToProcess', []);
         }
 
         $this->render('update', [
@@ -147,7 +155,7 @@ class ImageController extends Controller {
     }
 
     public function actionDelete($id) {
-        if (yii::app()->request->post()) {
+        if (Yii::$app->request->post()) {
             $this->loadModel($id)->delete();
 
             return $this->redirect(['index']);
@@ -159,7 +167,7 @@ class ImageController extends Controller {
     public function actionCreate() {
         $model = new Image();
 
-        yii::app()->user->setState('filesToProcess', []);
+        Yii::$app->user->setState('filesToProcess', []);
 
 //        if ($model->load(Yii::$app->request->post()) && $model->save()) {
 //            return $this->redirect(['view', 'id' => $model->id]);
@@ -171,7 +179,7 @@ class ImageController extends Controller {
     }
 
     public function actionProcess() {
-        $id = yii::app()->request->getQueryParam('id');
+        $id = Yii::$app->request->getQueryParam('id');
 
         if ($id) {
             $model = $this->loadModel($id);
@@ -179,7 +187,7 @@ class ImageController extends Controller {
             $model = new Image();
         }
 
-        $fileQueue = yii::app()->user->getState('filesToProcess');
+        $fileQueue = Yii::$app->user->getState('filesToProcess');
         if (!fileQueue) {
             $this->redirect(['index']);
         }
@@ -202,7 +210,7 @@ class ImageController extends Controller {
         }
 
         if (isset($_POST['Image']['included_file'])) {
-            $model->setAttribute('user_id', Yii::app()->user->getId());
+            $model->setAttribute('user_id', Yii::$app->user->getId());
             $model->setAttribute('created_on', \yii\db\Expression('NOW()'));
             $model->setAttribute('modified_on', \yii\db\Expression('NOW()'));
 
@@ -215,28 +223,28 @@ class ImageController extends Controller {
                         if (!$model->images) {
                             if (ImageFile::model()->saveImage($this->tags[0], $file)) {
                                 array_shift($fileQueue);
-                                yii::app()->user->setState('filesToProcess', $fileQueue);
+                                Yii::$app->user->setState('filesToProcess', $fileQueue);
 
                                 if (!empty($fileQueue)) {
                                     $imageTempModel = ImageTemp::findOne($fileQueue[0]);
                                     $file = $imageTempModel->getAttributes(['file', 'format', 'location']);
                                 } else {
-                                    yii::app()->user->setFlash('succes', "Afbeelding bestand(en) met succes toegevoegd.");
+                                    Yii::$app->user->setFlash('succes', "Afbeelding bestand(en) met succes toegevoegd.");
                                 }
                             } else {
-                                yii::app()->user > setFlash('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
+                                Yii::$app->user > setFlash('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
                                 $this->redirect(['process', 'id' => $model - id]);
                             }
                         }
                     } else {
-                        Yii::app()->user->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
+                        Yii::$app->user->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
                         $this->redirect(['process', 'id' => $model->id]);
                     }
                 } else {
-                    yii::app()->user->setFlash('error', "Er is een fout opgetreden bij het opslaan. Probeert u het alstublieft nog eens.");
+                    yii::$app->user->setFlash('error', "Er is een fout opgetreden bij het opslaan. Probeert u het alstublieft nog eens.");
                 }
             } else {
-                Yii::app()->user->setFlash('error', "De steekwoorden zijn ongeldig. Probeert u het alstublieft nog eens.");
+                Yii::$app->user->setFlash('error', "De steekwoorden zijn ongeldig. Probeert u het alstublieft nog eens.");
             }
         }
 
@@ -247,7 +255,7 @@ class ImageController extends Controller {
         $list = ArrayHelper::map(Collection::model()->findAll(
                                 ['order' => 'title',
                                     'condition' => 'user_id=:id AND published=1',
-                                    'params' => [':id' => Yii::app()->user->getId()]
+                                    'params' => [':id' => Yii::$app->user->getId()]
                                 ]
                         ), 'id', 'title');
 
@@ -259,24 +267,23 @@ class ImageController extends Controller {
     }
 
     public function actionIndex() {
-        if (!Yii::app()->user->checkAccess('moderator')) {
+        if (!Yii::$app->user->getIdentity('moderator')) {
             $condition = 'published=1';
         } else {
             $condition = '';
         }
-
-        $dataProvider = new ActiveDataProvider([
-            'criteria' => [
-                'condition' => $condition,
-                'order' => 'title ASC',
-            ],
-        ]);
+        $DataProvider = new ActiveDataProvider([
+        'query' => models\User::find()->
+            where(['published'=>Yii::$app->user->identity->published])->
+            orderBy('title ASC'),       
+    ]);
+      
 
         $this->render('index', [
             'model' => new Image(),
             'dataProvider' => $dataProvider,
         ]);
-
+   
         /*
           $searchModel = new Search();
           $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -286,7 +293,7 @@ class ImageController extends Controller {
           'dataProvider' => $dataProvider,
           ]);
          */
-    }
+}
 
     public function actionAdmin() {
         $model = new Image('search');

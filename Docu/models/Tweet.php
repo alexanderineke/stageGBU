@@ -34,17 +34,24 @@ class Tweet
         return $timeline;
     }
 
-    protected function format($tweets){
+    protected function format($tweets) {
         $twitter_array = [];
 
-        for ($i=0; $i < count($tweets); $i++) {
-                $twitter_array[$i]['text'] =  $tweets[$i]->text;
-                $twitter_array[$i]['user']['profile_image_url'] = $tweets[$i]->user->profile_image_url;
-                if(isset($tweets[$i]->entities->hashtags)) $twitter_array[$i]['entities']['hashtags'] = $tweets[$i]->entities->hashtags;
-                if(isset($tweets[$i]->entities->urls)) $twitter_array[$i]['entities']['urls'] = $tweets[$i]->entities->urls;
-                if(isset($tweets[$i]->entities->media)) $twitter_array[$i]['entities']['media'] = $tweets[$i]->entities->media;
+        for ($i = 0; $i < count($tweets); $i++) {
+            $twitter_array[$i]['text'] = $tweets[$i]->text;
+            $twitter_array[$i]['user']['profile_image_url'] = $tweets[$i]->user->profile_image_url;
+            if (isset($tweets[$i]->entities->hashtags)) {
+                $twitter_array[$i]['entities']['hashtags'] = $tweets[$i]->entities->hashtags;
+            }
+            if (isset($tweets[$i]->entities->urls)) {
+                $twitter_array[$i]['entities']['urls'] = $tweets[$i]->entities->urls;
+            }
+            if (isset($tweets[$i]->entities->media)) {
+                $twitter_array[$i]['entities']['media'] = $tweets[$i]->entities->media;
+            }
         }
 
         return json_encode($twitter_array);
     }
+
 }
