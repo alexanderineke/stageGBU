@@ -19,6 +19,7 @@ AppAsset::register($this);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
+    <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@web'); ?>/css/main.css" />
     <?php $this->head() ?>
 </head>
 <body>
@@ -27,19 +28,23 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'My Company',
-        'brandUrl' => Yii::$app->homeUrl,
+        'type' => 'inverse',
+        'brandLabel' =>'ja',
+        'brandUrl' => 'index.php',
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
     echo Nav::widget([
+        'collapse' => true,
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'collection', 'url' => ['/site/collection']],
-            ['label' => 'image', 'url' => ['/site/image']],
-            ['label' => 'audio', 'url' => ['/site/audio']],
+            ['label' => 'Gebruikers', 'url' => ['/user'], 'visible'=>Yii::app()->user->checkAccess('user')],
+            ['label' => 'Afbeeldingen', 'url' => ['/image'], 'visible'=>Yii::app()->user->checkAccess('moderator')],
+            ['label' => 'Inloggen', 'url' => ['/site/login'], 'visible'=>Yii::app()->user->isGuest],
+            ['label' => 'Uitloggen ('.Yii::app()->user->identity->username.')', 'url' => ['/site/logout'], 'visible'=>!Yii::app()->user->isGuest],
+            /*
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/site/login']]
             ) : (
@@ -52,6 +57,8 @@ AppAsset::register($this);
                 . Html::endForm()
                 . '</li>'
             )
+             * 
+             */
         ],
     ]);
     NavBar::end();
