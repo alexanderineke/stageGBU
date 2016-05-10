@@ -12,9 +12,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
 // nog niet zeker correct
 $this->params['menu'][] = [
-        ['label'=>'Acties','visible'=>Yii::$app->user->getIndentity('moderator')],
-	['label'=>'Maak gebruiker aan','url'=>['create'],'icon'=>'file','visible'=>Yii::$app->user->getIndentity('moderator')],
-	['label'=>'Beheer gebruikers','url'=>['admin'],'icon'=>'list-alt','visible'=>Yii::$app->user->getIndentity('admin')],
+        ['label'=>'Acties','visible'=>Yii::$app->user->getIdentity('moderator')],
+	['label'=>'Maak gebruiker aan','url'=>['create'],'icon'=>'file','visible'=>Yii::$app->user->getIdentity('moderator')],
+	['label'=>'Beheer gebruikers','url'=>['admin'],'icon'=>'list-alt','visible'=>Yii::$app->user->getIdentity('admin')],
 ];
 //
 

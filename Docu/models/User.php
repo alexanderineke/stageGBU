@@ -103,13 +103,13 @@ class User extends \yii\db\ActiveRecord {
         return $dataProvider;
     }
 
-    public function beforeSave() {
+    public function beforeSave($insert) {
         // in this case, we will use the old hashed password.
         if (empty($this->password) && empty($this->repeat_password) && !empty($this->initialPassword)) {
             $this->password = $this->repeat_password = $this->initialPassword;
         }
 
-        return parent::beforeSave();
+        return parent::beforeSave($insert);
     }
 
     public function afterFind() {

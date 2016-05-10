@@ -27,23 +27,26 @@ AppAsset::register($this);
 
 <div class="wrap">
     <?php
-    NavBar::begin([
-        'type' => 'inverse',
-        'brandLabel' =>'ja',
-        'brandUrl' => 'index.php',
-        'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
-        ],
-    ]);
+     NavBar::begin([
+                'brandLabel' => 'Start Pagina',
+                'brandUrl' => Yii::$app->homeUrl,
+                'options' => [
+                    'class' => 'navbar-inverse navbar-fixed-top',
+                ],
+            ]);
+     
+    
     echo Nav::widget([
-        'collapse' => true,
+        
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'Gebruikers', 'url' => ['/user'], 'visible'=>Yii::$app->user->getIndentity('user')],
-            ['label' => 'Afbeeldingen', 'url' => ['/image'], 'visible'=>Yii::$app->user->getIndentity('moderator')],
+            ['label' => 'Gebruikers', 'url' => ['/user'], 'visible'=>Yii::$app->user->getIdentity('user')],
+            ['label' => 'Afbeeldingen', 'url' => ['/image'], 'visible'=>Yii::$app->user->getIdentity('moderator')],
             ['label' => 'Inloggen', 'url' => ['/site/login'], 'visible'=>Yii::$app->user->isGuest],
-            ['label' => 'Uitloggen ('.Yii::$app->user->identity->username.')', 'url' => ['/site/logout'], 'visible'=>!Yii::$app->user->isGuest],
+             Yii::$app->user->isGuest ?
+            ['label' => 'Uitloggen', 'url' => ['/site/login']] :
+            ['label' => 'Uitloggen ('.Yii::$app->user->identity->username.')', 'url' => ['/site/logout'], 'linkOptions' => ['data-method' => 'post']]
             /*
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/site/login']]

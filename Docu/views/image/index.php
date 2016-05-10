@@ -11,9 +11,9 @@ $this->title = 'Afbeeldingen';
 $this->params['breadcrumbs'][] = $this->title;
         
 $this->params['menu'][] = [
-        ['label' => 'Acties', 'visible' => Yii::app()->user->getIndentity('moderator')],
-        ['label' => 'Maak afbeeldingen aan', 'url' => ['create'], 'icon' => 'file', 'visible' => Yii::app()->user->getIndentity('user')],
-        ['label' => 'Beheer afbeeldingen', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::app()->user->getIndentity('admin')],
+        ['label' => 'Acties', 'visible' => Yii::app()->user->getIdentity('moderator')],
+        ['label' => 'Maak afbeeldingen aan', 'url' => ['create'], 'icon' => 'file', 'visible' => Yii::app()->user->getIdentity('user')],
+        ['label' => 'Beheer afbeeldingen', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::app()->user->getIdentity('admin')],
    ];
 ?>
 <div class="image-index">

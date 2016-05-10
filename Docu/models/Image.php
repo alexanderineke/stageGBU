@@ -61,7 +61,7 @@ class Image extends \yii\db\ActiveRecord {
         ];
     }
 
-    public function search($params) {
+   public function search($params) {
         $query = Image::find();
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

@@ -7,9 +7,9 @@ $this->params['breadcrumbs'][] = ['label' => 'User', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 $this->params['menu'][] = [
-    ['label' => 'Acties', 'visible' => Yii::$app->user->getIndentity('moderator')],
-    ['label' => 'Lijst van gebruikers', 'icon' => 'list', 'url' => ['index'], 'visible' => Yii::$app->user->getIndentity('moderator')],
-    ['label' => 'Maak gebruiker aan', 'icon' => 'file', 'url' => ['create'], 'visible' => Yii::$app->user->getIndentity('moderator')],
+    ['label' => 'Acties', 'visible' => Yii::$app->user->getIdentity('moderator')],
+    ['label' => 'Lijst van gebruikers', 'icon' => 'list', 'url' => ['index'], 'visible' => Yii::$app->user->getIdentity('moderator')],
+    ['label' => 'Maak gebruiker aan', 'icon' => 'file', 'url' => ['create'], 'visible' => Yii::$app->user->getIdentity('moderator')],
  ];
 
 Yii::$app->clientScript->registerScript('search', "

@@ -7,10 +7,10 @@ $this->params['breadcrumbs'][] = ['label' => 'Collecion', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 $this->params['menu'][] = [
-    ['label' => 'Acties', 'visible' => Yii::$app->user->getIndentity('moderator')],
-    ['label' => 'Maak collectie aan', 'icon' => 'file', 'url' => ['create'], 'visible' => Yii::$app->user->getIndentity('moderator')],
-    ['label' => 'Lijst van collecties', 'icon' => 'list', 'url' => ['index'], 'visible' => Yii::$app->user->getIndentity('moderator')],
-    ['label' => 'Uitgelichte collecties', 'icon' => 'eye-open', 'url' => ['view&id=17'], 'visible' => Yii::$app->user->getIndentity('moderator')],
+    ['label' => 'Acties', 'visible' => Yii::$app->user->getIdentity('moderator')],
+    ['label' => 'Maak collectie aan', 'icon' => 'file', 'url' => ['create'], 'visible' => Yii::$app->user->getIdentity('moderator')],
+    ['label' => 'Lijst van collecties', 'icon' => 'list', 'url' => ['index'], 'visible' => Yii::$app->user->getIdentity('moderator')],
+    ['label' => 'Uitgelichte collecties', 'icon' => 'eye-open', 'url' => ['view&id=17'], 'visible' => Yii::$app->user->getIdentity('moderator')],
 ];
 
 Yii::$app->clientScript->registerScript('search', "

@@ -7,9 +7,9 @@ $this->params['breadcrumbs'][] = ['label' => 'Meerdere aanmaken', 'url' => []];
 $this->params['breadcrumbs'][] = $this->title;
 
 $this->params['menu'][] = [
-    ['label' => 'Acties', 'visible' => Yii::$app->user->getIndentity('moderator')],
-    ['label' => 'Lijst van Documenten', 'icon' => 'list', 'url' => ['index'], 'visible' => Yii::$app->user->getIndentity('moderator')],
-    ['label' => 'Beheer documenten', 'icon' => 'file', 'url' => ['admin'],'icon'=>'list-alt', 'visible' => Yii::$app->user->getIndentity('admin')],
+    ['label' => 'Acties', 'visible' => Yii::$app->user->getIdentity('moderator')],
+    ['label' => 'Lijst van Documenten', 'icon' => 'list', 'url' => ['index'], 'visible' => Yii::$app->user->getIdentity('moderator')],
+    ['label' => 'Beheer documenten', 'icon' => 'file', 'url' => ['admin'],'icon'=>'list-alt', 'visible' => Yii::$app->user->getIdentity('admin')],
 ];
 ?>
 
