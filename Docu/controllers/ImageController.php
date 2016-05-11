@@ -29,7 +29,7 @@ class ImageController extends Controller {
         return ['accesControl'];
     }
 
-    public function accesRules() {
+    public function behaviors() {
         return [
             ['allow',
                 'actions' => ['index', 'view'],
@@ -45,17 +45,6 @@ class ImageController extends Controller {
             ],
             ['deny',
                 'users' => ['*'],
-            ],
-        ];
-    }
-
-    public function behaviors() {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                ],
             ],
         ];
     }
