@@ -10,9 +10,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
 echo Menu::widget([
     'items' => [
-        ['label' => 'Acties', 'visible' => Yii::app()->user->checkAccess('moderator')],
-        ['label' => 'Maak audio bestanden aan', 'url' => ['create'], 'icon' => 'file', 'visible' => Yii::app()->user->checkAccess('user')],
-        ['label' => 'Beheer audio bestanden', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::app()->user->checkAccess('admin')],
+        ['label' => 'Acties', 'visible' => Yii::$app->user->getIdentity('moderator')],
+        ['label' => 'Maak audio bestanden aan', 'url' => ['create'], 'icon' => 'file', 'visible' => Yii::$app->user->getIdentity('user')],
+        ['label' => 'Beheer audio bestanden', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::$app->user->getIdentity('admin')],
     ],
 ]);
 

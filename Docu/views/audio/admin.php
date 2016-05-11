@@ -7,9 +7,9 @@ $this->params['breadcrumbs'][] = ['label' => 'Audio', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 $this->params['menu'][] = [
-    ['label' => 'Acties', 'visible' => Yii::app()->user->checkAccess('moderator')],
-    ['label' => 'Lijst van audio', 'icon' => 'list', 'url' => ['index'], 'visible' => Yii::app()->user->checkAccess('moderator')],
-    ['label' => 'Maak audio bestanden aan', 'icon' => 'file', 'url' => ['create'], 'visible' => Yii::app()->user->checkAccess('user')],
+    ['label' => 'Acties', 'visible' => Yii::$app->user->getIdentity('moderator')],
+    ['label' => 'Lijst van audio', 'icon' => 'list', 'url' => ['index'], 'visible' => Yii::$app->user->getIdentity('moderator')],
+    ['label' => 'Maak audio bestanden aan', 'icon' => 'file', 'url' => ['create'], 'visible' => Yii::$app->user->getIdentity('user')],
 ];
 /*
 Yii::app()->clientScript->registerScript('search', "

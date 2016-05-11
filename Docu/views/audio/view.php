@@ -12,12 +12,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
 echo Menu::widget([
     'items' => [
-        ['label' => 'Acties', 'visible' => Yii::app()->user->checkAccess('moderator')],
-        ['label' => 'Lijst van audio bestanden', 'url' => ['index'], 'icon' => 'list', 'visible' => Yii::app()->user->checkAccess('moderator')],
-        ['label' => 'Maak audio bestanden aan', 'url' => ['create'], 'icon' => 'file', 'visible' => Yii::app()->user->checkAccess('user')],
-        ['label' => 'Bewerk audio bestanden', 'url' => ['update', 'id' => $model->id], 'icon' => 'pencil', 'visible' => Yii::app()->user->checkAccess('moderator')],
+        ['label' => 'Acties', 'visible' => Yii::$app->user->getIdentity('moderator')],
+        ['label' => 'Lijst van audio bestanden', 'url' => ['index'], 'icon' => 'list', 'visible' => Yii::$app->user->getIdentity('moderator')],
+        ['label' => 'Maak audio bestanden aan', 'url' => ['create'], 'icon' => 'file', 'visible' => Yii::$app->user->getIdentity('user')],
+        ['label' => 'Bewerk audio bestanden', 'url' => ['update', 'id' => $model->id], 'icon' => 'pencil', 'visible' => Yii::$app->user->getIdentity('moderator')],
         ['label' => 'Verwijder audio bestanden', 'url' => '#', 'icon' => 'trash', 'linkOptions' => ['submit' => ['delete', 'id' => $model->id]], 'confirm' => 'Weet je zeker dat je dit audio bestand wilt verwijderen?'],
-        ['label' => 'Beheer audio bestanden', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::app()->user->checkAccess('admin')],
+        ['label' => 'Beheer audio bestanden', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::$app->user->getIdentity('admin')],
     ],
 ]);
 ?>
