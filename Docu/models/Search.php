@@ -28,48 +28,48 @@ class Search {
         return Model::scenarios();
     }
 
-/*
-    public function searchDocuments($params) {
-        $query = Document::find()
-                ->joinwith('tags');
+    /*
+      public function searchDocuments($params) {
+      $query = Document::find()
+      ->joinwith('tags');
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'pagination' => ['pageSize' => 25],
-            'sort' => [
-                'attributes' => [
-                    'tag_search' => [
-                        'asc' => ['tags.slug' => SORT_ASC],
-                        'desc' => ['tags.slug' => SORT_DESC],
-                    ],
-                    '*',
-                ],
-            ],
-        ]);
+      $dataProvider = new ActiveDataProvider([
+      'query' => $query,
+      'pagination' => ['pageSize' => 25],
+      'sort' => [
+      'attributes' => [
+      'tag_search' => [
+      'asc' => ['tags.slug' => SORT_ASC],
+      'desc' => ['tags.slug' => SORT_DESC],
+      ],
+      '*',
+      ],
+      ],
+      ]);
 
-        $this->load($params);
+      $this->load($params);
 
-        if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
-            return $dataProvider;
-        }
+      if (!$this->validate()) {
+      // uncomment the following line if you do not want to return any records when validation fails
+      // $query->where('0=1');
+      return $dataProvider;
+      }
 
-        $q
-                ->andFilterWhere('or', [['like', 'content', $query],
-                    ['like', 'description', $query],
-                    ['like', 'year', $query],
-                    ['like', 'title', $query],
-                    ['like', 'tags.slug', $query]])
-                ->andFilterWhere([['like', 'title', $documentModel->title],
-                    ['like', 'description', $documentModel->description],
-                    ['like', 'tags.slug', $documentModel->tag_search],
-                    ['like', 'year', $documentModel->year],
-                    ['like', 'tags.state', 1]])
-                ->groupBy(['t.id']);
-        return $dataProvider;
-    }
-*/
+      $query
+      ->andFilterWhere('or', [['like', 'content', $this->content],
+      ['like', 'description', $this->description],
+      ['like', 'year', $this->year],
+      ['like', 'title', $this->title],
+      ['like', 'tags.slug', $this->tags.slug]])
+      ->andFilterWhere([['like', 'title', $this->title],
+      ['like', 'description', $this->description],
+      ['like', 'tags.slug', $this->tag_search],
+      ['like', 'year', $this->year],
+      ['like', 'tags.state', 1]])
+      ->groupBy(['t.id']);
+      return $dataProvider;
+      }
+     */
 
     public static function searchDocuments($params) {
         $query = Document::find()
@@ -103,11 +103,40 @@ class Search {
     }
 
     /*
-      public function searchDocuments($params) {
-      $query = Document::find()
-      ->joinWith(['tags' => function($q) {
-      $q->where('tags.slug LIKE "%' . $this->tag . '%"');
-      }]);
+      public function searchDocumentsByTag($params) {
+      $query = DocumentTag::find()
+      ->joinwith('tags');
+
+      $dataProvider = new ActiveDataProvider([
+      'query' => $query,
+      'pagination' => ['pageSize' => 25],
+      'sort' => [
+      'attributes' => [
+      'tag_search' => [
+      'asc' => ['tags.slug' => SORT_ASC],
+      'desc' => ['tags.slug' => SORT_DESC],
+      ],
+      '*',
+      ],
+      ],
+      ]);
+
+      $this->load($params);
+
+      if (!$this->validate()) {
+      // uncomment the following line if you do not want to return any records when validation fails
+      // $query->where('0=1');
+      return $dataProvider;
+      }
+
+      $query
+      ->andFilterWhere('or', [['like', 'tags.slug', $this->tags . slug]])
+      ->andFilterWhere([['like', 'title', $this->title],
+      ['like', 'description', $this->description],
+      ['like', 'tags.slug', $this->tag_search],
+      ['like', 'year', $this->year],
+      ['like', 'tags.state', 1]])
+      ->groupBy(['t.id']);
       return $dataProvider;
       }
      */
@@ -135,6 +164,49 @@ class Search {
             'pages' => $pages
         ];
     }
+
+    /*
+      public function searchAudio($params){
+      $query = Audio::find()
+      ->joinwith('tags');
+
+      $dataProvider = new ActiveDataProvider([
+      'query' => $query,
+      'pagination' => ['pageSize' => 25],
+      'sort' => [
+      'attributes' => [
+      'tag_search' => [
+      'asc' => ['tags.slug' => SORT_ASC],
+      'desc' => ['tags.slug' => SORT_DESC],
+      ],
+      '*',
+      ],
+      ],
+      ]);
+
+      $this->load($params);
+
+      if (!$this->validate()) {
+      // uncomment the following line if you do not want to return any records when validation fails
+      // $query->where('0=1');
+      return $dataProvider;
+      }
+
+      $query
+      ->andFilterWhere('or', [['like', 'content', $this->content],
+      ['like', 'description', $this->description],
+      ['like', 'year', $this->year],
+      ['like', 'title', $this->title],
+      ['like', 'tags.slug', $this->tags.slug]])
+      ->andFilterWhere([['like', 'title', $this->title],
+      ['like', 'description', $this->description],
+      ['like', 'tags.slug', $this->tag_search],
+      ['like', 'year', $this->year],
+      ['like', 'tags.state', 1]])
+      ->groupBy(['t.id']);
+      return $dataProvider;
+      }
+     */
 
     public function searchAudio($params) {
         $query = Audio::find()
@@ -167,17 +239,50 @@ class Search {
         ];
     }
 
+    /*
+      public function searchAudioByTag($params){
+      $query = AudioTag::find()
+      ->joinwith('tags');
+
+      $dataProvider = new ActiveDataProvider([
+      'query' => $query,
+      'pagination' => ['pageSize' => 25],
+      'sort' => [
+      'attributes' => [
+      'tag_search' => [
+      'asc' => ['tags.slug' => SORT_ASC],
+      'desc' => ['tags.slug' => SORT_DESC],
+      ],
+      '*',
+      ],
+      ],
+      ]);
+
+      $this->load($params);
+
+      if (!$this->validate()) {
+      // uncomment the following line if you do not want to return any records when validation fails
+      // $query->where('0=1');
+      return $dataProvider;
+      }
+
+      $query
+      ->andFilterWhere('or', [['like', 'tags.slug', $this->tags.slug]])
+      ->andFilterWhere([['like', 'title', $this->title],
+      ['like', 'description', $this->description],
+      ['like', 'tags.slug', $this->tag_search],
+      ['like', 'year', $this->year],
+      ['like', 'tags.state', 1]])
+      ->groupBy(['t.id']);
+      return $dataProvider;
+      }
+
+     */
+
     public function searchAudioByTag($params) {
         $query = AudioTag::find()
                 ->joinWith('tags')
-                ->andWhere([
-                    'or',
-                    ['like', 'content', $params['content'] . '%', true],
-                    ['like', 'description', $params['description'] . '%', true],
-                    ['like', 'year', $params['year'] . '%', true],
-                    ['like', 'title', $params['title'] . '%', true],
-                    ['like', 'tags.slug', $params['tags.slug'] . '%', true],
-                ])
+                ->andWhere(['or', ['like', 'tags.slug', $params['tags.slug'] . '%', true],])
                 ->andWhere([
                     ['like', 'title', $params['title'] . '%', true],
                     ['like', 'description', $params['description'] . '%', true],
@@ -197,6 +302,37 @@ class Search {
             'pages' => $pages
         ];
     }
+
+    /*
+      public function searchImages($params) {
+      $query = Image::find()
+      ->joinwith('tags')
+      ->joinWith('images');
+
+      $dataProvider = new ActiveDataProvider([
+      'query' => $query,
+      'pagination' => ['pageSize' => 30],
+      ]);
+
+      $this->load($params);
+
+      if (!$this->validate()) {
+      // uncomment the following line if you do not want to return any records when validation fails
+      // $query->where('0=1');
+      return $dataProvider;
+      }
+
+      $query
+      ->andFilterWhere('or', [['like', 'content', $this->content],
+      ['like', 'description', $this->description],
+      ['like', 'year', $this->year],
+      ['like', 'title', $this->title],
+      ['like', 'tags.slug', $this->tags . slug]])
+      ->andFilterWhere(['like', 'tags.state', 1])
+      ->groupBy(['t.id']);
+      return $dataProvider;
+      }
+     */
 
     public function searchImages($params) {
         $query = Image::find()
@@ -210,17 +346,11 @@ class Search {
                     ['like', 'title', $params['title'] . '%', true],
                     ['like', 'tags.slug', $params['tags.slug'] . '%', true],
                 ])
-                ->andWhere([
-                    ['like', 'title', $params['title'] . '%', true],
-                    ['like', 'description', $params['description'] . '%', true],
-                    ['like', 'tags.slug', $params['tags.slug'] . '%', true],
-                    ['like', 'year', $params['year'] . '%', true],
-                    ['like', 'tags.state', 1 . '%', false],
-                ])
+                ->andWhere(['like', 'tags.state', 1 . '%', false])
                 ->groupBy('id');
 
         $countQuery = clone $query;
-        $pages = new Pagination(['totalCount' => $countQuery->count(), 'defaultPageSize' => 25]);
+        $pages = new Pagination(['totalCount' => $countQuery->count(), 'defaultPageSize' => 30]);
         $datas = $query->offset($pages->offset)
                 ->limit($pages->limit)
                 ->all();
@@ -230,29 +360,45 @@ class Search {
         ];
     }
 
+    
+    
+    /*
+    public function searchImagesByTag($params) {
+        $query = Document::find()
+                ->joinwith('tags')
+                ->joinWith('images');
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => ['pageSize' => 30]]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        $query
+                ->andFilterWhere('or', ['like', 'tags.slug', $this->tags . slug])
+                ->andFilterWhere(['like', 'tags.state', 1])
+                ->groupBy(['t.id']);
+        return $dataProvider;
+    }
+*/
+
+
     public function searchImagesByTag($params) {
         $query = ImageTag::find()
                 ->joinWith('tags')
                 ->joinWith('images')
-                ->andWhere([
-                    'or',
-                    ['like', 'content', $params['content'] . '%', true],
-                    ['like', 'description', $params['description'] . '%', true],
-                    ['like', 'year', $params['year'] . '%', true],
-                    ['like', 'title', $params['title'] . '%', true],
-                    ['like', 'tags.slug', $params['tags.slug'] . '%', true],
-                ])
-                ->andWhere([
-                    ['like', 'title', $params['title'] . '%', true],
-                    ['like', 'description', $params['description'] . '%', true],
-                    ['like', 'tags.slug', $params['tags.slug'] . '%', true],
-                    ['like', 'year', $params['year'] . '%', true],
-                    ['like', 'tags.state', 1 . '%', false],
-                ])
+                ->andWhere('or', ['like', 'tags.slug', $params['tags.slug'] . '%', true])
+                ->andWhere(['like', 'tags.state', 1 . '%', false])
                 ->groupBy('id');
 
         $countQuery = clone $query;
-        $pages = new Pagination(['totalCount' => $countQuery->count(), 'defaultPageSize' => 25]);
+        $pages = new Pagination(['totalCount' => $countQuery->count(), 'defaultPageSize' => 30]);
         $datas = $query->offset($pages->offset)
                 ->limit($pages->limit)
                 ->all();
@@ -299,16 +445,16 @@ class Search {
         GROUP BY tag_id
         ORDER BY magnitude DESC
         LIMIT 10';
-        
+
         $tag_ids = [];
-        if($result = \Yii::$app->db->createCommand($most_popular_tags_sql)->query()){
-            foreach($result as $row){
+        if ($result = \Yii::$app->db->createCommand($most_popular_tags_sql)->query()) {
+            foreach ($result as $row) {
                 $tag_ids[] = $row['tag_ids'];
             }
             $tagModel = new Tag();
             $tags = $tagModel->findTagsByID($tag_ids, true);
         }
-        if($tags){
+        if ($tags) {
             return $tags;
         }
     }
