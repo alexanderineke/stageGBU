@@ -28,41 +28,48 @@ class Search {
         return Model::scenarios();
     }
 
-    /*
+/*
+    public function searchDocuments($params) {
+        $query = Document::find()
+                ->joinwith('tags');
 
-      public function searchDocuments($documentModel, $query, $content = false, $content_only = false) {
-      $q = Document::find()
-      ->with('tags');
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => ['pageSize' => 25],
+            'sort' => [
+                'attributes' => [
+                    'tag_search' => [
+                        'asc' => ['tags.slug' => SORT_ASC],
+                        'desc' => ['tags.slug' => SORT_DESC],
+                    ],
+                    '*',
+                ],
+            ],
+        ]);
 
-      $dataProvider = new ActiveDataProvider([
-      'query' => $q,
-      'pagination' => ['pagaSize' => 25],
-      'sort' => [
-      'attributes' => [
-      'tag_search' => [
-      'asc' => ['tags.slug' => SORT_ASC],
-      'desc' => ['tags.slug' => SORT_DESC],
-      ],
-      '*',
-      ],
-      ],
-      ]);
+        $this->load($params);
 
-      $q
-      ->where(['like', 'content', $query])
-      ->orWhere(['like', 'description', $query])
-      ->orWhere(['like', 'year', $query])
-      ->orWhere(['like', 'title', $query])
-      ->orWhere(['like', 'tags.slug', $query])
-      ->andFilterWhere(['like', 'title', $documentModel->title])
-      ->andFilterWhere(['like', 'description', $documentModel->description])
-      ->andFilterWhere(['like', 'tags.slug', $documentModel->tag_search])
-      ->andFilterWhere(['like', 'year', $documentModel->year])
-      ->andFilterWhere(['like', 'tags.state', 1])
-      ->groupBy(['t.id']);
-      return $dataProvider;
-      }
-     */
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        $q
+                ->andFilterWhere('or', [['like', 'content', $query],
+                    ['like', 'description', $query],
+                    ['like', 'year', $query],
+                    ['like', 'title', $query],
+                    ['like', 'tags.slug', $query]])
+                ->andFilterWhere([['like', 'title', $documentModel->title],
+                    ['like', 'description', $documentModel->description],
+                    ['like', 'tags.slug', $documentModel->tag_search],
+                    ['like', 'year', $documentModel->year],
+                    ['like', 'tags.state', 1]])
+                ->groupBy(['t.id']);
+        return $dataProvider;
+    }
+*/
 
     public static function searchDocuments($params) {
         $query = Document::find()
