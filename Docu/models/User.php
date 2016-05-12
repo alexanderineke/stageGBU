@@ -4,24 +4,9 @@ namespace app\models;
 
 use Yii;
 
-/**
- * This is the model class for table "{{%user}}".
- *
- * @property integer $id
- * @property string $username
- * @property string $password
- * @property string $email
- * @property string $roles
- *
- * @property Document[] $documents
- * @property Image[] $images
- */
 class User extends \yii\db\ActiveRecord {
 
-    /**
-     * @inheritdoc
-     */
-    // holds the password confirmation word
+
     public $repeat_password;
     //will hold the encrypted password for update actions.
     public $initialPassword;
@@ -30,9 +15,6 @@ class User extends \yii\db\ActiveRecord {
         return '{{%user}}';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function rules() {
         if ($this->scenario === 'update') {
             return [
