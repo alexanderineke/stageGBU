@@ -14,21 +14,19 @@ use Yii;
  * @property string $format
  * @property string $location
  */
-class ImageTemp extends \yii\db\ActiveRecord
-{
+class ImageTemp extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return '{{%image_temp}}';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['create_date', 'user_id', 'file', 'format', 'location'], 'required'],
             [['create_date'], 'safe'],
@@ -42,8 +40,7 @@ class ImageTemp extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'create_date' => 'Create Date',
@@ -53,8 +50,8 @@ class ImageTemp extends \yii\db\ActiveRecord
             'location' => 'Location',
         ];
     }
-    
-     public function search($params) {
+
+    public function search($params) {
         $query = ImageTemp::find();
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -69,15 +66,16 @@ class ImageTemp extends \yii\db\ActiveRecord
         }
 
         $query
-                ->andFilterWhere(['like', 'id', $this->id])
-                ->andFilterWhere(['like', 'create_date', $this->create_date])
-                ->andFilterWhere(['like', 'user_id', $this->user_id])
-                ->andFilterWhere(['like', 'file', $this->file])
-                ->andFilterWhere(['like', 'format', $this->format])
-                ->andFilterWhere(['like', 'location', $this->location]);
-                
+                ->andFilterWhere([['like', 'id', $this->id],
+                    ['like', 'create_date', $this->create_date],
+                    ['like', 'user_id', $this->user_id],
+                    ['like', 'file', $this->file],
+                    ['like', 'format', $this->format],
+                    ['like', 'location', $this->location]]);
+
         return $dataProvider;
     }
+
     public function addTempFile($filename, $location) {
         $sql = "insert into tbl_image_temp (user_id, create_date, file, format, location) values (:user_id, NOW(), :file, :format, :location)";
         $parameters = [":user_id" => Yii::$app->user->getId(),

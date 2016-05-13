@@ -12,21 +12,19 @@ use Yii;
  * @property integer $tag_id
  * @property integer $state
  */
-class ImageTag extends \yii\db\ActiveRecord
-{
+class ImageTag extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return '{{%image_tag}}';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['image_id', 'tag_id'], 'required'],
             [['image_id', 'tag_id', 'state'], 'integer'],
@@ -37,8 +35,7 @@ class ImageTag extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'image_id' => 'Image',
@@ -46,6 +43,7 @@ class ImageTag extends \yii\db\ActiveRecord
             'state' => 'State',
         ];
     }
+
     public function search($params) {
         $query = ImageTag::find();
         $dataProvider = new ActiveDataProvider([
@@ -61,13 +59,14 @@ class ImageTag extends \yii\db\ActiveRecord
         }
 
         $query
-                ->andFilterWhere(['like', 'id', $this->id])
-                ->andFilterWhere(['like', 'image_id', $this->image_id])
-                ->andFilterWhere(['like', 'tag_id', $this->tag_id])
-                ->andFilterWhere(['like', 'state', $this->state]);
-               
+                ->andFilterWhere([['like', 'id', $this->id],
+                    ['like', 'image_id', $this->image_id],
+                    ['like', 'tag_id', $this->tag_id],
+                    ['like', 'state', $this->state]]);
+
         return $dataProvider;
     }
+
     public function add($image_id, $tagIds) {
         $inDB = [];
         foreach ($this->check($image_id, $tagIds) as $i) {
@@ -89,12 +88,13 @@ class ImageTag extends \yii\db\ActiveRecord
             return true;
         }
     }
- public function check($image_id, $tagIds){
-      
+
+    public function check($image_id, $tagIds) {
+
         $query = ImageTag::find()
-                ->andFilterWhere(['image_id' =>$image_id])
-                ->andFilterWhere(['tag_id' =>$tagIds])
-                ->andFilterWhere(['state' =>1]);
+                ->andFilterWhere(['image_id' => $image_id])
+                ->andFilterWhere(['tag_id' => $tagIds])
+                ->andFilterWhere(['state' => 1]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -105,22 +105,23 @@ class ImageTag extends \yii\db\ActiveRecord
         }
         return $dataProvider;
     }
+
     public function deleteTags($image_id, $tagIds) {
         $query = ImageTag::find()
-                ->andFilterWhere(['image_id' =>$image_id])
-                ->andFilterWhere(['tag_id' =>$tagIds])
-                ->andFilterWhere(['state' =>1])
+                ->andFilterWhere(['image_id' => $image_id])
+                ->andFilterWhere(['tag_id' => $tagIds])
+                ->andFilterWhere(['state' => 1])
                 ->delete()
                 ->execute();
         return $query;
     }
 
-    public function getTag($image_id){
-     
+    public function getTag($image_id) {
+
         $query = ImageTag::find()
                 ->select(['tag_id'])
-                ->andFilterWhere(['image_id' =>$image_id])
-                ->andFilterWhere(['state' =>1])
+                ->andFilterWhere(['image_id' => $image_id])
+                ->andFilterWhere(['state' => 1])
                 ->limit(1);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -132,4 +133,5 @@ class ImageTag extends \yii\db\ActiveRecord
         }
         return $dataProvider;
     }
+
 }

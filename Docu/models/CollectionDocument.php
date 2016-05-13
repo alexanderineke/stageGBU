@@ -12,21 +12,19 @@ use Yii;
  * @property integer $document_id
  * @property integer $state
  */
-class CollectionDocument extends \yii\db\ActiveRecord
-{
+class CollectionDocument extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return '{{%collection_document}}';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['collection_id', 'document_id', 'state'], 'required'],
             [['collection_id', 'document_id', 'state'], 'integer'],
@@ -37,8 +35,7 @@ class CollectionDocument extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'collection_id' => 'Collection',
@@ -46,6 +43,7 @@ class CollectionDocument extends \yii\db\ActiveRecord
             'state' => 'State',
         ];
     }
+
     public function search() {
         $query = CollectionDocument::find();
         $dataProvider = new ActiveDataProvider([
@@ -59,14 +57,14 @@ class CollectionDocument extends \yii\db\ActiveRecord
             return $dataProvider;
         }
         $query
-                ->andFilterWhere(['like', 'id', $this->id])
-                ->andFilterWhere(['like', 'collection_id', $this->collection_id])
-                ->andFilterWhere(['like', 'document_id', $this->document_id])
-                ->andFilterWhere(['like', 'state', $this->state]);
+                ->andFilterWhere([['like', 'id', $this->id],
+                    ['like', 'collection_id', $this->collection_id],
+                    ['like', 'document_id', $this->document_id],
+                    ['like', 'state', $this->state]]);
 
         return $dataProvider;
     }
-    
+
     public static function add($document_id, $collection_id) {
         $model = $sql_document->createCommand("INSERT INTO tbl_collection_document (document_id, collection_id, state) VALUES (:document_id, :collection_id, 1)");
         $model->bindParam(":document_id", $document_id, ":collection_id", $collection_id);
@@ -77,6 +75,7 @@ class CollectionDocument extends \yii\db\ActiveRecord
         $model->execute();
         return true;
     }
+
     public function deleteDocument($document_id, $collection_id) {
 
         if (!empty($collection_id)) {
@@ -102,8 +101,6 @@ class CollectionDocument extends \yii\db\ActiveRecord
         return true;
     }
 
-
-
     public function getCollection() {
         return $this->hasMany(Collection::className(), ['id' => 'collection_id']);
     }
@@ -111,4 +108,5 @@ class CollectionDocument extends \yii\db\ActiveRecord
     public function getDocument() {
         return $this->hasMany(Document::className(), ['id' => 'document_id']);
     }
+
 }

@@ -32,14 +32,14 @@ class AudioFile extends \yii\db\ActiveRecord {
             [['audio_id', 'state'], 'integer'],
             [['file', 'location'], 'string', 'max' => 255],
             [['format'], 'string', 'max' => 4],
-            [['id, audio_id, file, format, location'], 'safe', 'on'=>'search']
+            [['id, audio_id, file, format, location'], 'safe', 'on' => 'search']
         ];
     }
 
-        public function getAudio(){
+    public function getAudio() {
         return $this->Belongs_to(Audio::className(), ['id' => 'audio_id']);
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -66,11 +66,11 @@ class AudioFile extends \yii\db\ActiveRecord {
         }
 
         $query
-                ->andFilterWhere(['like', 'id', $this->id])
-                ->andFilterWhere(['like', 'audio_id', $this->audio_id])
-                ->andFilterWhere(['like', 'file', $this->file])
-                ->andFilterWhere(['like', 'format', $this->format])
-                ->andFilterWhere(['like', 'location', $this->location]);
+                ->andFilterWhere([['like', 'id', $this->id],
+                    ['like', 'audio_id', $this->audio_id],
+                    ['like', 'file', $this->file],
+                    ['like', 'format', $this->format],
+                    ['like', 'location', $this->location]]);
 
         return $dataProvider;
     }
@@ -102,15 +102,15 @@ class AudioFile extends \yii\db\ActiveRecord {
 
             //Insert de nieuwe doucment
             /*
-            $attributes['audio_id'] = $audio_id;
-            $attributes['file'] = $fileInfo['filename'];
-            $attributes['location'] = $folder_name;
-            $attributes['format'] = '.mp3';
-            $attributes['state'] = 1;
-            $this->setIsNewRecord(true);
-            $this->attributes = $attributes;
+              $attributes['audio_id'] = $audio_id;
+              $attributes['file'] = $fileInfo['filename'];
+              $attributes['location'] = $folder_name;
+              $attributes['format'] = '.mp3';
+              $attributes['state'] = 1;
+              $this->setIsNewRecord(true);
+              $this->attributes = $attributes;
              */
-             $this->audio_id = $audio_id;
+            $this->audio_id = $audio_id;
             $this->file = $fileInfo['filename'];
             $this->location = $folder_name;
             $this->format = '.mp3';

@@ -14,21 +14,19 @@ use Yii;
  * @property string $location
  * @property integer $state
  */
-class ImageFile extends \yii\db\ActiveRecord
-{
+class ImageFile extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return '{{%image_file}}';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['image_id', 'file', 'format', 'location'], 'required'],
             [['image_id', 'state'], 'integer'],
@@ -41,8 +39,7 @@ class ImageFile extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'image_id' => 'Image',
@@ -50,7 +47,8 @@ class ImageFile extends \yii\db\ActiveRecord
             'format' => 'Format',
             'location' => 'Location',
         ];
-    } 
+    }
+
     public function search($params) {
         $query = Image::find();
         $dataProvider = new ActiveDataProvider([
@@ -66,15 +64,15 @@ class ImageFile extends \yii\db\ActiveRecord
         }
 
         $query
-                ->andFilterWhere(['like', 'id', $this->id])
-                ->andFilterWhere(['like', 'image_id', $this->image_id])
-                ->andFilterWhere(['like', 'file', $this->file])
-                ->andFilterWhere(['like', 'format', $this->format])
-                ->andFilterWhere(['like', 'location', $this->location]);
-               
+                ->andFilterWhere([['like', 'id', $this->id],
+                    ['like', 'image_id', $this->image_id],
+                    ['like', 'file', $this->file],
+                    ['like', 'format', $this->format],
+                    ['like', 'location', $this->location]]);
+
         return $dataProvider;
     }
-    
+
     public function saveImage($image_id, $tag_id, $file) {
         $errorOccured = false;
 
@@ -157,7 +155,8 @@ class ImageFile extends \yii\db\ActiveRecord
         }
     }
 
-    public function getImage(){
+    public function getImage() {
         return $this->Belongs_to(Image::className(), ['id' => 'image_id']);
     }
+
 }

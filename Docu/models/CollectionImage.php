@@ -57,17 +57,17 @@ class CollectionImage extends \yii\db\ActiveRecord {
             return $dataProvider;
         }
         $query
-                ->andFilterWhere(['like', 'id', $this->id])
-                ->andFilterWhere(['like', 'collection_id', $this->collection_id])
-                ->andFilterWhere(['like', 'image_id', $this->document_id])
-                ->andFilterWhere(['like', 'state', $this->state]);
+                ->andFilterWhere([['like', 'id', $this->id],
+                    ['like', 'collection_id', $this->collection_id],
+                    ['like', 'image_id', $this->document_id],
+                    ['like', 'state', $this->state]]);
 
         return $dataProvider;
     }
 
     public static function add($image_id, $collection_id) {
         $model = $sql_image->createCommand("INSERT INTO tbl_collection_document (document_id, collection_id, state) VALUES (:document_id, :collection_id, 1)");
-        $model->bindParam(":document_id", $document_id, ":collection_id", $collection_id);
+        $model->bindParam(":image_id", $image_id, ":collection_id", $collection_id);
         $model->execute();
 
         $model = $sql_collection->createCommand("UPDATE tbl_collection SET modified_on = NOW() WHERE id = :collection_id");
@@ -80,7 +80,7 @@ class CollectionImage extends \yii\db\ActiveRecord {
 
         if (!empty($collection_id)) {
             $model = $sql_image->createCommand("DELETE FROM tbl_collection_image WHERE image_id = :image_id AND collection_id = :collection_id");
-            $model->bindParam(":document_id", $document_id, ":collection_id", $collection_id);
+            $model->bindParam(":image_id", $image_id, ":collection_id", $collection_id);
             $model->execute();
 
             $model = $sql_collection->createCommand("UPDATE tbl_collection SET modified_on = NOW() WHERE id = :collection_id");
@@ -89,7 +89,7 @@ class CollectionImage extends \yii\db\ActiveRecord {
             return true;
         } else {
             $model = $sql_image->createCommand("DELETE FROM tbl_collection_image WHERE image_id = :image_id");
-            $model->bindParam(":document_id", $document_id);
+            $model->bindParam(":image_id", $image_id);
             $model->execute();
 
             $model->$sql_collection = "UPDATE tbl_collection SET modified_on = NOW() WHERE id IN (:collection_id)";

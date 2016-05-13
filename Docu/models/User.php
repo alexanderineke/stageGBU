@@ -6,7 +6,6 @@ use Yii;
 
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface{
 
-
     public $repeat_password;
     //will hold the encrypted password for update actions.
     public $initialPassword;
@@ -78,9 +77,9 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface{
             return $dataProvider;
         }
         $query
-                ->andFilterWhere(['like', 'id', $this->id])
-                ->andFilterWhere(['like', 'username', $this->username])
-                ->andFilterWhere(['like', 'email', $this->email]);
+                ->andFilterWhere([['like', 'id', $this->id],
+                    ['like', 'username', $this->username],
+                    ['like', 'email', $this->email]]);
         return $dataProvider;
     }
 

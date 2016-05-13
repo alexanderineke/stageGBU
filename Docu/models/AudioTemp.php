@@ -67,12 +67,12 @@ class AudioTemp extends \yii\db\ActiveRecord {
         }
 
         $query
-                ->andFilterWhere(['like', 'id', $this->id])
-                ->andFilterWhere(['like', 'create_date', $this->create_id])
-                ->andFilterWhere(['like', 'user_id', $this->user_id])
-                ->andFilterWhere(['like', 'file', $this->file])
-                ->andFilterWhere(['like', 'format', $this->format])
-                ->andFilterWhere(['like', 'location', $this->location]);
+                ->andFilterWhere([['like', 'id', $this->id],
+                    ['like', 'create_date', $this->create_id],
+                    ['like', 'user_id', $this->user_id],
+                    ['like', 'file', $this->file],
+                    ['like', 'format', $this->format],
+                    ['like', 'location', $this->location]]);
 
         return $dataProvider;
     }

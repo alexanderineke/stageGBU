@@ -66,14 +66,14 @@ class Collection extends \yii\db\ActiveRecord {
             return $dataProvider;
         }
         $query
-                ->andFilterWhere(['like', 'id', $this->id])
-                ->andFilterWhere(['like', 'user_id', $this->user_id])
-                ->andFilterWhere(['like', 'title', $this->title])
-                ->andFilterWhere(['like', 'description', $this->description])
-                ->andFilterWhere(['like', 'created_on', $this->year])
-                ->andFilterWhere(['like', 'modified_on', $this->owner])
-                ->andFilterWhere(['like', 'published', $this->published]);
-        
+                ->andFilterWhere([['like', 'id', $this->id],
+                    ['like', 'user_id', $this->user_id],
+                    ['like', 'title', $this->title],
+                    ['like', 'description', $this->description],
+                    ['like', 'created_on', $this->year],
+                    ['like', 'modified_on', $this->owner],
+                    ['like', 'published', $this->published]]);
+
         return $dataProvider;
     }
 
@@ -90,13 +90,12 @@ class Collection extends \yii\db\ActiveRecord {
             return $dataProvider;
         }
         $query
-        ->Where(['like', 'id', $this->id])
-        ->Where(['like', 'user_id', $this->user_id]);
-      
-        return $dataProvider;
+                ->Where(['like', 'id', $this->id])
+                ->Where(['like', 'user_id', $this->user_id]);
 
-        }
-        
+        return $dataProvider;
+    }
+
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
@@ -107,8 +106,6 @@ class Collection extends \yii\db\ActiveRecord {
         return parent::model($className);
     }
 
-    
-    
     public function getCollection_images() {
         return $this->hasMany(CollectionImage::className(), ['id' => 'collection_id']);
     }

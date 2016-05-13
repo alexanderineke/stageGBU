@@ -40,7 +40,7 @@ class Audio extends \yii\db\ActiveRecord {
             [['user_id', 'title', 'published'], 'required'],
             [['user_id', 'year', 'published'], 'integer'],
             [['description'], 'string'],
-            [['tag_search, id, user_id, title, description, year, owner, published'], 'safe','on'=>'search'],
+            [['tag_search, id, user_id, title, description, year, owner, published'], 'safe', 'on' => 'search'],
             [['title'], 'string', 'max' => 64],
             [['owner'], 'string', 'max' => 45]
         ];
@@ -63,32 +63,34 @@ class Audio extends \yii\db\ActiveRecord {
             'file' => 'Bestand',
         ];
     }
-/*
-    public function relations() {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
-        return [
-            'user' => [self::BELONGS_TO, 'User', 'user_id'],
-            'tags' => [self::MANY_MANY, 'Tag', 'tbl_audio_tag(audio_id, tag_id)'],
-            'audio_tags' => [self::HAS_MANY, 'AudioTag', 'audio_id'],
-            'audios' => [self::HAS_MANY, 'AudioFile', 'audio_id', 'condition' => 'state=1'],
-        ];
-    }
-    */
-    public function getUser(){
+
+    /*
+      public function relations() {
+      // NOTE: you may need to adjust the relation name and the related
+      // class name for the relations automatically generated below.
+      return [
+      'user' => [self::BELONGS_TO, 'User', 'user_id'],
+      'tags' => [self::MANY_MANY, 'Tag', 'tbl_audio_tag(audio_id, tag_id)'],
+      'audio_tags' => [self::HAS_MANY, 'AudioTag', 'audio_id'],
+      'audios' => [self::HAS_MANY, 'AudioFile', 'audio_id', 'condition' => 'state=1'],
+      ];
+      }
+     */
+
+    public function getUser() {
         return $this->Belongs_to(\yii\web\User::className(), ['id' => 'user_id']);
     }
-    
-    public function getTags(){
-        return $this->hasMany(Tag::className(),['id' => 'tag_id'])
-                ->viaTable('tbl_audio_tag', ['audio_id' => 'id']);
+
+    public function getTags() {
+        return $this->hasMany(Tag::className(), ['id' => 'tag_id'])
+                        ->viaTable('tbl_audio_tag', ['audio_id' => 'id']);
     }
-    
-    public function getAudioTags(){
-        $this->HasMany(AudioTag::className(),['id' => 'audio_id']);
+
+    public function getAudioTags() {
+        $this->HasMany(AudioTag::className(), ['id' => 'audio_id']);
     }
-    
-    public function getAudios(){
+
+    public function getAudios() {
         $this->hasMany(AudioFile::className(), ['id' => 'audio_id'])->andWhere('state=1');
     }
 
@@ -105,13 +107,13 @@ class Audio extends \yii\db\ActiveRecord {
         }
 
         $query
-                ->andFilterWhere(['like', 'id', $this->id])
-                ->andFilterWhere(['like', 'user_id', $this->user_id])
-                ->andFilterWhere(['like', 'title', $this->title])
-                ->andFilterWhere(['like', 'description', $this->description])
-                ->andFilterWhere(['like', 'year', $this->year])
-                ->andFilterWhere(['like', 'owner', $this->owner])
-                ->andFilterWhere(['like', 'published', $this->published]);
+                ->andFilterWhere([['like', 'id', $this->id],
+                    ['like', 'user_id', $this->user_id],
+                    ['like', 'title', $this->title],
+                    ['like', 'description', $this->description],
+                    ['like', 'year', $this->year],
+                    ['like', 'owner', $this->owner],
+                    ['like', 'published', $this->published]]);
 
         return $dataProvider;
     }

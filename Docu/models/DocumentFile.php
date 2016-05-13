@@ -62,11 +62,11 @@ class DocumentFile extends ActiveRecord {
         }
 
         $query
-                ->andFilterWhere(['like', 'id', $this->id])
-                ->andFilterWhere(['like', 'document_id', $this->document_id])
-                ->andFilterWhere(['like', 'file', $this->file])
-                ->andFilterWhere(['like', 'format', $this->format])
-                ->andFilterWhere(['like', 'location', $this->location]);
+                ->andFilterWhere([['like', 'id', $this->id],
+                    ['like', 'document_id', $this->document_id],
+                    ['like', 'file', $this->file],
+                    ['like', 'format', $this->format],
+                    ['like', 'location', $this->location]]);
 
         return $dataProvider;
     }

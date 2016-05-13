@@ -95,13 +95,13 @@ class Document extends ActiveRecord {
         }
 
         $query
-                ->andFilterWhere(['like', 'id', $this->id])
-                ->andFilterWhere(['like', 'user_id', $this->user_id])
-                ->andFilterWhere(['like', 'title', $this->title])
-                ->andFilterWhere(['like', 'description', $this->description])
-                ->andFilterWhere(['like', 'year', $this->year])
-                ->andFilterWhere(['like', 'owner', $this->owner])
-                ->andFilterWhere(['like', 'published', $this->published]);
+                ->andFilterWhere([['like', 'id', $this->id],
+                    ['like', 'user_id', $this->user_id],
+                    ['like', 'title', $this->title],
+                    ['like', 'description', $this->description],
+                    ['like', 'year', $this->year],
+                    ['like', 'owner', $this->owner],
+                    ['like', 'published', $this->published]]);
 
         return $dataProvider;
     }

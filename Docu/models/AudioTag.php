@@ -28,7 +28,7 @@ class AudioTag extends \yii\db\ActiveRecord {
         return [
             [['audio_id', 'tag_id'], 'required'],
             [['audio_id', 'tag_id', 'state'], 'integer'],
-            [['id, audio_id, tag_id, state'], 'safe', 'on'=>'search']
+            [['id, audio_id, tag_id, state'], 'safe', 'on' => 'search']
         ];
     }
 
@@ -65,10 +65,10 @@ class AudioTag extends \yii\db\ActiveRecord {
         }
 
         $query
-                ->andFilterWhere(['like', 'id', $this->id])
-                ->andFilterWhere(['like', 'audio_id', $this->audio_id])
-                ->andFilterWhere(['like', 'tag_id', $this->tag_id])
-                ->andFilterWhere(['like', 'state', $this->state]);
+                ->andFilterWhere([['like', 'id', $this->id],
+                    ['like', 'audio_id', $this->audio_id],
+                    ['like', 'tag_id', $this->tag_id],
+                    ['like', 'state', $this->state]]);
 
         return $dataProvider;
     }

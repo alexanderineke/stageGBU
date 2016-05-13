@@ -60,10 +60,10 @@ class DocumentTag extends \yii\db\ActiveRecord {
         }
 
         $query
-                ->andFilterWhere(['like', 'id', $this->id])
-                ->andFilterWhere(['like', 'document_id', $this->document_id])
-                ->andFilterWhere(['like', 'tag_id', $this->tag_id])
-                ->andFilterWhere(['like', 'state', $this->state]);
+                ->andFilterWhere([['like', 'id', $this->id],
+                    ['like', 'document_id', $this->document_id],
+                    ['like', 'tag_id', $this->tag_id],
+                    ['like', 'state', $this->state]]);
 
         return $dataProvider;
     }

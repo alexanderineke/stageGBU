@@ -58,13 +58,14 @@ class Tag extends \yii\db\ActiveRecord {
             return $dataProvider;
         }
         $query
-                ->andFilterWhere(['like', 'id', $this->id])
-                ->andFilterWhere(['like', 'name', $this->name])
-                ->andFilterWhere(['like', 'slug', $this->slug])
-                ->andFilterWhere(['like', 'state', $this->state]);
+                ->andFilterWhere([['like', 'id', $this->id],
+                    ['like', 'name', $this->name],
+                    ['like', 'slug', $this->slug],
+                    ['like', 'state', $this->state]]);
 
         return $dataProvider;
     }
+
     // Warning: Please modify the following code to remove attributes that
     // should not be searched.
     public function add($tagArr, $slugArr) {
@@ -90,6 +91,7 @@ class Tag extends \yii\db\ActiveRecord {
             }
         }
     }
+
     public function check($slugArr) {
         $query = Tag::find()
                 ->andFilterWhere(['id' => $id])
@@ -107,7 +109,7 @@ class Tag extends \yii\db\ActiveRecord {
         }
         return $dataProvider;
     }
-    
+
     public function findTags($term) {
         $query = Tag::find()
                 ->andFilterWhere(['id' => $id])
@@ -119,7 +121,8 @@ class Tag extends \yii\db\ActiveRecord {
                 ->execute();
         return $query;
     }
-     public function findTagsByID($term) {
+
+    public function findTagsByID($term) {
         $query = Tag::find()
                 ->andFilterWhere(['id' => $id])
                 ->andFilterWhere(['name' => $name])
@@ -130,4 +133,5 @@ class Tag extends \yii\db\ActiveRecord {
                 ->execute();
         return $query;
     }
+
 }
