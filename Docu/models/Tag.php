@@ -45,7 +45,7 @@ class Tag extends \yii\db\ActiveRecord {
         ];
     }
 
-    public function search() {
+    public function search($params) {
         $query = Tag::find();
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

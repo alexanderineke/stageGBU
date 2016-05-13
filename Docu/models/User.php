@@ -4,7 +4,7 @@ namespace app\models;
 
 use Yii;
 
-class User extends \yii\db\ActiveRecord {
+class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface{
 
 
     public $repeat_password;
@@ -21,7 +21,7 @@ class User extends \yii\db\ActiveRecord {
                 [['username'], 'unique'],
                 [['username', 'email', 'roles'], 'required'],
                 [['username', 'password', 'repeat_password', 'email'], 'string', 'min' => 5, 'max' => 128],
-                [['password'], 'compare', 'compareAttribute' => 'password_repeat'],
+                ['repeat_password', 'compare', 'compareAttribute'=>'password', 'skipOnEmpty' => false, 'message'=>"Passwords don't match"],
                 // The following rule is used by search().
                 // Please remove those attributes that should not be searched.
                 [['id', 'username', 'email'], 'safe', 'on' => 'search']
@@ -31,7 +31,7 @@ class User extends \yii\db\ActiveRecord {
                 [['username'], 'unique'],
                 [['username', 'password', 'repeat_password', 'email', 'roles'], 'required'],
                 [['username', 'password', 'repeat_password', 'email'], 'string', 'min' => 5, 'max' => 128],
-                [['password'], 'compare', 'compareAttribute' => 'password_repeat'],
+                ['repeat_password', 'compare', 'compareAttribute'=>'password', 'skipOnEmpty' => false, 'message'=>"Passwords don't match"],
                 // The following rule is used by search().
                 // Please remove those attributes that should not be searched.
                 [['id', 'username', 'email'], 'safe', 'on' => 'search']
@@ -77,7 +77,6 @@ class User extends \yii\db\ActiveRecord {
             // $query->where('0=1');
             return $dataProvider;
         }
-
         $query
                 ->andFilterWhere(['like', 'id', $this->id])
                 ->andFilterWhere(['like', 'username', $this->username])
@@ -86,13 +85,12 @@ class User extends \yii\db\ActiveRecord {
     }
 
     public function beforeSave($insert) {
-        // in this case, we will use the old hashed password.
+      // in this case, we will use the old hashed password.
         if (empty($this->password) && empty($this->repeat_password) && !empty($this->initialPassword)) {
-            $this->password = $this->repeat_password = $this->initialPassword;
+            $this->password = $this->repeat_password= $this->initialPassword;
         }
-
         return parent::beforeSave($insert);
-    }
+    }   
 
     public function afterFind() {
         //reset the password to null because we don't want the hash to be shown.
@@ -124,6 +122,11 @@ class User extends \yii\db\ActiveRecord {
         return crypt($password, $this->password) === $this->password;
     }
 
+    //TESTING!!
+   // public function validatePassword($password) {
+  //     
+   //     return true;
+   // }
     protected function generateSalt($cost = 13) {
         if (!is_numeric($cost) || $cost < 4 || $cost > 31) {
             throw new Exception("cost parameter must be between 4 and 31");
@@ -137,6 +140,70 @@ class User extends \yii\db\ActiveRecord {
         $salt = '$2a$' . str_pad((int) $cost, 2, '0', STR_PAD_RIGHT) . '$';
         $salt .= strtr(substr(base64_encode($rand), 0, 22), ['+' => '.']);
         return $salt;
+    }
+    public static function findIdentity($id) {
+        $user = self::find()
+            ->where([
+                "id" => $id
+            ])
+            ->one();
+        if (!count($user)) {
+            return null;
+        }
+        return new static($user);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function findIdentityByAccessToken($token, $userType = null) {
+
+        $user = self::find()
+            ->where(["accessToken" => $token])
+            ->one();
+        if (!count($user)) {
+            return null;
+        }
+        return new static($user);
+    }
+
+    /**
+     * Finds user by username
+     *
+     * @param  string      $username
+     * @return static|null
+     */
+    public static function findByUsername($username) {
+        $user = self::find()
+            ->where([
+                "username" => $username
+            ])
+            ->one();
+        if (!count($user)) {
+            return null;
+        }
+        return new static($user);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getId() {
+        return $this->id;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAuthKey() {
+        return;// $this->authKey;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function validateAuthKey($authKey) {
+        return $this->authKey === $authKey;
     }
 
     /**

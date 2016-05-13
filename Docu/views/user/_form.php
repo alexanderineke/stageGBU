@@ -20,7 +20,7 @@ use yii\widgets\ActiveForm;
     
     <?= $form->field($model, 'email')->textInput(['class'=>'span5','maxlength' => 128]) ?>
 
-    <?= $form->field($model, 'roles')->dropDownList($items) ?>
+    <?= $form->field($model, 'roles')->dropDownList(['user'=>'Gebruiker', 'moderator'=>'Moderator', 'admin'=>'Beheerder']) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

@@ -47,13 +47,13 @@ class AudioController extends Controller {
                         'actions' => ['admin', 'delete'],
                         'roles' => ['admin'],
                     ],
-                  //  [   'deny' => true,
-                   //     'users' => ['*'],
-                   // ],
+                    [   'deny' => true,
+                        'users' => ['*'],
+                    ],
                 ],
             ],
         ];
-    }
+    }                                          
 
     /*
       public function action() !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!{

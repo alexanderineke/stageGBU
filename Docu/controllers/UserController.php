@@ -83,7 +83,8 @@ class UserController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
-        } else {
+        } 
+        else {
             return $this->render('update', [
                 'model' => $model,
             ]);
@@ -122,7 +123,7 @@ class UserController extends Controller
      * @return User the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function loadModel($id)
+    protected function findModel($id)
     {
         if (($model = User::findOne($id)) !== null) {
             return $model;

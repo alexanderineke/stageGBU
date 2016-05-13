@@ -4,11 +4,11 @@ namespace app\controllers;
 
 use Yii;
 use app\models;
-use app\models\Audio;
+use app\models\Image;
 use app\models\Search;
-use app\models\AudioTag;
-use app\models\AudioFile;
-use app\models\AudioTemp;
+use app\models\ImageTag;
+use app\models\ImageFile;
+use app\models\ImageTemp;
 use app\models\Collection;
 use yii\helpers\ArrayHelper;
 use yii\web\UploadedFile;
@@ -17,6 +17,11 @@ use yii\web\NotFoundHttpException;
 use yii\web\HttpException;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
+
+
+
+
+
 /**
  * ImageController implements the CRUD actions for Image model.
  */
@@ -262,7 +267,7 @@ class ImageController extends Controller {
             $condition = '';
         }
         $dataProvider = new ActiveDataProvider([
-        'query' => models\User::find()->
+            'query' => models\User::find()->
             where(['published'=>Yii::$app->user->identity->published])->
             orderBy('title ASC'),       
     ]);
