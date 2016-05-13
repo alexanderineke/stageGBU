@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
 ?>
 
 <div class="document-search">
@@ -29,6 +28,6 @@ use yii\widgets\ActiveForm;
     <div class="form-actions">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
     </div>
-    <?php ActiveForm::end(); ?>
-
 </div>
+
+<?php ActiveForm::end(); ?>

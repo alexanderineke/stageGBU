@@ -56,7 +56,7 @@ class ImageController extends Controller {
 
     public function actionView($id) {
         return $this->render('view', [
-                    'model' => $this->findModel($id),
+                    'model' => $this->loadModel($id),
         ]);
     }
 
@@ -122,25 +122,25 @@ class ImageController extends Controller {
                         if ($fileQueue) {
                             if (ImageFile::model()->saveImage($model->id, $this->tags[0], $file)) {
                                 array_shift($fileQueue);
-                                Yii::$app->user->setState('filesToProcess', $fileQueue);
+                                Yii::$app->session->set('filesToProcess', $fileQueue);
                                 $this->redirect(['view', 'id' => $model->id]);
                             } else {
-                                Yii::$app->user - setFlash('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
+                                Yii::$app->session->set('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
                             }
                         } else {
                             $this - redirect(['view', 'id' => $model->id]);
                         }
                     } else {
-                        Yii::$app->user->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
+                        Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
                     }
                 } else {
-                    Yii::$app->user->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
+                    Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
                 }
             } else {
-                Yii::$app->user->setFlash('error', "De steekwoorden zijn ongeldig. Probeert u het alstublieft nog eens.");
+                Yii::$app->session->setFlash('error', "De steekwoorden zijn ongeldig. Probeert u het alstublieft nog eens.");
             }
         } else {
-            Yii::$app->user->setState('filesToProcess', []);
+            Yii::$app->session->setState('filesToProcess', []);
         }
 
         $this->render('update', [
@@ -159,7 +159,7 @@ class ImageController extends Controller {
     }
 
     public function actionCreate() {
-        $model = new Image();
+        $model = new Image(); 
 
         Yii::$app->user->setState('filesToProcess', []);
 

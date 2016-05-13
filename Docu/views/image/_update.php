@@ -1,29 +1,25 @@
-<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
-	'id'=>'images-form',
-	'enableAjaxValidation'=>false,
-	'htmlOptions' => array('enctype' => 'multipart/form-data'),
-)); ?>
+<?php
 
-	<p class="help-block">Velden met een <span class="required">*</span> zijn verplicht.</p>
+$form = ActiveForm::begin([
+            'id' => 'images-form',
+            'options' => ['enctype' => 'multipart/form-data'],
+        ]);
+?>
 
-	<?php echo $form->errorSummary($model); ?>
+<p class="help-block">Velden met een <span class="required">*</span> zijn verplicht.</p>
 
-	<?php echo $form->textFieldRow($model,'title',array('class'=>'span5','maxlength'=>64)); ?>
+<?php echo $form->errorSummary($model); ?>
 
-	 <?php echo $form->labelEx($model,'description'); ?>		
-	 <?php 
-		 $this->widget('ext.redactor.ImperaviRedactorWidget', array(
-		 	'name' => 'Image[description]',
-		 	'value' => $model->description,
-		 	'options' => array(
-		 	'minHeight'=>150,
-		 	'class'=>'span8',
-		 	'lang'=>'nl',
-		 	'buttons'=>array('formatting', '|', 'bold', 'italic', 'deleted', '|', 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'table', 'link', '|', 'horizontalrule')
-		 ))); 
-	?>
+<?php echo $form->field($model, 'title')->textField(['class' => 'span5', 'maxlength' => 64]); ?>
 
-	<?=
+<?php echo $form->field($model, 'description')->label('Description'); ?>		
+<?php
+
+// Hier moet een ImperaviRedactorWidget komen
+?>
+
+<?=
+
 $tags = '';
 $values = [];
 foreach ($model->tags as $i => $tag) {
@@ -33,28 +29,36 @@ foreach ($model->tags as $i => $tag) {
     $tags = substr($tags, 0, -1);
 }
 ?>
+
+<?php
+
+//Hier moet een ETagIt komen
+?>
+
 <?= $form->field($model, 'tags_previous')->hiddenInput(['value' => $tags]) ?>
 
 <?= $form->field($model, 'year')->textInput(['class' => 'span5']) ?>
 
 <?= $form->field($model, 'owner')->textInput(['class' => 'span5', 'maxlength' => 45]) ?>
 
-<?= $form->field($model, 'file')->label(['Label Of file', 'minHeight' => 150, 'class' => 'span8', 'lang' => 'nl']); ?>	
+<?= $form->field($model, 'published')->dropDownList(['1' => 'Ja', '0' => 'Nee']); ?>
 
-<?= $form->field($model, 'published')->dropDownList($items) ?>
+<?php
 
+echo \kato\DropZone::widget([
+    'options' => [
+        'maxFilesize' => '200',
+        'dictDefaultMessage' => 'Plaats hier het bestand dat u wilt uploaden',
+        'dictFallbackMessage' => 'Uw browser wordt niet ondersteund',
+        'dictInvalidFileType' => 'Dit bestands formaat wordt niet ondersteund. Converteer het a.u.b. naar PDF.',
+        'dictFileTooBig' => 'Het bestand dat u probeert te uploaden is te groot.',
+        'clickable' => true,
+        'accept' => ['image/jpeg', 'image/png', 'image/gif'],
+        'url' => $this->createUrl('image/batchupload'),
+    ]
+]);
+?>
 
-	<?php 
-		$this->widget('ext.dropzone.EDropzone',[
-		    'model' => $model,
-		    'attribute' => 'file',
-		    'url' => $this->createUrl('image/upload'),
-		    'mimeTypes' => ['image/jpeg', 'image/png', 'image/gif'],
-		    'options' => [	    
-		    	'dictDefaultMessage' => 'Plaats hier het bestand dat u wilt uploaden',
-		    	'dictFallbackMessage' => 'Uw browser wordt niet ondersteund',
-		    	'dictInvalidFileType' => 'Dit bestands formaat wordt niet ondersteund. Converteer het a.u.b. naar PDF.',
-		    	'dictFileTooBig' => 'Het bestand dat u probeert te uploaden is te groot.',
-		    ],
-		]);
-	?>
+<?= Html::submitButton($model->isNewRecord ? 'Maak aan' : 'Bewaar', ['class' => 'btn btn-primary']) ?>
+
+<?php ActiveForm::end(); ?>

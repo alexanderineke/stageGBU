@@ -2,8 +2,8 @@
 
 use yii\helpers\Html;
 
-$this->title = 'Beheer Afbeeldingen';
-$this->params['breadcrumbs'][] = ['label' => 'Collecion', 'url' => ['index']];
+$this->title = 'Beheer';
+$this->params['breadcrumbs'][] = ['label' => 'Afbeelding', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 $this->params['menu'][] = [
@@ -12,18 +12,8 @@ $this->params['menu'][] = [
     [['label' => 'Maak afbeeldingen aan', 'url'] => ['create'], 'icon' => 'file', 'visible' => Yii::$app->user->getIdentity('user')],
       ];
 
-Yii::app()->clientScript->registerScript('search', "
-$('.search-button').click(function(){
-	$('.search-form').toggle();
-	return false;
-});
-$('.search-form form').submit(function(){
-	$.fn.yiiGridView.update('image-grid', {
-		data: $(this).serialize()
-	});
-	return false;
-});
-");
+
+//Hier moet registerscript komen
 ?>
 
 <h1><?= Html::encode($this->title) ?></h1>

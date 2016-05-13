@@ -66,7 +66,7 @@ if (isset($file)) {
 <?= $form->field($model, 'published')->dropDownList(['1' => 'Ja', '0' => 'Nee']); ?>
 
 <div class="form-actions">
-    <?= Html::submitButton(sizeof(Yii::app()->user->getState('filesToProcess')) > 1 ? 'Volgende' : 'Bewaar', ['class' => 'btn btn-primary']) ?>
+    <?= Html::submitButton(sizeof(Yii::$app->session->fet('filesToProcess')) > 1 ? 'Volgende' : 'Bewaar', ['class' => 'btn btn-primary']) ?>
 </div>
 
 <?php ActiveForm::end(); ?>

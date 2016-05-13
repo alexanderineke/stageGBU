@@ -4,9 +4,7 @@ $form = ActiveForm::begin([
             'action' => ['image/process'],
             'enableAjaxValidation' => false,
             'method' => 'get',
-            //?↓
-            'options' => 'form',
-                //
+            'options' => ['enctype' => 'multipart/form-data'],
         ]);
 ?>
 
@@ -23,19 +21,13 @@ echo \kato\DropZone::widget([
         'dictInvalidFileType' => 'Dit bestands formaat wordt niet ondersteund. Converteer het a.u.b. naar PDF.',
         'dictFileTooBig' => 'Het bestand dat u probeert te uploaden is te groot.',
         'clickable' => true,
-        'accept' => ['audio/mpeg3', 'audio/x-mpeg-3', 'audio/mpeg', 'audio/mp3'],
-        'url' => $this->createUrl('audio/batchupload'),
+        'accept' => ['image/jpeg', 'image/png', 'image/gif'],
+        'url' => $this->createUrl('image/batchupload'),
     ]
 ]);
 ?>
 <div class="form-actions">
-    <?php
-    $this->widget('bootstrap.widgets.TbButton', [
-        'buttonType' => 'submit',
-        'type' => 'primary',
-        'label' => 'Maak aan',
-    ]);
-    ?>
+    <?= Html::submitButton('Maak aan', ['class' => 'btn btn-primary']) ?>
 </div>
 
-<?php $this->endWidget(); ?>
+<?php ActiveForm::end(); ?>
