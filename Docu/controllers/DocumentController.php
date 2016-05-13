@@ -392,12 +392,14 @@ class DocumentController extends Controller {
                 }
                 foreach ($newSlugs as $i => $newslug) {
                     if (!array_key_exists($newslug, $compareTags)) {
-                        if (!in_array($newslug, $remainingSlugs))
+                        if (!in_array($newslug, $remainingSlugs)) {
                             $remainingTags[] = $newTags[$i];
-                        $remainingSlugs[] = $newslug;
+                            $remainingSlugs[] = $newslug;
+                        }
                     }
                 }
-            } else {
+            }
+            else {
                 $remainingTags = $newTags;
             }
 
@@ -406,7 +408,8 @@ class DocumentController extends Controller {
                     foreach ($addedTags as $i) {
                         $tags[] = $i;
                     }
-                } else {
+                } 
+                else {
                     $errorOccured = true;
                 }
             }
@@ -419,15 +422,17 @@ class DocumentController extends Controller {
         }
         $this->tags = $tags;
 
-        if (sizeof($tags))
+        if (sizeof($tags)){
             return true;
+        }
     }
-
     protected function saveTags($document_id) {
         $errorOccured = false;
 
-        if (!(new DocumentTag)->add($document_id, array_unique($this->tags)))
-            $errorOccured = true;
+    if (!(new DocumentTag)->add($document_id, array_unique($this->tags))){
+    $errorOccured = true;
+    
+    }
         $prevTags = explode(',', $_POST['Document']['tags_previous']);
         $prevTagsArr = [];
         foreach ($prevTags as $i) {
@@ -440,10 +445,10 @@ class DocumentController extends Controller {
                 $errorOccured = true;
             }
         }
-        if (!$errorOccured)
+        if (!$errorOccured){
             return true;
+        }
     }
-
     public function getDocumentContent($model, $file, $existing = false) {
         if ($existing) {
             $file = Yii::getAlias('@app' . '/../uploads/documenten/' . $file['location'] . '/' . $file['file'] . $file['format']);

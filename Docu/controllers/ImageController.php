@@ -261,7 +261,7 @@ class ImageController extends Controller {
         } else {
             $condition = '';
         }
-        $DataProvider = new ActiveDataProvider([
+        $dataProvider = new ActiveDataProvider([
         'query' => models\User::find()->
             where(['published'=>Yii::$app->user->identity->published])->
             orderBy('title ASC'),       
