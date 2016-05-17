@@ -27,10 +27,10 @@ echo Menu::widget([
         <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?=
-    GridView::widget([
-        'dataProvider' => $DataProvider,
-        'filterModel' => $searchModel,
+   <?= GridView::widget([
+    'dataProvider' => $model->search(),
+  
+        
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'id',

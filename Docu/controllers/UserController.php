@@ -31,16 +31,23 @@ class UserController extends Controller {
      * @return mixed
      */
     public function actionIndex() {
-        return $this->render('index');
-
-
-        /*  $searchModel = new Search();
+       /* $condition = '';
+        $dataProvider = new ActiveDataProvider([
+            'query' => User::find()
+                 ->where($condition)
+                ]);
+        
+        return $this->render('index', [
+            'model' => new User(),
+            'dataProvider' => $dataProvider,
+        ]);*/
+          $searchModel = new Search();
           $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
           return $this->render('index', [
           'searchModel' => $searchModel,
           'dataProvider' => $dataProvider,
-          ]); */
+          ]); 
     }
 
     /**

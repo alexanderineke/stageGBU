@@ -67,7 +67,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface{
         }
     }
 
-    public function search($params) {
+   /* public function search($params) {
         $query = User::find();
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -85,7 +85,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface{
                     ['like', 'username', $this->username],
                     ['like', 'email', $this->email]]);
         return $dataProvider;
-    }
+    }*/
 
    public function beforeSave($insert) {
             $this->setPassword($this->password);
