@@ -9,8 +9,13 @@ $this->title = 'Maak Gebruiker aan';
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
+<<<<<<< HEAD
 echo Menu::widget([
     'items' =>[
+=======
+// nog niet zeker correct
+$this->params['menu'][] = [
+>>>>>>> origin/master
    	['label'=>'Acties','visible'=>Yii::$app->user->getIdentity('moderator')],
 	['label'=>'Lijst van gebruikers','url'=>['index'],'icon'=>'list','visible'=>Yii::$app->user->getIdentity('moderator')],
 	['label'=>'Beheer gebruikers','url'=>['admin'],'icon'=>'list-alt','visible'=>Yii::$app->user->getIdentity('admin')],

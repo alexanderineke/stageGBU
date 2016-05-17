@@ -3,7 +3,10 @@
 namespace app\models;
 
 use Yii;
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface{
 
@@ -83,12 +86,14 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface{
                     ['like', 'email', $this->email]]);
         return $dataProvider;
     }
-    
-     public function beforeSave($insert) {
-            $this->setPassword($this->password);
-            $this->generateAuthKey();
-              return true;
-    }  
+
+    public function beforeSave($insert) {
+      // in this case, we will use the old hashed password.
+        if (empty($this->password) && empty($this->repeat_password) && !empty($this->initialPassword)) {
+            $this->password = $this->repeat_password= $this->initialPassword;
+        }
+        return parent::beforeSave($insert);
+    }   
 
     public function afterFind() {
         //reset the password to null because we don't want the hash to be shown.
@@ -100,8 +105,6 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface{
 
     public function saveModel($data = []) {
         //because the hashes needs to match
-       $hash = Yii::$app->getSecurity()->generatePasswordHash($password);
-       
         if (!empty($data['password']) && !empty($data['repeat_password'])) {
             $salt = $this->generateSalt(12);
             $data['password'] = $this->hashPassword($data['password'], $salt);
@@ -117,10 +120,10 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface{
         return true;
     }
 
-   /* public function validatePassword($password) {
+    public function validatePassword($password) {
         $this->password = $this->initialPassword;
         return crypt($password, $this->password) === $this->password;
-    }*/
+    }
 
     //TESTING!!
    // public function validatePassword($password) {
@@ -141,51 +144,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface{
         $salt .= strtr(substr(base64_encode($rand), 0, 22), ['+' => '.']);
         return $salt;
     }
-    
-     public static function findIdentity($id)
-    {
-        return static::findOne($id);
-    }
-    
-    public static function findIdentityByAccessToken($token, $type = null)
-    {
-          return static::findOne(['access_token' => $token]);
-    }
-    
-    public static function findByUsername($username) {
-     return static::findOne(['username' => $username]);
-    }
-    
-    public function getId()
-    {
-        return $this->getPrimaryKey();
-    }
-    
-    public function getAuthKey()
-    {
-        return;// $this->auth_key;
-    }
-
-    public function validateAuthKey($authKey)
-    {
-        return $this->getAuthKey() === $authKey;
-    }
-    public function validatePassword($password)
-    {
-      return Yii::$app->getSecurity()->validatePassword($password, $this->initialPassword);
-    }
-    
-    public function setPassword($password)
-    {
-     $this->password = Yii::$app->getSecurity()->generatePasswordHash($password);
-    }
-
-    public function generateAuthKey()
-    {
-        return;// $this->auth_key = Security::generateRandomKey();
-    }
-
-   /* public static function findIdentity($id) {
+    public static function findIdentity($id) {
         $user = self::find()
             ->where([
                 "id" => $id
@@ -195,12 +154,12 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface{
             return null;
         }
         return new static($user);
-    }*/
+    }
 
     /**
      * @inheritdoc
      */
-  /*  public static function findIdentityByAccessToken($token, $userType = null) {
+    public static function findIdentityByAccessToken($token, $userType = null) {
 
         $user = self::find()
             ->where(["accessToken" => $token])
@@ -209,7 +168,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface{
             return null;
         }
         return new static($user);
-    }*/
+    }
 
     /**
      * Finds user by username
@@ -217,7 +176,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface{
      * @param  string      $username
      * @return static|null
      */
-   /* public static function findByUsername($username) {
+    public static function findByUsername($username) {
         $user = self::find()
             ->where([
                 "username" => $username
@@ -227,29 +186,28 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface{
             return null;
         }
         return new static($user);
-    }*/
+    }
 
     /**
      * @inheritdoc
      */
-    
-  /*  public function getId() {
+    public function getId() {
         return $this->id;
-    }*/
+    }
 
     /**
      * @inheritdoc
      */
-  /*  public function getAuthKey() {
+    public function getAuthKey() {
         return;// $this->authKey;
-    }*/
+    }
 
     /**
      * @inheritdoc
      */
-   /* public function validateAuthKey($authKey) {
+    public function validateAuthKey($authKey) {
         return $this->authKey === $authKey;
-    }*/
+    }
 
     /**
      * @return \yii\db\ActiveQuery
