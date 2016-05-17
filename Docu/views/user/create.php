@@ -9,6 +9,7 @@ $this->title = 'Maak Gebruiker aan';
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
+// nog niet zeker correct
 $this->params['menu'][] = [
    	['label'=>'Acties','visible'=>Yii::$app->user->getIdentity('moderator')],
 	['label'=>'Lijst van gebruikers','url'=>['index'],'icon'=>'list','visible'=>Yii::$app->user->getIdentity('moderator')],

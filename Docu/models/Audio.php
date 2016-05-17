@@ -3,38 +3,21 @@
 namespace app\models;
 
 use Yii;
+use yii\data\ActiveDataProvider;
+use yii\helpers\Html;
 
-/**
- * This is the model class for table "{{%audio}}".
- *
- * @property string $id
- * @property integer $user_id
- * @property string $title
- * @property string $description
- * @property integer $year
- * @property string $owner
- * @property string $created_on
- * @property string $modified_on
- * @property integer $published
- */
 class Audio extends \yii\db\ActiveRecord {
 
     public $tag_search, $count, $tagName;
 
     public function getTagsHelper() {
-        return implode(', ', array_values(CHtml::listData($this->tags, 'id', 'name')));
+        return implode(', ', array_values(Html::listData($this->tags, 'id', 'name')));        
     }
 
-    /**
-     * @inheritdoc
-     */
     public static function tableName() {
         return '{{%audio}}';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function rules() {
         return [
             [['user_id', 'title', 'published'], 'required'],
@@ -46,9 +29,6 @@ class Audio extends \yii\db\ActiveRecord {
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
     public function attributeLabels() {
         return [
             'id' => 'ID',
@@ -63,19 +43,6 @@ class Audio extends \yii\db\ActiveRecord {
             'file' => 'Bestand',
         ];
     }
-
-    /*
-      public function relations() {
-      // NOTE: you may need to adjust the relation name and the related
-      // class name for the relations automatically generated below.
-      return [
-      'user' => [self::BELONGS_TO, 'User', 'user_id'],
-      'tags' => [self::MANY_MANY, 'Tag', 'tbl_audio_tag(audio_id, tag_id)'],
-      'audio_tags' => [self::HAS_MANY, 'AudioTag', 'audio_id'],
-      'audios' => [self::HAS_MANY, 'AudioFile', 'audio_id', 'condition' => 'state=1'],
-      ];
-      }
-     */
 
     public function getUser() {
         return $this->Belongs_to(\yii\web\User::className(), ['id' => 'user_id']);
@@ -117,5 +84,4 @@ class Audio extends \yii\db\ActiveRecord {
 
         return $dataProvider;
     }
-
 }

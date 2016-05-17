@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-use yii\data\Pagination;
+use yii\widgets\Menu;
 
 $this->title = 'Audio';
 $this->params['breadcrumbs'][] = $this->title;
@@ -25,28 +25,29 @@ function objectToTagString($tags) {
 }
 
 function fileLocation($id, $title) {
-    return Html::a($title, ['audio/view', 'id' => $id]);
+    return Yii::getAlias($title, ['audio/view', 'id' => $id], $options = []);
 }
 ?>
 
-<h1>Audio</h1>
+<h1><?= Html::encode($this->title); ?></h1>
 
 <?=
 GridView::widget([
-    'id' => 'audio-grid',
-    'type' => 'striped bordered',
     'dataProvider' => $model->search(),
     'columns' => [
         ['class' => 'yii\grid\SerialColumn'],
-        ['name'=>'title', 'header'=>'Naam audiobestand','value'=>'fileLocation($data->id, $data->title)', 'type'=>'raw'],
-        ['name'=>'tag_search', 'header'=>'Tags', 'value'=>'objectToTagString($data->tags)'],
-        ['name'=>'year', 'header'=>'Jaar'],
+        ['header' => 'Naam audiobestand', 'value' => function($data) {
+                return fileLocation($data->id, $data->title);
+            }],
+        ['header' => 'Tags', 'value' => function($data) {
+                return objectToTagString($data->tags);
+            }],
+        ['header' => 'Jaar'],
         ['class' => 'yii\grid\ActionColumn'],
     ],
-    'enableHistory'=>true,
-    'pager'=> [
+    'pager' => [
         'prevPageLabel' => '&laquo;',
         'nextPageLabel' => '&raquo;',
     ],
-    ]);
+]);
 ?>

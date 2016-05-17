@@ -16,13 +16,14 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\HttpException;
 use yii\filters\VerbFilter;
+use yii\data\ActiveDataProvider;
 
 /**
  * AudioController implements the CRUD actions for Audio model.
  */
 class AudioController extends Controller {
 
-    public $layout = '/layouts/column2';
+  //  public $layout = '@app/views/layouts/column2.php';
     protected $tags = [];
 
     public function filters() {
@@ -37,7 +38,7 @@ class AudioController extends Controller {
                 'rules' => [
                     [   'allow' => true,
                         'actions' => ['index', 'view'],
-                        'users' => ['*'],
+                        'roles' => ['?'],
                     ],
                     [   'allow' => true,
                         'actions' => ['update', 'create', 'process', 'upload', 'batchupload'],
@@ -47,13 +48,13 @@ class AudioController extends Controller {
                         'actions' => ['admin', 'delete'],
                         'roles' => ['admin'],
                     ],
-                    [   'deny' => true,
-                        'users' => ['*'],
+                    [   'allow' => false,
+                        'roles' => ['?'],
                     ],
                 ],
             ],
         ];
-    }                                          
+    }
 
     /*
       public function action() !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!{
@@ -290,13 +291,16 @@ class AudioController extends Controller {
         }
 
         $dataProvider = new ActiveDataProvider([
-            'criteria' => [
-                'condition' => $condition,
-                'order' => 'title ASC',
-            ],
+            'query' => Audio::find()
+                ->where($condition)
+                ->orderBy('title ASC'),
+//            'criteria' => [
+//                'condition' => $condition,
+//                'order' => 'title ASC',
+//            ],
         ]);
 
-        $this->render('index', [
+        return $this->render('index', [
             'model' => new Audio(),
             'dataProvider' => $dataProvider,
         ]);

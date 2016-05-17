@@ -7,13 +7,11 @@ $this->widget('bootstrap.widgets.TbButton', [
     'icon' => 'inbox white'
 ]);
 
-$gridDataProvider = new ArrayDataProvider([
-  'id' => 0, 
-  'type' => '',
-  'title' => 'Geen selectie',
-  ]);
+$gridDataProvider = new CArrayDataProvider([
+    ['id' => 0, 'type' => '', 'title' => 'Geen selectie'],
+        ]);
 
- $this->widget('bootstrap.widgets.TbGridView', [
+$this->widget('bootstrap.widgets.TbGridView', [
     'type' => 'striped bordered condensed',
     'dataProvider' => $gridDataProvider,
     'template' => '{items}',
