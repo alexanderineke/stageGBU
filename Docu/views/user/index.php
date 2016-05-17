@@ -22,22 +22,13 @@ echo Menu::widget([
 <div class="user-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-   <?= GridView::widget([
-    'dataProvider' => $model->search(),
-  
-        
+    <?=
+    GridView::widget([
+        'dataProvider' => $dataProvider,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-            'id',
             'username',
             'email:email',
             'roles',
-            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]);
     ?>

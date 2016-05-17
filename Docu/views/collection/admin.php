@@ -1,18 +1,21 @@
 <?php
 
 use yii\helpers\Html;
+use yii\grid\GridView;
+use yii\widgets\Menu;
 
 $this->title = 'Beheer Collecties';
 $this->params['breadcrumbs'][] = ['label' => 'Collecion', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
-$this->params['menu'][] = [
+echo Menu::widget([
+    'items' => [
     ['label' => 'Acties', 'visible' => Yii::$app->user->getIdentity('moderator')],
     ['label' => 'Maak collectie aan', 'icon' => 'file', 'url' => ['create'], 'visible' => Yii::$app->user->getIdentity('moderator')],
     ['label' => 'Lijst van collecties', 'icon' => 'list', 'url' => ['index'], 'visible' => Yii::$app->user->getIdentity('moderator')],
     ['label' => 'Uitgelichte collecties', 'icon' => 'eye-open', 'url' => ['view&id=17'], 'visible' => Yii::$app->user->getIdentity('moderator')],
-];
-
+]]);
+/*
 Yii::$app->clientScript->registerScript('search', "
 $('.search-button').click(function(){
 	$('.search-form').toggle();
@@ -24,15 +27,10 @@ $('.search-form form').submit(function(){
 	});
 	return false;
 });
-");
+");*/
 ?>
 
 <h1><?= Html::encode($this->title) ?></h1>
-
-<p>
-    U kan optioneel een vergelijk symbool (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
-    of <b>=</b>) gebruiken in uw zoekopdracht.
-</p>
 
 <?= Html::a('Geavanceerd zoeken', '#', ['class' => 'btn btn-primary']) ?>
 <div class="search-form" style="display: none">
@@ -40,14 +38,13 @@ $('.search-form form').submit(function(){
 </div>
 
 <?= GridView::widget([
-    'id' => 'collection-grid',
-    'dataProvider' => $model->search(),
-    'filter' => $model,
+    'dataProvider' => $dataProvider,
     'columns' => [
+        ['class' => 'yii\grid\SerialColumn'],
         'title',
         'created_on',
         'modified_on',
-        ['class' => 'btn btn-primary'],
+       ['class' => 'yii\grid\ActionColumn'],
     ],
 ])
 ?>

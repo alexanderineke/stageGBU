@@ -31,23 +31,23 @@ class UserController extends Controller {
      * @return mixed
      */
     public function actionIndex() {
-       /* $condition = '';
+        $condition = '';
         $dataProvider = new ActiveDataProvider([
             'query' => User::find()
                  ->where($condition)
                 ]);
-        
+       /* */
         return $this->render('index', [
             'model' => new User(),
             'dataProvider' => $dataProvider,
-        ]);*/
-          $searchModel = new Search();
+        ]);
+         /* $searchModel = new Search();
           $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
           return $this->render('index', [
           'searchModel' => $searchModel,
           'dataProvider' => $dataProvider,
-          ]); 
+          ]); */
     }
 
     /**
@@ -109,6 +109,17 @@ class UserController extends Controller {
     }
 
     public function actionAdmin() {
+        $condition = '';
+        $dataProvider = new ActiveDataProvider([
+            'query' => User::find()
+                 ->where($condition)
+                ]);
+       /* */
+        return $this->render('admin', [
+            'model' => new User(),
+            'dataProvider' => $dataProvider,
+        ]);/*
+        
         $model = new User('search');
         $model->unsetAttributes();  // clear any default values
         if (isset($_GET['User'])) {
@@ -116,7 +127,7 @@ class UserController extends Controller {
         }
         $this->render('admin', [
             'model' => $model,
-        ]);
+        ]);*/
     }
 
     /**

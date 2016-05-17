@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-
+use yii\widgets\Menu;
 /* @var $this yii\web\View */
 /* @var $model app\models\Collection */
 
@@ -10,15 +10,16 @@ $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => 'Collections', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
-$this->params['menu'][] = [
+echo Menu::widget([
+    'items'=>[
    	['label'=>'Acties','visible'=>Yii::$app->user->getIdentity('moderator')],
 	['label'=>'Lijst van collecties','url'=>['index'],'icon'=>'list','visible'=>Yii::$app->user->getIdentity('moderator')],
 	['label'=>'Maak collectie aan','url'=>['create'],'icon'=>'file','visible'=>Yii::$app->user->getIdentity('moderator')],
         ['label'=>'Bewerk collectie','url'=>['update','id'=>$model->id],'icon'=>'pencil','visible'=>Yii::$app->user->getIdentity('moderator')],
-        ['label'=>'Verwijder collectie','url'=>'#','icon'=>'trash','linkOptions'=>['submit'=>['delete','id'=>$model->id],'confirm'=>'Weet je zeker dat je deze collectie wilt verwijderen?'],'visible'=>Yii::$app->user->getIndentity('admin')],
+        ['label'=>'Verwijder collectie','url'=>'#','icon'=>'trash','linkOptions'=>['submit'=>['delete','id'=>$model->id],'confirm'=>'Weet je zeker dat je deze collectie wilt verwijderen?'],'visible'=>Yii::$app->user->getIdentity('admin')],
         ['label'=>'Beheer collectie','url'=>['admin'],'icon'=>'list-alt','visible'=>Yii::$app->user->getIdentity('admin')],
         
-];
+]]);
 
 
 ?>

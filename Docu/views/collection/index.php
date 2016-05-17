@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\widgets\Menu;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\Search */
@@ -9,12 +10,12 @@ use yii\grid\GridView;
 
 $this->title = 'Collecties';
 $this->params['breadcrumbs'][] = $this->title;
-        
-$this->params['menu'][] = [
+        echo Menu::widget([
+    'items' => [
         ['label'=>'Acties','visible'=>Yii::$app->user->getIdentity('moderator')],
 	['label'=>'Maak collectie aan','url'=>['create'],'icon'=>'file','visible'=>Yii::$app->user->getIdentity('moderator')],
         ['label'=>'Beheer collecties','url'=>['admin'],'icon'=>'list-alt','visible'=>Yii::$app->user->getIdentity('admin')],
-];
+]]);
 ?>
 <div class="collection-index">
 
@@ -28,8 +29,7 @@ $this->params['menu'][] = [
     <?=
     GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'itemView' => '_view',
+       
     ]);
     ?>
 

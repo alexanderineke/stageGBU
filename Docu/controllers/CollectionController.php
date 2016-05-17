@@ -8,6 +8,7 @@ use app\models\Search;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\data\ActiveDataProvider;
 
 /**
  * CollectionController implements the CRUD actions for Collection model.
@@ -32,14 +33,17 @@ class CollectionController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new Search();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        $condition = '';
+        $dataProvider = new ActiveDataProvider([
+            'query' => Collection::find()
+                 ->where($condition)
+                ]);
+       /* */
         return $this->render('index', [
-            'searchModel' => $searchModel,
+            'model' => new Collection(),
             'dataProvider' => $dataProvider,
         ]);
-    }
+       }
 
     /**
      * Displays a single Collection model.
@@ -96,11 +100,23 @@ class CollectionController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
-    {
+    public function actionDelete($id) {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionAdmin() {
+        $condition = '';
+        $dataProvider = new ActiveDataProvider([
+            'query' => Collection::find()
+                    ->where($condition)
+        ]);
+
+        return $this->render('admin', [
+                    'model' => new Collection(),
+                    'dataProvider' => $dataProvider,
+        ]);
     }
 
     /**

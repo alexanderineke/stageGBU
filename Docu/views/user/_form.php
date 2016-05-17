@@ -14,8 +14,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'username')->textInput(['class'=>'span5','maxlength' => 128]) ?>
     
-    
-
     <?= $form->field($model, 'password')->passwordInput(['class'=>'span5','maxlength' => 128]) ?>
     
     <?= $form->field($model, 'repeat_password')->passwordInput(['class'=>'span5','maxlength' => 128]) ?>
