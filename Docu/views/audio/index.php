@@ -34,14 +34,13 @@ function fileLocation($id, $title) {
 GridView::widget([
     'dataProvider' => $model->search(),
     'columns' => [
-        ['class' => 'yii\grid\SerialColumn'],
         ['header' => 'Naam audiobestand', 'value' => function($data) {
                 return fileLocation($data->id, $data->title);
             }],
         ['header' => 'Tags', 'value' => function($data) {
                 return objectToTagString($data->tags);
             }],
-        ['header' => 'Jaar'],
+        ['header' => 'Jaar', 'value' => 'year'],
         ['class' => 'yii\grid\ActionColumn'],
     ],
     'pager' => [

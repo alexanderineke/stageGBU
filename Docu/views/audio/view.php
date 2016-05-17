@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\widgets\Menu;
+use app\models\User;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Audio */
@@ -31,18 +32,20 @@ foreach ($model->tags as $i => $tag) {
     $tags .= $tag->name . ', ';
     $tags = substr($tags, 0, -2);
 }
+
+$user = User::findIdentity($model->user_id);
 ?>
 
 <?php
 if (isset($model->audios[0]->location) && isset($model->audios[0]->file) && isset($model->audios[0]->format)) {
-    Html::submitButton('Speel audio bestand af', ['class' => 'btn btn-primary']);
+   echo Html::submitButton('Speel audio bestand af', ['class' => 'btn btn-primary']);
     echo Button::widget([
         'label' => 'Speel audio bestand af',
         'options' => ['class' => 'btn btn-primary btn-xs'],
         'url' => 'uploads/audio/' . $model->audios[0]->location . '/' . $model->audios[0]->file . $model->audios[0]->format,
         'htmlOptions' => ['target' => '_blank'],
             ], true);
-}else{
+} else {
     $button = '<span class="null">Niet opgegeven</span>';
 }
 ?>
@@ -50,18 +53,17 @@ if (isset($model->audios[0]->location) && isset($model->audios[0]->file) && isse
 <?php
 echo DetailView::widget([
     'model' => $model,
-    'data'=>$model,
     'attributes' => [
-        ['label'=>'Uploader', 'value'=>$model->user->username],
+        ['label' => 'Uploader', 'value' => $user->username],
         'description:html',
-        ['label'=>'Steekwoorden', 'value'=>$tags],
+        ['label' => 'Steekwoorden', 'value' => $tags],
         'year',
-        ['name'=>'owner', 'value'=>!empty($model->owner) ? $model->owner : "Niet opgegeven"],
-        ['name'=>'created_on', 'value'=>($model->created_on !== "0000-00-00 00:00:00" ? $model->created_on : "Niet beschikbaar")],
-        ['name'=>'modified_on', 'value'=>($model->created_on !== "0000-00-00 00:00:00" ? $model->created_on : "Niet beschikbaar")],
-        ['label'=>'Bestand', 'value'=>$button, 'type'=>'raw'],
-        ['name'=>'published', 'label'=>'Gepubliceerd', 'value'=>$model->published? "Ja":"Nee"]
-        ],
+        ['label' => 'owner', 'value' => !empty($model->owner) ? $model->owner : "Niet opgegeven"],
+        ['label' => 'created_on', 'value' => ($model->created_on !== "0000-00-00 00:00:00" ? $model->created_on : "Niet beschikbaar")],
+        ['label' => 'modified_on', 'value' => ($model->created_on !== "0000-00-00 00:00:00" ? $model->created_on : "Niet beschikbaar")],
+        ['label' => 'Bestand', 'value' => $button, 'type' => 'raw'],
+        ['label' => 'published', 'label' => 'Gepubliceerd', 'value' => $model->published ? "Ja" : "Nee"]
+    ],
 ]);
 
 //Hier moet een ext. widget voor Ecollection komen

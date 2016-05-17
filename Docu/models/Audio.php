@@ -43,11 +43,11 @@ class Audio extends \yii\db\ActiveRecord {
             'file' => 'Bestand',
         ];
     }
-
+/*
     public function getUser() {
         return $this->Belongs_to(\yii\web\User::className(), ['id' => 'user_id']);
     }
-
+*/
     public function getTags() {
         return $this->hasMany(Tag::className(), ['id' => 'tag_id'])
                         ->viaTable('tbl_audio_tag', ['audio_id' => 'id']);
