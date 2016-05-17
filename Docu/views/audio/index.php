@@ -3,10 +3,9 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\data\Pagination;
-
+use yii\widgets\Menu;
 $this->title = 'Audio';
 $this->params['breadcrumbs'][] = $this->title;
-
 
 echo Menu::widget([
     'items' => [

@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-
+use yii\widgets\Menu;
 /* @var $this yii\web\View */
 /* @var $model app\models\User */
 
@@ -9,11 +9,12 @@ $this->title = 'Maak Gebruiker aan';
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
-$this->params['menu'][] = [
+echo Menu::widget([
+    'items' =>[
    	['label'=>'Acties','visible'=>Yii::$app->user->getIdentity('moderator')],
 	['label'=>'Lijst van gebruikers','url'=>['index'],'icon'=>'list','visible'=>Yii::$app->user->getIdentity('moderator')],
 	['label'=>'Beheer gebruikers','url'=>['admin'],'icon'=>'list-alt','visible'=>Yii::$app->user->getIdentity('admin')],
-];
+]]);
 
 ?>
 <div class="user-create">

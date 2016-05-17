@@ -3,10 +3,6 @@
 namespace app\models;
 
 use Yii;
-use yii\base\NotSupportedException;
-use yii\db\ActiveRecord;
-use yii\base\Security;
-use yii\web\IdentityInterface;
 
 
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface{
@@ -28,7 +24,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface{
                 ['repeat_password', 'compare', 'compareAttribute'=>'password', 'skipOnEmpty' => false, 'message'=>"Passwords don't match"],
                 // The following rule is used by search().
                 // Please remove those attributes that should not be searched.
-                [['id', 'username', 'email'], 'safe', 'on' => 'search']
+                //[['id', 'username', 'email'], 'safe', 'on' => 'search']
             ];
         } else {
             return [
@@ -38,7 +34,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface{
                 ['repeat_password', 'compare', 'compareAttribute'=>'password', 'skipOnEmpty' => false, 'message'=>"Passwords don't match"],
                 // The following rule is used by search().
                 // Please remove those attributes that should not be searched.
-                [['id', 'username', 'email'], 'safe', 'on' => 'search']
+               // [['id', 'username', 'email'], 'safe', 'on' => 'search']
             ];
         }
     }

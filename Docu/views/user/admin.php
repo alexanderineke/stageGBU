@@ -1,16 +1,18 @@
 <?php
 
 use yii\helpers\Html;
+use yii\widgets\GridView;
+use yii\widgets\Menu;
 
 $this->title = 'Beheer Gebruikers';
 $this->params['breadcrumbs'][] = ['label' => 'User', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
-$this->params['menu'][] = [
+echo Menu::widget([
     ['label' => 'Acties', 'visible' => Yii::$app->user->getIdentity('moderator')],
     ['label' => 'Lijst van gebruikers', 'icon' => 'list', 'url' => ['index'], 'visible' => Yii::$app->user->getIdentity('moderator')],
     ['label' => 'Maak gebruiker aan', 'icon' => 'file', 'url' => ['create'], 'visible' => Yii::$app->user->getIdentity('moderator')],
- ];
+ ]);
 
 Yii::$app->clientScript->registerScript('search', "
 $('.search-button').click(function(){
