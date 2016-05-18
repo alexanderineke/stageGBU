@@ -317,12 +317,12 @@ class AudioController extends Controller {
     }
 
     public function actionAdmin() {
-        $model = new Audio('search');
-        $model->unsetAttributes(); // Bestaat niet!
+        $model = new Audio();
+       // $model->unsetAttributes(); // Bestaat niet!
         if (isset($_GET['Audio'])) {
             $model->attributes = $_GET['Audio'];
         }
-        $this - render('admin', [
+        return $this -> render('admin', [
                     'model' => $model,
         ]);
     }
