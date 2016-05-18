@@ -4,12 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\widgets\Menu;
 use app\models\User;
+use yii\bootstrap\Button;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Audio */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Audioen', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Audiobestanden', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 echo Menu::widget([
@@ -18,7 +19,7 @@ echo Menu::widget([
         ['label' => 'Lijst van audio bestanden', 'url' => ['index'], 'icon' => 'list', 'visible' => Yii::$app->user->getIdentity('moderator')],
         ['label' => 'Maak audio bestanden aan', 'url' => ['create'], 'icon' => 'file', 'visible' => Yii::$app->user->getIdentity('user')],
         ['label' => 'Bewerk audio bestanden', 'url' => ['update', 'id' => $model->id], 'icon' => 'pencil', 'visible' => Yii::$app->user->getIdentity('moderator')],
-        ['label' => 'Verwijder audio bestanden', 'url' => '#', 'icon' => 'trash', 'linkOptions' => ['submit' => ['delete', 'id' => $model->id]], 'confirm' => 'Weet je zeker dat je dit audio bestand wilt verwijderen?'],
+        ['label' => 'Verwijder audio bestand', 'url' => '#', 'icon' => 'trash', 'linkOptions' => ['submit' => ['delete', 'id' => $model->id]], 'confirm' => 'Weet je zeker dat je dit audio bestand wilt verwijderen?'],
         ['label' => 'Beheer audio bestanden', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::$app->user->getIdentity('admin')],
     ],
 ]);
@@ -60,8 +61,8 @@ echo DetailView::widget([
         'year',
         ['label' => 'owner', 'value' => !empty($model->owner) ? $model->owner : "Niet opgegeven"],
         ['label' => 'created_on', 'value' => ($model->created_on !== "0000-00-00 00:00:00" ? $model->created_on : "Niet beschikbaar")],
-        ['label' => 'modified_on', 'value' => ($model->created_on !== "0000-00-00 00:00:00" ? $model->created_on : "Niet beschikbaar")],
-        ['label' => 'Bestand', 'value' => $button, 'type' => 'raw'],
+        ['label' => 'modified_on', 'value' => ($model->modified_on !== "0000-00-00 00:00:00" ? $model->modified_on : "Niet beschikbaar")],
+        ['label' => 'Bestand', 'value' => $button, 'format' => 'raw'],
         ['label' => 'published', 'label' => 'Gepubliceerd', 'value' => $model->published ? "Ja" : "Nee"]
     ],
 ]);

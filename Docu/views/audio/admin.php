@@ -44,11 +44,10 @@ $('.search-form form').submit(function(){
     'id' => 'audio-grid',
     'dataProvider' => $model->search(),
     'columns' => [
-        ['label' => 'Titel', 'value' => 'title',
-         'filter'=> Html::activeInput('text', $model, 'title', ['placeholder'=>'Zoek op titel...']) 
-        ],
-        ['label' => 'Aanmaakdatum', 'value' => 'created_on',],
-        ['label' => 'Laatste wijzigingsdatum', 'value' => 'modified_on',],
+        'title',
+        // 'filter'=> Html::activeInput('text', $model, 'title', ['placeholder'=>'Zoek op titel...']) 
+        'created_on',
+        'modified_on',
         ['class' => 'yii\grid\ActionColumn'],
        // ['class' => 'btn btn-default'],
     ],
