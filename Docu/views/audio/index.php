@@ -35,13 +35,14 @@ GridView::widget([
     'dataProvider' => $model->search(),
     'columns' => [
         ['header' => 'Naam audiobestand', 'value' => function($data) {
-                return fileLocation($data->id, $data->title);
-            }],
+                $file = fileLocation($data->id, $data->title);
+                return Html::a(Html::encode($file), 'index.php?r=audio%2Fview&id=' . $data->id);
+            }, 'format' => 'raw'],
         ['header' => 'Tags', 'value' => function($data) {
                 return objectToTagString($data->tags);
             }],
         ['header' => 'Jaar', 'value' => 'year'],
-        ['class' => 'yii\grid\ActionColumn'],
+      //  ['class' => 'yii\grid\ActionColumn'],
     ],
     'pager' => [
         'prevPageLabel' => '&laquo;',

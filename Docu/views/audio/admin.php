@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\grid\GridView;
 
 $this->title = 'Beheer';
 $this->params['breadcrumbs'][] = ['label' => 'Audio', 'url' => ['index']];
@@ -42,14 +43,14 @@ $('.search-form form').submit(function(){
 <?= GridView::widget([
     'id' => 'audio-grid',
     'dataProvider' => $model->search(),
-    'filter' => $model,
     'columns' => [
-        ['name' => 'title',
+        ['label' => 'Titel', 'value' => 'title',
          'filter'=> Html::activeInput('text', $model, 'title', ['placeholder'=>'Zoek op titel...']) 
         ],
-        ['name' => 'created_on'],
-        ['name' => 'modified_on'],
-        ['class' => 'btn btn-default'],
+        ['label' => 'Aanmaakdatum', 'value' => 'created_on',],
+        ['label' => 'Laatste wijzigingsdatum', 'value' => 'modified_on',],
+        ['class' => 'yii\grid\ActionColumn'],
+       // ['class' => 'btn btn-default'],
     ],
 ])
 ?>
