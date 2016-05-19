@@ -58,6 +58,9 @@ foreach ($model->tags as $i => $tag) {
     $tags .= $tag->name . ', ';
     $tags = substr($tags, 0, -2);
 }
+
+$user = User::findIdentity($model->id);
+
 ?>
 
 <h1><?php echo $model->title; ?></h1>
