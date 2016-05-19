@@ -31,10 +31,6 @@ class Document extends ActiveRecord {
         return implode(', ', array_values(Html::listData($this->tags, 'id', 'name')));
     }
 
-    public static function model($className = __CLASS__) {
-        return parent::model($className);
-    }
-
     public static function tableName() {
         return '{{%document}}';
     }
@@ -60,7 +56,7 @@ class Document extends ActiveRecord {
     }
 
     public function getDocumentTags() {
-        return $this->hasMany(DocumentTag::className(), ['id' => 'document_id']);
+       return  $this->hasMany(DocumentTag::className(), ['id' => 'document_id']);
     }
 
     public function getDocuments() {
@@ -105,7 +101,7 @@ class Document extends ActiveRecord {
 
         return $dataProvider;
     }
-
+/*
     public function searchDocuments($model, $query) {
         $q = Document::find();
 
@@ -126,18 +122,18 @@ class Document extends ActiveRecord {
         }
 
         $q
-                ->orWhere(['like', 'description', $query])
-                ->orWhere(['like', 'year', $query])
-                ->orWhere(['like', 'title', $query])
-                ->orWhere(['like', 'tags.slug', $query])
-                ->andFilterWhere(['like', 'title', $this->title])
-                ->andFilterWhere(['like', 'description', $this->description])
-                ->andFilterWhere(['like', 'tags.slug', $this->year])
-                ->andFilterWhere(['like', 'year', $this->owner])
-                ->andFilterWhere(['like', 'tags.state', $this->published])
+                ->andFilterWhere(['or', ['like', 'description', $query],
+                    ['like', 'year', $query],
+                    ['like', 'title', $query],
+                    ['like', 'tags.slug', $query]])
+                ->andFilterWhere([['like', 'title', $this->title],
+                    ['like', 'description', $this->description],
+                    ['like', 'tags.slug', $this->year],
+                    ['like', 'year', $this->owner],
+                    ['like', 'tags.state', $this->published]])
                 ->groupBy('t.id');
 
         return $dataProvider;
     }
-
+*/
 }

@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\widgets\Menu;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\Search */
@@ -10,11 +11,13 @@ use yii\grid\GridView;
 $this->title = 'Documents';
 $this->params['breadcrumbs'][] = $this->title;
 
-$this->params['menu'][] = [
-    ['label' => 'Acties', 'visible' => Yii::$app->user->getIdentity('moderator')],
+echo Menu::widget([
+    'items' => [
+        ['label' => 'Acties', 'visible' => Yii::$app->user->getIdentity('moderator')],
     ['label' => 'Maak Documenten aan', 'icon' => 'file', 'url' => ['create'], 'visible' => Yii::$app->user->getIdentity('user')],
     ['label' => 'Beheer documenten', 'icon' => 'file', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::$app->user->getIdentity('admin')],
-];
+    ],
+]);
 
 function objectToTagString($tags) {
     $string = [];
@@ -24,7 +27,7 @@ function objectToTagString($tags) {
 }
 
 function fileLocation($id, $title) {
-    return Html::a($title, ['document/view', 'id' => $id]);
+    return Html::a($title, ['document/view', 'id' => $id], $options = []);
 }
 ?>
 
@@ -32,15 +35,17 @@ function fileLocation($id, $title) {
 
 <?=
 GridView::widget([
-    'id' => 'document-grid',
-    'type' => 'striped bordered',
     'dataProvider' => $model->search(),
     'columns' => [
-        ['name' => 'title', 'header' => 'Naam document', 'value' => 'fileLocation($data->id, $data->title)', 'type' => 'raw'],
-        ['name' => 'tag_search', 'header' => 'Tags', 'value' => 'objectToTagString($data->tags)'],
-        ['name' => 'year', 'header' => 'Jaar'],
+        ['header' => 'Naam document', 'value' => function($data) {
+                $file = fileLocation($data->id, $data->title);
+                return Html::a(($file), 'index.php?r=document%2Fview&id=' . $data->id);
+            }, 'format' => 'raw'],
+        ['header' => 'Steekwoorden', 'value' => function($data) {
+                return objectToTagString($data->tags);
+            }],
+        ['header' => 'Jaar', 'value' => 'year'],
     ],
-    'enableHistory' => true,
     'pager' => [
         'prevPageLabel' => '&laquo;',
         'nextPageLabel' => '&raquo;',

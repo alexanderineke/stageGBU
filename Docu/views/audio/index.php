@@ -25,7 +25,7 @@ function objectToTagString($tags) {
 }
 
 function fileLocation($id, $title) {
-    return Yii::getAlias($title, ['audio/view', 'id' => $id], $options = []);
+    return Yii::getAlias($title, ['audio/view', 'id' => $id]);
 }
 ?>
 
@@ -43,7 +43,7 @@ GridView::widget([
                 return objectToTagString($data->tags);
             }],
         ['header' => 'Jaar', 'value' => 'year'],
-      //  ['class' => 'yii\grid\ActionColumn'],
+    //  ['class' => 'yii\grid\ActionColumn'],
     ],
     'pager' => [
         'prevPageLabel' => '&laquo;',

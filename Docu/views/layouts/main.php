@@ -44,6 +44,7 @@ AppAsset::register($this);
             ['label' => 'Gebruikers', 'url' => ['/user'], 'visible'=>Yii::$app->user->getIdentity('user')],
             ['label' => 'Afbeeldingen', 'url' => ['/image'], 'visible'=>Yii::$app->user->getIdentity('moderator')],
             ['label' => 'Audio', 'url' => ['/audio'], 'visible'=>Yii::$app->user->getIdentity('user')],
+            ['label' => 'Documenten', 'url' => ['/document'], 'visible'=>Yii::$app->user->getIdentity('user')],
             ['label' => 'Inloggen', 'url' => ['/site/login'], 'visible'=>Yii::$app->user->isGuest],
              Yii::$app->user->isGuest ?
             ['label' => 'Uitloggen', 'url' => ['/site/login']] :

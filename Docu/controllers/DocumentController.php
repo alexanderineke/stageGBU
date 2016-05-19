@@ -13,13 +13,13 @@ use app\models\DocumentTemp;
 use app\models\DocumentFile;
 use app\models\Tag;
 use app\models\DocumentTag;
+use yii\data\ActiveDataProvider;
 
 /**
  * DocumentController implements the CRUD actions for Document model.
  */
 class DocumentController extends Controller {
 
-    public $layout = '/layouts/column2';
     protected $tags = [];
 
     public function behaviors() {
@@ -31,18 +31,18 @@ class DocumentController extends Controller {
                     [
                         'allow' => ['true'],
                         'actions' => ['index', 'view'],
-                        'users' => ['*'],
+                        'roles' => ['?'],
                     ],
                     ['allow' => ['true'],
-                        'actions' => ['update', 'create', 'process', 'upload', 'batchupload'],
+                        'actions' => ['index', 'view', 'update', 'create', 'process', 'upload', 'batchupload'],
                         'roles' => ['moderator'],
                     ],
                     ['allow' => ['true'],
-                        'actions' => ['admin', 'delete', 'batchdocs'],
-                        'roles' => ['admin'],
+                        'actions' => ['index', 'view', 'update', 'create', 'process', 'upload', 'batchupload', 'admin', 'delete', 'batchdocs'],
+                        'roles' => ['@'],
                     ],
-                    ['deny' => ['true'],
-                        'users' => ['*'],
+                    ['allow' => ['false'],
+                        'roles' => ['?'],
                     ],
                 ],
             ],
@@ -289,20 +289,23 @@ class DocumentController extends Controller {
     }
 
     public function actionIndex() {
-        if (!Yii::$app->user->checkAcces('moderator')) {
+        if (!Yii::$app->user->getIdentity('moderator')) {
             $condition = 'published=1';
         } else {
             $condition = '';
         }
 
         $dataProvider = new ActiveDataProvider([
-            'criteria' => [
-                'condition' => $condition,
-                'order' => 'title ASC',
-            ],
+            'query' => Document::find()
+                ->where($condition)
+                ->orderBy('title ASC'),
+      //      'criteria' => [
+       //         'condition' => $condition,
+       //         'order' => 'title ASC',
+       //     ],
         ]);
 
-        $this->render('index', [
+        return $this->render('index', [
             'model' => new Document(),
             'dataProvider' => $dataProvider,
         ]);
