@@ -1,0 +1,15 @@
+{
+    "name": "gbu/dcu",
+    "description": "Website van documentatiecentrum urk",
+    "authors": [
+        {
+            "name": "Johan Post",
+            "email": "jpost@gbu.nl"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+		"smalot/pdfparser": "*",
+		"ruudk/twitter-oauth": "dev-master"
+    }
+}

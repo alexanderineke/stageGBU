@@ -1,0 +1,16 @@
+uploads/*
+assets/*
+protected/runtime/*
+protected/config/*
+!.gitignore
+.htaccess
+/.idea/*
+/coverage/*
+/samples/*
+/vendor/*
+/test*
+/xdebug/*
+/composer.phar
+/composer
+debug*
+yii/*
