@@ -53,6 +53,7 @@ GridView::widget([
     'id' => 'document-grid',
     'dataProvider' => $model->search(),
     'columns' => [
+        ['class' => 'yii\grid\SerialColumn'],
         'title',
         //    'filter' => Html::activeInput('text', $model, 'title', ['placeholder' => 'Zoek op titel...'])
         'created_on',

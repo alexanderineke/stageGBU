@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 $this->title = 'Beheer';
-$this->params['breadcrumbs'][] = ['label' => 'Audio', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Audiobestanden', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 $this->params['menu'][] = [
@@ -13,18 +13,18 @@ $this->params['menu'][] = [
     ['label' => 'Maak audio bestanden aan', 'icon' => 'file', 'url' => ['create'], 'visible' => Yii::$app->user->getIdentity('user')],
 ];
 /*
-Yii::app()->clientScript->registerScript('search', "
-$('.search-button').click(function(){
-	$('.search-form').toggle();
-	return false;
-});
-$('.search-form form').submit(function(){
-	$.fn.yiiGridView.update('audio-grid', {
-		data: $(this).serialize()
-	});
-	return false;
-});
-");
+  Yii::app()->clientScript->registerScript('search', "
+  $('.search-button').click(function(){
+  $('.search-form').toggle();
+  return false;
+  });
+  $('.search-form form').submit(function(){
+  $.fn.yiiGridView.update('audio-grid', {
+  data: $(this).serialize()
+  });
+  return false;
+  });
+  ");
  */
 ?>
 
@@ -39,17 +39,26 @@ $('.search-form form').submit(function(){
 <div class="search-form" style="display: none">
     <?php $this->render('_search', ['model' => $model], true); ?>
 </div>
-
-<?= GridView::widget([
+<?php
+echo Html::activeInput('text', $model, 'title');
+?>
+<?=
+GridView::widget([
     'id' => 'audio-grid',
     'dataProvider' => $model->search(),
     'columns' => [
+        ['class' => 'yii\grid\SerialColumn'],
         'title',
-        // 'filter'=> Html::activeInput('text', $model, 'title', ['placeholder'=>'Zoek op titel...']) 
-        'created_on',
-        'modified_on',
-        ['class' => 'yii\grid\ActionColumn'],
-       // ['class' => 'btn btn-default'],
-    ],
-])
-?>
+        [
+            'format' => 'html',
+            'value' => function($model) {
+                return Html::activeInput('text', $model, 'title', ['placeholder' => 'Zoek op titel...']);
+            }
+                ],
+                'created_on',
+                'modified_on',
+                ['class' => 'yii\grid\ActionColumn'],
+            // ['class' => 'btn btn-default'],
+            ],
+        ])
+        ?>

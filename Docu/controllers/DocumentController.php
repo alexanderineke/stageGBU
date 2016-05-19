@@ -57,7 +57,7 @@ class DocumentController extends Controller {
 
     public function actionUpload() {
         $model = new DocumentTemp;
-        $uploadedfile = UploadedFile::getInstanceByName('Document[file]');
+        $uploadedFile = UploadedFile::getInstanceByName('Document[file]');
         $rnd = rand(0, 9999);
         $folderName = date("d M Y");
         $fileName = "{$rnd}_{$uploadedFile}";
