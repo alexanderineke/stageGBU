@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\widgets\Menu;
+use app\models\User;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Document */
@@ -32,30 +33,32 @@ foreach ($model->tags as $i => $tag) {
     $tags .= $tag->name . ', ';
     $tags = substr($tags, 0, -2);
 }
+
+$user = User::findIdentity($model->id);
 ?>
 
 <?php
+
 if (isset($model->documents[0]->location) && isset($model->documents[0]->file) && isset($model->documents[0]->format)) {
     $button = Html::a('Geef document weer', ['uploads/documenten/' . $model->documents[0]->location . '/' . $model->documents[0]->file . $model->documents[0]->format], ['class' => 'btn btn-primary btn-xs', 'target' => '_blank']);
 } else {
     $button = '<span class="null">Niet opgegeven</span>';
-}
+}  
 ?>
 
 <?php
 echo DetailView::widget([
     'model' => $model,
-    'data' => $model,
     'attributes' => [
-        ['label' => 'Uploader', 'value' => $model->user->username],
+        ['label' => 'Uploader', 'value' => $user->username],
         'description:html',
         ['label' => 'Steekwoorden', 'value' => $tags],
         'year',
-        ['name' => 'owner', 'value' => !empty($model->owner) ? $model->owner : "Niet opgegeven"],
-        ['name' => 'created_on', 'value' => ($model->created_on !== "0000-00-00 00:00:00" ? $model->created_on : "Niet beschikbaar")],
-        ['name' => 'modified_on', 'value' => ($model->created_on !== "0000-00-00 00:00:00" ? $model->created_on : "Niet beschikbaar")],
-        ['label' => 'Bestand', 'value' => $button, 'type' => 'raw'],
-        ['name' => 'published', 'label' => 'Gepubliceerd', 'value' => $model->published ? "Ja" : "Nee"]
+        ['label' => 'Eigenaar', 'value' => !empty($model->owner) ? $model->owner : "Niet opgegeven"],
+        ['label' => 'Aanmaakdatum', 'value' => ($model->created_on !== "0000-00-00 00:00:00" ? $model->created_on : "Niet beschikbaar")],
+        ['label' => 'Laatste wijzigingsdatum', 'value' => ($model->created_on !== "0000-00-00 00:00:00" ? $model->created_on : "Niet beschikbaar")],
+        ['label' => 'Bestand', 'value' => $button, 'format' => 'raw'],
+        ['label' => 'Gepubliceerd', 'label' => 'Gepubliceerd', 'value' => $model->published ? "Ja" : "Nee"]
     ],
 ]);
 

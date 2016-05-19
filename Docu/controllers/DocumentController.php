@@ -297,17 +297,17 @@ class DocumentController extends Controller {
 
         $dataProvider = new ActiveDataProvider([
             'query' => Document::find()
-                ->where($condition)
-                ->orderBy('title ASC'),
-      //      'criteria' => [
-       //         'condition' => $condition,
-       //         'order' => 'title ASC',
-       //     ],
+                    ->where($condition)
+                    ->orderBy('title ASC'),
+                //      'criteria' => [
+                //         'condition' => $condition,
+                //         'order' => 'title ASC',
+                //     ],
         ]);
 
         return $this->render('index', [
-            'model' => new Document(),
-            'dataProvider' => $dataProvider,
+                    'model' => new Document(),
+                    'dataProvider' => $dataProvider,
         ]);
 
         /*
@@ -322,14 +322,14 @@ class DocumentController extends Controller {
     }
 
     public function actionAdmin() {
-        $model = new Document('search');
-        $model->unsetAttributes(); // Functie bestaat niet, dus moet naar gekeken worden
+        $model = new Document();
+        // $model->unsetAttributes(); // Functie bestaat niet, dus moet naar gekeken worden
         if (isset($_GET['Document'])) {
             $model->attributes = $_GET['Document'];
         }
 
-        $this->render('admin', [
-            'model' => $model,
+        return $this->render('admin', [
+                    'model' => $model,
         ]);
     }
 
@@ -401,8 +401,7 @@ class DocumentController extends Controller {
                         }
                     }
                 }
-            }
-            else {
+            } else {
                 $remainingTags = $newTags;
             }
 
@@ -411,8 +410,7 @@ class DocumentController extends Controller {
                     foreach ($addedTags as $i) {
                         $tags[] = $i;
                     }
-                } 
-                else {
+                } else {
                     $errorOccured = true;
                 }
             }
@@ -425,17 +423,17 @@ class DocumentController extends Controller {
         }
         $this->tags = $tags;
 
-        if (sizeof($tags)){
+        if (sizeof($tags)) {
             return true;
         }
     }
+
     protected function saveTags($document_id) {
         $errorOccured = false;
 
-    if (!(new DocumentTag)->add($document_id, array_unique($this->tags))){
-    $errorOccured = true;
-    
-    }
+        if (!(new DocumentTag)->add($document_id, array_unique($this->tags))) {
+            $errorOccured = true;
+        }
         $prevTags = explode(',', $_POST['Document']['tags_previous']);
         $prevTagsArr = [];
         foreach ($prevTags as $i) {
@@ -448,10 +446,11 @@ class DocumentController extends Controller {
                 $errorOccured = true;
             }
         }
-        if (!$errorOccured){
+        if (!$errorOccured) {
             return true;
         }
     }
+
     public function getDocumentContent($model, $file, $existing = false) {
         if ($existing) {
             $file = Yii::getAlias('@app' . '/../uploads/documenten/' . $file['location'] . '/' . $file['file'] . $file['format']);

@@ -8,7 +8,7 @@ use yii\widgets\ActiveForm;
 
     <?php
     $form = ActiveForm::begin([
-                'action' => Yii::$app->createUrl($this->route),
+                'action' => ['index'],
                 'method' => 'get',
     ]);
     ?>

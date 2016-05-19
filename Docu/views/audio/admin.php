@@ -35,7 +35,7 @@ $('.search-form form').submit(function(){
     of <b>=</b>) gebruiken in uw zoekopdracht.
 </p>
 
-<?= Html::a('Geavanceerd zoeken', '#', ['class' => 'btn btn-primary']) ?>
+<?= Html::a('Geavanceerd zoeken', '#', ['class' => 'btn btn-default']) ?>
 <div class="search-form" style="display: none">
     <?php $this->render('_search', ['model' => $model], true); ?>
 </div>

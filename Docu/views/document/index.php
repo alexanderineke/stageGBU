@@ -8,14 +8,14 @@ use yii\widgets\Menu;
 /* @var $searchModel app\models\Search */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Documents';
+$this->title = 'Documenten';
 $this->params['breadcrumbs'][] = $this->title;
 
 echo Menu::widget([
     'items' => [
         ['label' => 'Acties', 'visible' => Yii::$app->user->getIdentity('moderator')],
-    ['label' => 'Maak Documenten aan', 'icon' => 'file', 'url' => ['create'], 'visible' => Yii::$app->user->getIdentity('user')],
-    ['label' => 'Beheer documenten', 'icon' => 'file', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::$app->user->getIdentity('admin')],
+        ['label' => 'Maak Documenten aan', 'icon' => 'file', 'url' => ['create'], 'visible' => Yii::$app->user->getIdentity('user')],
+        ['label' => 'Beheer documenten', 'icon' => 'file', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::$app->user->getIdentity('admin')],
     ],
 ]);
 

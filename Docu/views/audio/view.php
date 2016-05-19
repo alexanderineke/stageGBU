@@ -85,11 +85,11 @@ echo DetailView::widget([
         'description:html',
         ['label' => 'Steekwoorden', 'value' => $tags],
         'year',
-        ['label' => 'owner', 'value' => !empty($model->owner) ? $model->owner : "Niet opgegeven"],
-        ['label' => 'created_on', 'value' => ($model->created_on !== "0000-00-00 00:00:00" ? $model->created_on : "Niet beschikbaar")],
-        ['label' => 'modified_on', 'value' => ($model->modified_on !== "0000-00-00 00:00:00" ? $model->modified_on : "Niet beschikbaar")],
+        ['label' => 'Eigenaar', 'value' => !empty($model->owner) ? $model->owner : "Niet opgegeven"],
+        ['label' => 'Aanmaakdatum', 'value' => ($model->created_on !== "0000-00-00 00:00:00" ? $model->created_on : "Niet beschikbaar")],
+        ['label' => 'Laatste wijzigingsdatum', 'value' => ($model->modified_on !== "0000-00-00 00:00:00" ? $model->modified_on : "Niet beschikbaar")],
         ['label' => 'Bestand', 'value' => $button, 'format' => 'raw'],
-        ['label' => 'published', 'label' => 'Gepubliceerd', 'value' => $model->published ? "Ja" : "Nee"]
+        ['label' => 'Gepubliceerd', 'label' => 'Gepubliceerd', 'value' => $model->published ? "Ja" : "Nee"]
     ],
 ]);
 
