@@ -1,22 +1,16 @@
 <?php
+$this->breadcrumbs=array(
+    'Audio',
+);
 
-use yii\helpers\Html;
-use yii\grid\GridView;
-use yii\widgets\Menu;
+$this->menu=array(
+    array('label'=>'Acties','visible'=>Yii::app()->user->checkAccess('moderator')),
+    array('label'=>'Maak audio bestand aan','url'=>array('create'),'icon'=>'file','visible'=>Yii::app()->user->checkAccess('user')),
+    array('label'=>'Beheer audio bestand','url'=>array('admin'),'icon'=>'list-alt','visible'=>Yii::app()->user->checkAccess('admin')),
+);
 
-$this->title = 'Audio';
-$this->params['breadcrumbs'][] = $this->title;
-
-echo Menu::widget([
-    'items' => [
-        ['label' => 'Acties', 'visible' => Yii::$app->user->getIdentity('moderator')],
-        ['label' => 'Maak audio bestanden aan', 'url' => ['create'], 'icon' => 'file', 'visible' => Yii::$app->user->getIdentity('user')],
-        ['label' => 'Beheer audio bestanden', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::$app->user->getIdentity('admin')],
-    ],
-]);
-
-function objectToTagString($tags) {
-    $string = [];
+function objectToTagString($tags) { //Vertaalt de verschillende tags naar 1 string met alle tags.
+    $string = array();
     foreach ($tags as $tag) {
         $string[] = $tag["name"];
     }
@@ -24,28 +18,25 @@ function objectToTagString($tags) {
 }
 
 function fileLocation($id, $title) {
-    return Yii::getAlias($title, ['audio/view', 'id' => $id], $options = []);
+    return CHtml::link($title,array('audio/view', 'id'=>$id));;
 }
+
+
 ?>
 
-<h1><?= Html::encode($this->title); ?></h1>
+<h1>Audio</h1>
 
-<?=
-GridView::widget([
-    'dataProvider' => $model->search(),
-    'columns' => [
-        ['header' => 'Naam audiobestand', 'value' => function($data) {
-               return Html::a(Html::encode(fileLocation($data->id, $data->title)),'index.php?r=audio%2Fview&id='.$data->id);
-            }, 'format' => 'raw'],
-        ['header' => 'Tags', 'value' => function($data) {
-                return objectToTagString($data->tags);
-            }],
-        ['header' => 'Jaar', 'value' => 'year'],
-      //  ['class' => 'yii\grid\ActionColumn'],
-    ],
-    'pager' => [
-        'prevPageLabel' => '&laquo;',
-        'nextPageLabel' => '&raquo;',
-    ],
-]);
-?>
+<?php
+    $this->widget('bootstrap.widgets.TbGridView', array(
+            'id'=>'audio-grid',
+            'type'=>'striped bordered',
+            'dataProvider'=>$model->search(),
+            'columns'=>array(
+                 array('name'=>'title', 'header'=>'Naam audiobestand', 'value'=>'fileLocation($data->id, $data->title)', 'type'=>'raw'),
+                 array('name'=>'tag_search', 'header'=>'Tags', 'value'=>'objectToTagString($data->tags)'), //Omdat een result meerdere tags kan hebben moeten we deze verwerken.
+                 array('name'=>'year', 'header'=>'Jaar'),
+             ),
+            'enableHistory'=>true,
+            'pager' => array('class' => 'bootstrap.widgets.TbPager', 'prevPageLabel' => '&laquo;', 'nextPageLabel' => '&raquo;'),
+        ));
+ ?>

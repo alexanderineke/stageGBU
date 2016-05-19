@@ -7,6 +7,7 @@ use yii\widgets\Menu;
 $this->title = 'Audiobestanden';
 $this->params['breadcrumbs'][] = $this->title;
 
+
 echo Menu::widget([
     'items' => [
         ['label' => 'Acties', 'visible' => Yii::$app->user->getIdentity('moderator')],

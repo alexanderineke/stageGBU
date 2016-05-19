@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\widgets\Menu;
 
 $this->title = 'Aanmaken';
 $this->params['breadcrumbs'][] = ['label' => 'Documneten', 'url' => ['index']];
