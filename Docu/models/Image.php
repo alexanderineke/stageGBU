@@ -96,7 +96,6 @@ class Image extends \yii\db\ActiveRecord {
 
     public function generateAuthKey() {
         return; // $this->auth_key = Security::generateRandomKey();
-        ====== = >>>>>>> origin/master
     }
 
     public function getUser() {
