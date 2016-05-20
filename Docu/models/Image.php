@@ -103,7 +103,7 @@ class Image extends \yii\db\ActiveRecord {
     }
 
     public function getTags() {
-        return $this->hasMany(Tag::className(), ['id' => 'user_id'])
+        return $this->hasMany(Tag::className(), ['id' => 'tag_id'])
                         ->viaTable('tbl_image_tag', ['image_id' => 'id']);
     }
 
