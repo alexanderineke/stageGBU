@@ -54,16 +54,16 @@ class ImageController extends Controller {
             ],
         ];
     }
-  
+
     public function actionView($id) {
         return $this->render('view', [
-                    'model' => $this->findModel($id),
+                    'model' => $this->loadModel($id),
         ]);
     }
 
     public function actionUpload() {
         $model = new ImageTemp;
-        $uploadedFile = UploadedFile::getInstanceByName('Image[file]');
+        $uploadedfile = UploadedFile::getInstanceByName('Image[file]');
         $rnd = rand(0, 9999);
         $folderName = date("d M Y");
         $fileName = "{$rnd}_{$uploadedFile}";
@@ -261,20 +261,21 @@ class ImageController extends Controller {
     }
 
     public function actionIndex() {
-      // if (!Yii::$app->user->getIdentity('moderator')) {
-      //      $condition = 'published=1';
-      //  } else {
+        if (!Yii::$app->user->getIdentity('moderator')) {
+            $condition = 'published=1';
+        } else {
             $condition = '';
-      //  }
-       $dataProvider = new ActiveDataProvider([
-            'query' => Image::find()->
-            where($condition)       
-    ]); 
-        return $this->render('index', [
-            'model' => new Image(),
-            'dataProvider' => $dataProvider,
-        ]);
-    
+            //  }
+            $dataProvider = new ActiveDataProvider([
+                'query' => Image::find()->
+                        where($condition)
+            ]);
+            return $this->render('index', [
+
+                        'model' => new Image(),
+                        'dataProvider' => $dataProvider,
+            ]);
+        }
         /*
           $searchModel = new Search();
           $dataProvider = $searchModel->search(Yii::$app->request->queryParams);

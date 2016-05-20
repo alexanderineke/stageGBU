@@ -154,10 +154,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface{
     {
         return;// $this->auth_key;
     }
-public function generateAuthKey()
-    {
-        return;// $this->auth_key = Security::generateRandomKey();
-    }
+
     public function validateAuthKey($authKey)
     {
         return $this->getAuthKey() === $authKey;
@@ -172,7 +169,10 @@ public function generateAuthKey()
      $this->password = Yii::$app->getSecurity()->generatePasswordHash($password);
     }
 
-    
+    public function generateAuthKey()
+    {
+        return;// $this->auth_key = Security::generateRandomKey();
+    }
     public function getDocuments() {
         return $this->hasMany(Document::className(), ['user_id' => 'id']);
     }
