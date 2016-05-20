@@ -11,9 +11,9 @@ $this->title = 'Afbeeldingen';
 $this->params['breadcrumbs'][] = $this->title;
         
 $this->params['menu'][] = [
-        ['label' => 'Acties', 'visible' => Yii::app()->user->getIdentity('moderator')],
-        ['label' => 'Maak afbeeldingen aan', 'url' => ['create'], 'icon' => 'file', 'visible' => Yii::app()->user->getIdentity('user')],
-        ['label' => 'Beheer afbeeldingen', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::app()->user->getIdentity('admin')],
+        ['label' => 'Acties', 'visible' => Yii::$app->user->getIdentity('moderator')],
+        ['label' => 'Maak afbeeldingen aan', 'url' => ['create'], 'icon' => 'file', 'visible' => Yii::$app->user->getIdentity('user')],
+        ['label' => 'Beheer afbeeldingen', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::$app->user->getIdentity('admin')],
    ];
 ?>
 <div class="image-index">
@@ -28,17 +28,17 @@ $this->params['menu'][] = [
     <?=
     GridView::widget([
         'id' => 'image-grid',
-        'type' => 'striped bordered',
+       // 'type' => 'striped bordered',
         'dataProvider' => $model->search(),
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            ['name' => 'images', 'type' => 'html', 'htmlOptions' => [
-                    'style' => 'width: 100px; text-align: center;',
-                ], 'header' => 'Voorbeeld', 'value' => 'CHtml::image("uploads/afbeeldingen/".$data->images[0]->location."/thumb/".$data->images[0]->file.$data->images[0]->format)'],
-            ['name' => 'title', 'header' => 'Titel', 'type' => 'html', 'value' => 'CHtml::link($data->title, Yii::app()->createUrl("image/view",["id"=>$data->id)])'],
+            ['label' => 'images', 'format' => 'html', //'htmlOptions' => [
+                   // 'style' => 'width: 100px; text-align: center;',
+               /*];*/  'header' => 'Voorbeeld'/*, 'value' => 'CHtml::image("uploads/afbeeldingen/".$data->images[0]->location."/thumb/".$data->images[0]->file.$data->images[0]->format)'*/],
+            ['label' => 'title', 'header' => 'Titel', 'format' => 'html',/* 'value' => 'CHtml::link($data->title, Yii::app()->createUrl("image/view",["id"=>$data->id)])'*/],
             ['class' => 'yii\grid\ActionColumn'],
         ],
-        'enableHistory' => true,
+      //  'enableHistory' => true,
         'pager' => [
             'prevPageLabel' => '&laquo;',
             'nextPageLabel' => '&raquo;',

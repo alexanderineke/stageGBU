@@ -17,10 +17,21 @@ $form = ActiveForm::begin([
 
 <?= $form->field($model, 'title')->textInput(['class' => 'span5', 'maxlength' => 64]); ?>
 
-<?= $form->field($model, 'description'); ?>
+<?= $form->field($model, 'description')->textarea(); ?>
+
 
 <?php
-
+echo \vova07\imperavi\Widget::widget([
+    'name' => 'redactor',
+    'settings' => [
+        'lang' => 'ru',
+        'minHeight' => 200,
+        'plugins' => [
+            'clips',
+            'fullscreen'
+        ]
+    ]
+]);
 //Hier moet een variant komen van ImperaviRedactorWidget
 ?>
 

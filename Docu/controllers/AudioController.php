@@ -164,7 +164,7 @@ class AudioController extends Controller {
             Yii::$app->getSession()->setFlash('filesToProcess', array());
         }
 
-        $this->render('update', [
+        return $this->render('update', [
             'model' => $model,
         ]);
     }

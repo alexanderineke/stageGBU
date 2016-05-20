@@ -18,16 +18,11 @@ use yii\web\HttpException;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 
-
-
-
-
 /**
  * ImageController implements the CRUD actions for Image model.
  */
 class ImageController extends Controller {
 
-    public $layout = '/layouts/column2';
     protected $tags = [];
 
     public function filters() {
@@ -36,20 +31,26 @@ class ImageController extends Controller {
 
     public function behaviors() {
         return [
-            ['allow',
-                'actions' => ['index', 'view'],
-                'users' => ['*'],
-            ],
-            ['allow',
-                'actions' => ['update', 'create', 'process', 'upload', 'batchupload'],
-                'roles' => ['moderator'],
-            ],
-            ['allow',
-                'actions' => ['admin', 'delete'],
-                'roles' => ['admin'],
-            ],
-            ['deny',
-                'users' => ['*'],
+            'acces' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'only' => ['index', 'view', 'update', 'create', 'process', 'upload', 'batchupload', 'admin', 'delete'],
+                'rules' => [
+                    ['allow' => true,
+                        'actions' => ['index', 'view'],
+                        'roles' => ['?'],
+                    ],
+                    ['allow' => true,
+                        'actions' => ['index', 'view', 'update', 'create', 'process', 'upload', 'batchupload'],
+                        'roles' => ['moderator'],
+                    ],
+                    ['allow' => true,
+                        'actions' => ['index', 'view', 'update', 'create', 'process', 'upload', 'batchupload', 'admin', 'delete'],
+                        'roles' => ['@'],
+                    ],
+                    ['allow' => false,
+                        'roles' => ['?'],
+                    ],
+                ],
             ],
         ];
     }
@@ -85,10 +86,9 @@ class ImageController extends Controller {
         $rnd = rand(0, 9999);
         $folderName = date("d M Y");
         $fileName = "{$rnd}_{$uploadedFile}";
-       if (!is_dir(Yii::getAlias('@app' . '/../uploads/' . $folderName))) {
-       mkdir(Yii::getAlias('@app' . '/../uploads/' . $folderName));
-       
-       }
+        if (!is_dir(Yii::getAlias('@app' . '/../uploads/' . $folderName))) {
+            mkdir(Yii::getAlias('@app' . '/../uploads/' . $folderName));
+        }
         if ($uploadedFile->saveAs(Yii::getAlias('@app' . '/../uploads/' . $folderName . '/' . $fileName))) {
             if ($id) {
                 $fileQueue = Yii::$app->user->getState('filesToProcess');
@@ -159,7 +159,7 @@ class ImageController extends Controller {
     }
 
     public function actionCreate() {
-        $model = new Image(); 
+        $model = new Image();
 
         Yii::$app->user->setState('filesToProcess', []);
 
@@ -268,16 +268,16 @@ class ImageController extends Controller {
         }
         $dataProvider = new ActiveDataProvider([
             'query' => models\User::find()->
-            where(['published'=>Yii::$app->user->identity->published])->
-            orderBy('title ASC'),       
-    ]);
-      
+                 //   where(['published' => Yii::$app->user->identity->published])->
+                    orderBy('title ASC'),
+        ]);
 
-        $this->render('index', [
+
+        return $this->render('index', [
             'model' => new Image(),
             'dataProvider' => $dataProvider,
         ]);
-   
+
         /*
           $searchModel = new Search();
           $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -287,7 +287,7 @@ class ImageController extends Controller {
           'dataProvider' => $dataProvider,
           ]);
          */
-}
+    }
 
     public function actionAdmin() {
         $model = new Image('search');
