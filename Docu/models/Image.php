@@ -61,7 +61,7 @@ class Image extends \yii\db\ActiveRecord {
         ];
     }
 
-  /*  public function search($params) {
+    public function search($params) {
         $query = Image::find();
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -85,19 +85,8 @@ class Image extends \yii\db\ActiveRecord {
                     ['like', 'published', $this->published]]);
 
         return $dataProvider;
-    }*/
-      public function getId()
-    {
-        return $this->getPrimaryKey();
     }
-    public function getAuthKey()
-    {
-        return;// $this->auth_key;
-    }
-    public function generateAuthKey()
-    {
-        return;// $this->auth_key = Security::generateRandomKey();
-    }
+
     public function getUser() {
         return $this->Belongs_to(User::className(), ['id' => 'user_id']);
     }

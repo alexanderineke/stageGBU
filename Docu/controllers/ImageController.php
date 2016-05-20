@@ -18,12 +18,16 @@ use yii\web\HttpException;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 
+
+
+
+
 /**
  * ImageController implements the CRUD actions for Image model.
  */
 class ImageController extends Controller {
 
-  public $layout = '/layouts/column2';
+    public $layout = '/layouts/column2';
     protected $tags = [];
 
     public function filters() {
@@ -49,16 +53,16 @@ class ImageController extends Controller {
             ],
         ];
     }
-  
+
     public function actionView($id) {
         return $this->render('view', [
-                    'model' => $this->findModel($id),
+                    'model' => $this->loadModel($id),
         ]);
     }
 
     public function actionUpload() {
         $model = new ImageTemp;
-        $uploadedFile = UploadedFile::getInstanceByName('Image[file]');
+        $uploadedfile = UploadedFile::getInstanceByName('Image[file]');
         $rnd = rand(0, 9999);
         $folderName = date("d M Y");
         $fileName = "{$rnd}_{$uploadedFile}";
@@ -257,20 +261,23 @@ class ImageController extends Controller {
     }
 
     public function actionIndex() {
-      // if (!Yii::$app->user->getIdentity('moderator')) {
-      //      $condition = 'published=1';
-      //  } else {
+        if (!Yii::$app->user->getIdentity('moderator')) {
+            $condition = 'published=1';
+        } else {
             $condition = '';
-      //  }
-       $dataProvider = new ActiveDataProvider([
-            'query' => Image::find()->
-            where($condition)       
-    ]); 
+        }
+        $dataProvider = new ActiveDataProvider([
+            'query' => models\User::find()->
+            where(['published'=>Yii::$app->user->identity->published])->
+            orderBy('title ASC'),       
+    ]);
+      
+
         $this->render('index', [
             'model' => new Image(),
             'dataProvider' => $dataProvider,
         ]);
-    
+   
         /*
           $searchModel = new Search();
           $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
