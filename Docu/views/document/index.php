@@ -14,9 +14,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
 echo Menu::widget([
     'items' => [
-        ['label' => 'Acties'],
-        ['label' => 'Maak Documenten aan', 'icon' => 'list-alt', 'url' => ['create']],
-        ['label' => 'Beheer documenten', 'icon' => 'file', 'url' => ['admin']]
+        ['label' => 'Acties', 'visible' => !Yii::$app->user->isGuest],
+        ['label' => 'Maak Documenten aan', 'icon' => 'list-alt', 'url' => ['create'], 'visible' => !Yii::$app->user->isGuest],
+        ['label' => 'Beheer documenten', 'icon' => 'file', 'url' => ['admin'], 'visible' => !Yii::$app->user->isGuest]
     ],
 ]);
 

@@ -10,9 +10,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
 echo Menu::widget([
     'items' => [
-        ['label' => 'Acties', 'visible' => Yii::$app->user->getIdentity('moderator')],
-        ['label' => 'Lijst van Documenten', 'icon' => 'list', 'url' => ['index'], 'visible' => Yii::$app->user->getIdentity('moderator')],
-        ['label' => 'Maak Documenten aan', 'icon' => 'file', 'url' => ['create'], 'visible' => Yii::$app->user->getIdentity('user')],
+        ['label' => 'Acties', 'visible' => !Yii::$app->user->isGuest], //'visible' => Yii::$app->user->getIdentity('moderator')],
+        ['label' => 'Lijst van Documenten', 'icon' => 'list', 'url' => ['index'], 'visible' => !Yii::$app->user->isGuest], //'visible' => Yii::$app->user->getIdentity('moderator')],
+        ['label' => 'Maak Documenten aan', 'icon' => 'file', 'url' => ['create'], 'visible' => !Yii::$app->user->isGuest], //'visible' => Yii::$app->user->getIdentity('user')],
     ],
 ]);
 

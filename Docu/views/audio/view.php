@@ -15,12 +15,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
 echo Menu::widget([
     'items' => [
-        ['label' => 'Acties'],
-        ['label' => 'Lijst van audio bestanden', 'url' => ['index'], 'icon' => 'list'],
-        ['label' => 'Maak audio bestanden aan', 'url' => ['create'], 'icon' => 'file'],
-        ['label' => 'Bewerk audio bestand', 'url' => ['update', 'id' => $model->id], 'icon' => 'pencil'],
-        ['label' => 'Verwijder audio bestand', 'url' => '#', 'icon' => 'trash', 'linkOptions' => ['submit' => ['delete', 'id' => $model->id]], 'confirm' => 'Weet je zeker dat je dit audio bestand wilt verwijderen?'],
-        ['label' => 'Beheer audio bestand', 'url' => ['admin'], 'icon' => 'list-alt'],
+        ['label' => 'Acties', 'visible' => !Yii::$app->user->isGuest],
+        ['label' => 'Lijst van audio bestanden', 'url' => ['index'], 'icon' => 'list', 'visible' => !Yii::$app->user->isGuest],
+        ['label' => 'Maak audio bestanden aan', 'url' => ['create'], 'icon' => 'file', 'visible' => !Yii::$app->user->isGuest],
+        ['label' => 'Bewerk audio bestand', 'url' => ['update', 'id' => $model->id], 'icon' => 'pencil', 'visible' => !Yii::$app->user->isGuest],
+        ['label' => 'Verwijder audio bestand', 'url' => '#', 'icon' => 'trash', 'linkOptions' => ['submit' => ['delete', 'id' => $model->id]], 'confirm' => 'Weet je zeker dat je dit audio bestand wilt verwijderen?', 'visible' => !Yii::$app->user->isGuest],
+        ['label' => 'Beheer audio bestand', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => !Yii::$app->user->isGuest],
     ],
 ]);
 /*
@@ -60,7 +60,6 @@ foreach ($model->tags as $i => $tag) {
 }
 
 $user = User::findIdentity($model->id);
-
 ?>
 
 <h1><?php echo $model->title; ?></h1>
