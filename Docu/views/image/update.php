@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 
+use yii\widgets\Menu;
 /* @var $this yii\web\View */
 /* @var $model app\models\Image */
 

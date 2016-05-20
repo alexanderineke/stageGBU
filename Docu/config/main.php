@@ -73,14 +73,8 @@ return [
         //     ),
         // ),
 
-        'db'=>[
-            'connectionString' => 'mysql:host=localhost;dbname=docu',
-            'emulatePrepare' => true,
-            'username' => 'docu',
-            'password' => 'docu',
-            'charset' => 'utf8',
-            'tablePrefix' => 'tbl_',
-       ],
+        'db'=>[require(__DIR__ . '/db.php'),
+        ],
         
         'errorHandler'=>[
             // use 'site/error' action to display errors
@@ -118,4 +112,5 @@ return [
             'amount'=>'2'
         ],
     ],
+    
 ];

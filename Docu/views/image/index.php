@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-
+use yii\widgets\Menu;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\Search */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -10,11 +10,12 @@ use yii\grid\GridView;
 $this->title = 'Afbeeldingen';
 $this->params['breadcrumbs'][] = $this->title;
         
-$this->params['menu'][] = [
+echo Menu::widget([
+    'items' => [
         ['label' => 'Acties', 'visible' => Yii::$app->user->getIdentity('moderator')],
         ['label' => 'Maak afbeeldingen aan', 'url' => ['create'], 'icon' => 'file', 'visible' => Yii::$app->user->getIdentity('user')],
         ['label' => 'Beheer afbeeldingen', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::$app->user->getIdentity('admin')],
-   ];
+   ]]);
 ?>
 <div class="image-index">
 
