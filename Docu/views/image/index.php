@@ -18,6 +18,16 @@ echo Menu::widget([
         ['label' => 'Beheer afbeeldingen', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::$app->user->getIdentity('admin')],
     ],
 ]);
+function objectToTagString($tags) {
+    $string = [];
+    foreach ($tags as $tag) {
+        $string[] = $tag["name"];
+    }
+    return implode(", ", $string);
+}
+function fileLocation($id, $title) {
+    return Yii::getAlias($title, ['audio/view', 'id' => $id]);
+}
 ?>
 <div class="image-index">
 
@@ -34,12 +44,15 @@ GridView::widget([
     // 'type' => 'striped bordered',
     'dataProvider' => $model->search(),
     'columns' => [
-        ['class' => 'yii\grid\SerialColumn'],
-        ['label' => 'images', 'format' => 'html', //'htmlOptions' => [
-            // 'style' => 'width: 100px; text-align: center;',
-            /* ]; */ 'header' => 'Voorbeeld'/* , 'value' => 'CHtml::image("uploads/afbeeldingen/".$data->images[0]->location."/thumb/".$data->images[0]->file.$data->images[0]->format)' */],
-        ['label' => 'title', 'header' => 'Titel', 'format' => 'html', /* 'value' => 'CHtml::link($data->title, Yii::app()->createUrl("image/view",["id"=>$data->id)])' */],
-        ['class' => 'yii\grid\ActionColumn'],
+       ['header' => 'Naam imagebestand', 'value' => function($data) {
+                $file = fileLocation($data->id, $data->title);
+                return Html::a(Html::encode($file), 'index.php?r=image%2Fview&id=' . $data->id);
+            }, 'format' => 'raw'],
+        ['header' => 'Tags', 'value' => function($data) {
+                return objectToTagString($data->tags);
+            }],
+        ['header' => 'Jaar', 'value' => 'year'],
+    //  ['class' => 'yii\grid\ActionColumn'],
     ],
     //  'enableHistory' => true,
     'pager' => [

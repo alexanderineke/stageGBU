@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-
+use yii\widgets\Menu;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Image */
@@ -12,9 +12,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
 echo Menu::widget([
     'items' => [
-        [['label' => 'Acties', 'visible'] => Yii::$app->user->getIdentity('moderator')],
-        [['label' => 'Lijst van afbeeldingen', 'url'] => ['index'], 'icon' => 'list', 'visible' => Yii::$app->user->getIdentity('moderator')],
-        [['label' => 'Beheer afbeeldingen', 'url'] => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::$app->user->getIdentity('admin')],
+        ['label' => 'Acties', 'visible' => Yii::$app->user->getIdentity('moderator')],
+        ['label' => 'Lijst van afbeeldingen', 'url' => ['index'], 'icon' => 'list', 'visible' => Yii::$app->user->getIdentity('moderator')],
+        ['label' => 'Beheer afbeeldingen', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::$app->user->getIdentity('admin')],
     ],
 ]);
 ?>

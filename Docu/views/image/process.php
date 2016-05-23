@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\widgets\Menu;
 
 $this->title = 'Verwerk document';
 $this->params['breadcrumbs'][] = ['label' => 'Images', 'url' => ['index']];
@@ -8,9 +9,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
 echo Menu::widget([
     'items' => [
-        [['label' => 'Acties', 'visible'] => Yii::$app->user->getIdentity('moderator')],
-        [['label' => 'Lijst van afbeeldingen', 'url'] => ['index'], 'icon' => 'list', 'visible' => Yii::$app->user->getIdentity('moderator')],
-        [['label' => 'Beheer afbeeldingen', 'url'] => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::$app->user->getIdentity('admin')],
+        ['label' => 'Acties', 'visible' => Yii::$app->user->getIdentity('moderator')],
+        ['label' => 'Lijst van afbeeldingen', 'url' => ['index'], 'icon' => 'list', 'visible' => Yii::$app->user->getIdentity('moderator')],
+        ['label' => 'Beheer afbeeldingen', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::$app->user->getIdentity('admin')],
     ],
 ]);
 ?>
