@@ -1,4 +1,8 @@
 <?php
+
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+
 $form = ActiveForm::begin([
             'id' => 'image-form',
             'action' => ['image/process'],
@@ -13,7 +17,8 @@ $form = ActiveForm::begin([
 <?= $form->field($model, 'title')->textInput(['class' => 'span5', 'maxlength' => 64]) ?>
 
 <?php
-echo \kato\DropZone::widget([
+/*
+echo $form->field($model, 'picture')->widget(DropZone::className, [
     'options' => [
         'maxFilesize' => '200',
         'dictDefaultMessage' => 'Plaats hier het bestand dat u wilt uploaden',
@@ -24,7 +29,7 @@ echo \kato\DropZone::widget([
         'accept' => ['image/jpeg', 'image/png', 'image/gif'],
         'url' => $this->createUrl('image/batchupload'),
     ]
-]);
+]);*/
 ?>
 <div class="form-actions">
     <?= Html::submitButton('Maak aan', ['class' => 'btn btn-primary']) ?>

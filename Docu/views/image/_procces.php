@@ -1,5 +1,8 @@
 <?php
 
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+
 $form = ActiveForm::begin([
             'id' => 'images-form',
             'action' => ['image/process'],

@@ -1,5 +1,8 @@
 <?php
 
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+
 $form = ActiveForm::begin([
             'id' => 'images-form',
             'options' => ['enctype' => 'multipart/form-data'],
@@ -10,7 +13,7 @@ $form = ActiveForm::begin([
 
 <?php echo $form->errorSummary($model); ?>
 
-<?php echo $form->field($model, 'title')->textField(['class' => 'span5', 'maxlength' => 64]); ?>
+<?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
 <?php echo $form->field($model, 'description')->label('Description'); ?>		
 <?php
@@ -45,7 +48,7 @@ foreach ($model->tags as $i => $tag) {
 
 <?php
 
-echo \kato\DropZone::widget([
+/*echo $form->field($model, 'picture')->widget(DropZone::className, [
     'options' => [
         'maxFilesize' => '200',
         'dictDefaultMessage' => 'Plaats hier het bestand dat u wilt uploaden',
@@ -56,7 +59,7 @@ echo \kato\DropZone::widget([
         'accept' => ['image/jpeg', 'image/png', 'image/gif'],
         'url' => $this->createUrl('image/batchupload'),
     ]
-]);
+]);*/
 ?>
 
 <?= Html::submitButton($model->isNewRecord ? 'Maak aan' : 'Bewaar', ['class' => 'btn btn-primary']) ?>

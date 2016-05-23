@@ -29,25 +29,25 @@ class ImageController extends Controller {
         return ['accesControl'];
     }
 
-    public function behaviors() {
+       public function behaviors() {
         return [
             'acces' => [
                 'class' => \yii\filters\AccessControl::className(),
                 'only' => ['index', 'view', 'update', 'create', 'process', 'upload', 'batchupload', 'admin', 'delete'],
                 'rules' => [
-                    ['allow' => true,
+                    [   'allow' => true,
                         'actions' => ['index', 'view'],
                         'roles' => ['?'],
                     ],
-                    ['allow' => true,
+                    [   'allow' => true,
                         'actions' => ['index', 'view', 'update', 'create', 'process', 'upload', 'batchupload'],
                         'roles' => ['moderator'],
                     ],
-                    ['allow' => true,
+                    [   'allow' => true,
                         'actions' => ['index', 'view', 'update', 'create', 'process', 'upload', 'batchupload', 'admin', 'delete'],
                         'roles' => ['@'],
                     ],
-                    ['allow' => false,
+                    [   'allow' => false,
                         'roles' => ['?'],
                     ],
                 ],
@@ -55,10 +55,13 @@ class ImageController extends Controller {
         ];
     }
 
-    public function actionView($id) {
-        return $this->render('view', [
-                    'model' => $this->loadModel($id),
-        ]);
+      public function actionView($id) {
+        $model = \app\models\Image::findOne($id);
+        if ($model) {
+            return $this->render('view', ['model' => $model]);
+        } else {
+            throw new \yii\web\NotFoundHttpException;
+        }
     }
 
     public function actionUpload() {
@@ -104,7 +107,7 @@ class ImageController extends Controller {
         $model = $this->loadModel($id);
 
         if (isset($_POST['Image'])) {
-            $fileQueue = Yii::$app->user->getState('filesToProcess');
+            $fileQueue = Yii::$app->session->get('filesToProcess');
             if ($fileQueue) {
                 $imageTempModel = ImageTemp::findOne($fileQueue[0]);
                 $file = $imageTempModel->getAttributes(['file', 'format', 'location']);
@@ -140,7 +143,9 @@ class ImageController extends Controller {
                 Yii::$app->session->setFlash('error', "De steekwoorden zijn ongeldig. Probeert u het alstublieft nog eens.");
             }
         } else {
-            Yii::$app->session->setState('filesToProcess', []);
+             // Yii::$app->session->setState('filesToProcess', []);
+
+            Yii::$app->session->set('filesToProcess', []);
         }
 
         $this->render('update', [
@@ -161,15 +166,15 @@ class ImageController extends Controller {
     public function actionCreate() {
         $model = new Image();
 
-      //  Yii::$app->user->setState('filesToProcess', []);
+        Yii::$app->session->set('filesToProcess', []);
 
-//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-//            return $this->redirect(['view', 'id' => $model->id]);
-//        } else {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+       } else {
         return $this->render('create', [
                     'model' => $model,
         ]);
-//        }
+        }
     }
 
     public function actionProcess() {
@@ -181,14 +186,14 @@ class ImageController extends Controller {
             $model = new Image();
         }
 
-        $fileQueue = Yii::$app->user->getState('filesToProcess');
-        if (!fileQueue) {
+        $fileQueue = Yii::$app->session->set('filesToProcess', []);
+        if (!$fileQueue) {
             $this->redirect(['index']);
         }
 
         if (!$id && isset($_POST['Image'])) {
             $imageTempModel = ImageTemp::findOne($fileQueue[0]);
-            $file = $imageTempModel->getAttributes(['file', 'format', 'location']);
+           // $file = $imageTempModel->getAttributes(['file', 'format', 'location']);
             $model->attributes = $_POST['Image'];
         } else if ($id) {
 
@@ -196,11 +201,11 @@ class ImageController extends Controller {
                 $file = $model->images[0];
             } else {
                 $imageTempModel = ImageTemp::findOne($fileQueue[0]);
-                $file = $imageTempModel - getAttributes(['file', 'format', 'location']);
+          //      $file = $imageTempModel - getAttributes(['file', 'format', 'location']);
             }
         } else {
             $imageTempModel = ImageTemp::findOne($fileQueue[0]);
-            $file = $imageTempModel - getAttributes(['file', 'format', 'location']);
+         //   $file = $imageTempModel - getAttributes(['file', 'format', 'location']);
         }
 
         if (isset($_POST['Image']['included_file'])) {
@@ -217,7 +222,7 @@ class ImageController extends Controller {
                         if (!$model->images) {
                             if (ImageFile::model()->saveImage($this->tags[0], $file)) {
                                 array_shift($fileQueue);
-                                Yii::$app->user->setState('filesToProcess', $fileQueue);
+                                Yii::$app->session->set('filesToProcess', $fileQueue);
 
                                 if (!empty($fileQueue)) {
                                     $imageTempModel = ImageTemp::findOne($fileQueue[0]);
@@ -243,17 +248,17 @@ class ImageController extends Controller {
         }
 
         if (!$fileQueue || !isset($file)) {
-            $this - redirect(['index']);
+            $this -> redirect(['index']);
         }
 
-        $list = ArrayHelper::map(Collection::model()->findAll(
+        $list = ArrayHelper::map(Image::model()->findAll(
                                 ['order' => 'title',
                                     'condition' => 'user_id=:id AND published=1',
                                     'params' => [':id' => Yii::$app->user->getId()]
                                 ]
                         ), 'id', 'title');
 
-        $this - render('process', [
+        $this -> render('process', [
                     'model' => $model,
                     'file' => $file,
                     'collection_list' => $list,
@@ -265,7 +270,7 @@ class ImageController extends Controller {
             $condition = 'published=1';
         } else {
             $condition = '';
-            //  }
+        }
             $dataProvider = new ActiveDataProvider([
                 'query' => Image::find()->
                         where($condition)
@@ -275,7 +280,7 @@ class ImageController extends Controller {
                         'model' => new Image(),
                         'dataProvider' => $dataProvider,
             ]);
-        }
+        
         /*
           $searchModel = new Search();
           $dataProvider = $searchModel->search(Yii::$app->request->queryParams);

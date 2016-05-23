@@ -85,7 +85,6 @@ class Image extends \yii\db\ActiveRecord {
 
         return $dataProvider;
     }
-
     public function getId() {
         return $this->getPrimaryKey();
     }
