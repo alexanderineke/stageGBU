@@ -1,17 +1,20 @@
 <?php
 
 use yii\helpers\Html;
+use yii\grid\GridView;
 use yii\widgets\Menu;
+
 $this->title = 'Beheer';
 $this->params['breadcrumbs'][] = ['label' => 'Afbeelding', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 echo Menu::widget([
     'items' => [
-    ['label' => 'Acties', 'visible' => Yii::$app->user->getIdentity('moderator')],
-    ['label' => 'Lijst van afbeeldingen', 'url' => ['index'], 'icon' => 'list', 'visible' => Yii::$app->user->getIdentity('moderator')],
-    ['label' => 'Maak afbeeldingen aan', 'url' => ['create'], 'icon' => 'file', 'visible' => Yii::$app->user->getIdentity('user')],
-      ]]);
+        ['label' => 'Acties', 'visible' => Yii::$app->user->getIdentity('moderator')],
+        ['label' => 'Lijst van afbeeldingen', 'url' => ['index'], 'icon' => 'list', 'visible' => Yii::$app->user->getIdentity('moderator')],
+        ['label' => 'Maak afbeeldingen aan', 'url' => ['create'], 'icon' => 'file', 'visible' => Yii::$app->user->getIdentity('user')],
+    ]
+]);
 
 
 //Hier moet registerscript komen
@@ -30,14 +33,13 @@ echo Menu::widget([
 </div>
 
 <?= GridView::widget([
-    'id' => 'image-grid',
-    'dataProvider' => $model->search(),
-    'filter' => $model,
+  'dataProvider' => $dataProvider,
     'columns' => [
+        ['class' => 'yii\grid\SerialColumn'],
         'title',
         'created_on',
         'modified_on',
-        ['class' => 'btn btn-primary'],
+      ['class' => 'yii\grid\ActionColumn'],
     ],
 ])
 ?>

@@ -177,9 +177,6 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface{
         return $this->hasMany(Document::className(), ['user_id' => 'id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getImages() {
         return $this->hasMany(Image::className(), ['user_id' => 'id']);
     }

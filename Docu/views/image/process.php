@@ -19,7 +19,7 @@ echo Menu::widget([
 <h1><?= Html::encode($this->title) ?></h1>
 
 <?=
-$this->render('_form', [
+$this->render('_procces', [
     'model' => $model,
     'file' => $file,
     'collection_list' => $collection_list

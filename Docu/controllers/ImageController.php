@@ -193,19 +193,19 @@ class ImageController extends Controller {
 
         if (!$id && isset($_POST['Image'])) {
             $imageTempModel = ImageTemp::findOne($fileQueue[0]);
-           // $file = $imageTempModel->getAttributes(['file', 'format', 'location']);
+            // $file = $imageTempModel->getAttributes(['file', 'format', 'location']);
             $model->attributes = $_POST['Image'];
-        } else if ($id) {
+        } elseif ($id) {
 
             if ($model->images) {
                 $file = $model->images[0];
             } else {
                 $imageTempModel = ImageTemp::findOne($fileQueue[0]);
-          //      $file = $imageTempModel - getAttributes(['file', 'format', 'location']);
+                //      $file = $imageTempModel - getAttributes(['file', 'format', 'location']);
             }
         } else {
             $imageTempModel = ImageTemp::findOne($fileQueue[0]);
-         //   $file = $imageTempModel - getAttributes(['file', 'format', 'location']);
+            //   $file = $imageTempModel - getAttributes(['file', 'format', 'location']);
         }
 
         if (isset($_POST['Image']['included_file'])) {
@@ -217,7 +217,7 @@ class ImageController extends Controller {
 
                 if ($model->save()) {
 
-                    if ($this - saveTags($model->id)) {
+                    if ($this -> saveTags($model->id)) {
 
                         if (!$model->images) {
                             if (ImageFile::model()->saveImage($this->tags[0], $file)) {
@@ -231,8 +231,8 @@ class ImageController extends Controller {
                                     Yii::$app->user->setFlash('succes', "Afbeelding bestand(en) met succes toegevoegd.");
                                 }
                             } else {
-                                Yii::$app->user > setFlash('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
-                                $this->redirect(['process', 'id' => $model - id]);
+                                Yii::$app->user-> setFlash('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
+                                $this->redirect(['process', 'id' => $model->id]);
                             }
                         }
                     } else {
@@ -251,12 +251,7 @@ class ImageController extends Controller {
             $this -> redirect(['index']);
         }
 
-        $list = ArrayHelper::map(Image::model()->findAll(
-                                ['order' => 'title',
-                                    'condition' => 'user_id=:id AND published=1',
-                                    'params' => [':id' => Yii::$app->user->getId()]
-                                ]
-                        ), 'id', 'title');
+        $list = ArrayHelper::map(Image::find()->all(),'id', 'title');
 
         $this -> render('process', [
                     'model' => $model,
@@ -293,14 +288,18 @@ class ImageController extends Controller {
     }
 
     public function actionAdmin() {
-        $model = new Image('search');
-        $model->unsetAttributes();
-        if (isset($_GET['Image'])) {
-            $model->attributes = $_GET['Image'];
-        }
-        $this - render('admin', [
-                    'model' => $model,
+       $condition = '';
+        $dataProvider = new ActiveDataProvider([
+            'query' => Image::find()
+                 ->where($condition)
+                ]);
+       /* */
+        return $this->render('admin', [
+            'model' => new Image(),
+            'dataProvider' => $dataProvider,
         ]);
+        
+        
     }
 
     public function loadModel($id) {

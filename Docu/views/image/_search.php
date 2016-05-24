@@ -10,12 +10,11 @@ use yii\widgets\ActiveForm;
 
 <div class="image-search">
 
-    <?php
-    $form = ActiveForm::begin([
-                'action' => yii\helpers\Url::to($this->route),
-                'method' => 'get',
-    ]);
-    ?>
+    <?php $form = ActiveForm::begin([
+        'action' => ['index'],
+        'method' => 'get',
+    ]); ?>
+
 
     <?= $form->field($model, 'id')->textinput(['class' => 'span5', 'maxlength' => 10]) ?>
 
