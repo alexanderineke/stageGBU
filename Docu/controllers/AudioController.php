@@ -196,7 +196,7 @@ class AudioController extends Controller {
 
     public function actionProcess() {
         //$id = Yii::app()->request->getQueryParam('id');
-        $id = Yii::$app->request->getParams('id');
+        $id = Yii::$app->getRequest()->getQueryParam('id');
 
         if ($id) {
             $model = $this->loadModel($id);
@@ -205,7 +205,7 @@ class AudioController extends Controller {
         }
 
         $fileQueue = Yii::$app->session->setFlash('filesToProcess');
-        if (!fileQueue) {
+        if (!$fileQueue) {
             $this->redirect(['index']);
         }
 

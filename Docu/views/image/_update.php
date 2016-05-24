@@ -4,6 +4,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\widgets\dropzone\DropZone;
+use yii\widgets\imperavi\src\Widget;
 
     
 $form = ActiveForm::begin([
@@ -62,7 +63,7 @@ foreach ($model->tags as $i => $tag) {
 <?= $form->field($model, 'published')->dropDownList(['1' => 'Ja', '0' => 'Nee']); ?>
 
     <?php
-
+/*
     DropZone::Widget([
         'options' => [
             'maxFilesize' => '200',
@@ -75,6 +76,7 @@ foreach ($model->tags as $i => $tag) {
         //'url' => $this->createUrl('image/batchupload'),
         ]
     ]);
+ * */
     ?>
 
   
