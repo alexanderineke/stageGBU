@@ -17,7 +17,8 @@ use yii\web\NotFoundHttpException;
 use yii\web\HttpException;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
-
+use yii\widgets\dropzone\UploadAction;
+use yii\widgets\dropzone\RemoveAction;
 /**
  * ImageController implements the CRUD actions for Image model.
  */
@@ -64,9 +65,9 @@ class ImageController extends Controller {
         }
     }
 
-    public function actionUpload() {
+    public function actionUpload(){
         $model = new ImageTemp;
-        $uploadedfile = UploadedFile::getInstanceByName('Image[file]');
+        $uploadedFile = UploadedFile::getInstanceByName('Image[file]');
         $rnd = rand(0, 9999);
         $folderName = date("d M Y");
         $fileName = "{$rnd}_{$uploadedFile}";
@@ -93,6 +94,7 @@ class ImageController extends Controller {
             mkdir(Yii::getAlias('@app' . '/../uploads/' . $folderName));
         }
         if ($uploadedFile->saveAs(Yii::getAlias('@app' . '/../uploads/' . $folderName . '/' . $fileName))) {
+           $id = $model->addTempFile($fileName, $folderName);
             if ($id) {
                 $fileQueue = Yii::$app->user->getState('filesToProcess');
                 array_push($fileQueue, $id);
@@ -176,7 +178,6 @@ class ImageController extends Controller {
         ]);
         }
     }
-
     public function actionProcess() {
         $id = Yii::$app->request->getQueryParam('id');
 
@@ -193,7 +194,7 @@ class ImageController extends Controller {
 
         if (!$id && isset($_POST['Image'])) {
             $imageTempModel = ImageTemp::findOne($fileQueue[0]);
-            // $file = $imageTempModel->getAttributes(['file', 'format', 'location']);
+            $file = $imageTempModel->getAttributes(['file', 'format', 'location']);
             $model->attributes = $_POST['Image'];
         } elseif ($id) {
 
@@ -201,11 +202,11 @@ class ImageController extends Controller {
                 $file = $model->images[0];
             } else {
                 $imageTempModel = ImageTemp::findOne($fileQueue[0]);
-                //      $file = $imageTempModel - getAttributes(['file', 'format', 'location']);
+                $file = $imageTempModel->getAttributes(['file', 'format', 'location']);
             }
         } else {
             $imageTempModel = ImageTemp::findOne($fileQueue[0]);
-            //   $file = $imageTempModel - getAttributes(['file', 'format', 'location']);
+            $file = $imageTempModel->getAttributes(['file', 'format', 'location']);
         }
 
         if (isset($_POST['Image']['included_file'])) {
@@ -251,7 +252,7 @@ class ImageController extends Controller {
             $this -> redirect(['index']);
         }
 
-        $list = ArrayHelper::map(Image::find()->all(),'id', 'title');
+        $list = ArrayHelper::map(Collection::find()->all(),'id', 'title');
 
         $this -> render('process', [
                     'model' => $model,
@@ -298,8 +299,6 @@ class ImageController extends Controller {
             'model' => new Image(),
             'dataProvider' => $dataProvider,
         ]);
-        
-        
     }
 
     public function loadModel($id) {

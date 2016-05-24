@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
+use yii\widgets\dropzone\DropZone;
 
 $form = ActiveForm::begin([
             'id' => 'image-form',
@@ -19,7 +19,20 @@ $form = ActiveForm::begin([
 
 <?php
 
-echo $form->field($model, 'picture')->widget(DropZone::className, [
+
+echo DropZone::widget([
+    'options' => [
+        'maxFilesize' => '200',
+        'dictDefaultMessage' => 'Plaats hier het bestand dat u wilt uploaden',
+        'dictFallbackMessage' => 'Uw browser wordt niet ondersteund',
+        'dictInvalidFileType' => 'Dit bestands formaat wordt niet ondersteund. Converteer het a.u.b. naar PDF.',
+        'dictFileTooBig' => 'Het bestand dat u probeert te uploaden is te groot.',
+        'clickable' => true,
+     // 'accept' => ['image/jpeg', 'image/png', 'image/gif'],
+     // 'url' => $this->createUrl('image/batchupload'),
+       ],
+   ]);
+/*echo $form->field($model, 'picture')->widget(DropZone::className, [
     'options' => [
         'maxFilesize' => '200',
         'dictDefaultMessage' => 'Plaats hier het bestand dat u wilt uploaden',
@@ -30,7 +43,7 @@ echo $form->field($model, 'picture')->widget(DropZone::className, [
         'accept' => ['image/jpeg', 'image/png', 'image/gif'],
         'url' => $this->createUrl('image/batchupload'),
     ]
-]);
+]);*/
 ?>
 <div class="form-actions">
     <?= Html::submitButton('Maak aan', ['class' => 'btn btn-primary']) ?>

@@ -5,7 +5,7 @@ use yii\grid\GridView;
 use yii\widgets\Menu;
 
 $this->title = 'Beheer';
-$this->params['breadcrumbs'][] = ['label' => 'Afbeelding', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Images', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 echo Menu::widget([

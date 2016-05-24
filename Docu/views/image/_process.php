@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\widgets\dropzone\DropZone;
 
 $form = ActiveForm::begin([
             'id' => 'images-form',
@@ -9,7 +10,7 @@ $form = ActiveForm::begin([
             'enableAjaxValidation' => false,
             'method' => 'get',
             //?↓
-            'options' => 'form',
+            'options' => ['enctype' => 'multipart/form-data'],
                 //
         ]);
 ?>
@@ -23,7 +24,6 @@ $form = ActiveForm::begin([
 <?php echo $form->field($model, 'description')->label(['Description']); ?>	
 
 <?=
-
 $tags = '';
 $values = [];
 foreach ($model->tags as $i => $tag) {

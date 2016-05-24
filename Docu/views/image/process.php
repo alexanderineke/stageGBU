@@ -19,9 +19,9 @@ echo Menu::widget([
 <h1><?= Html::encode($this->title) ?></h1>
 
 <?=
-$this->render('_procces', [
+$this->render('_process', [
     'model' => $model,
     'file' => $file,
-    'collection_list' => $collection_list
+    'collection_list' => $collection_list,
 ])
 ?>
