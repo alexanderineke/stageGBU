@@ -1,6 +1,8 @@
 <?php
+
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\widgets\imperavi\src\Widget;
 
 $form = ActiveForm::begin([
             'id' => 'audio-form',
@@ -17,22 +19,17 @@ $form = ActiveForm::begin([
 
 <?= $form->field($model, 'title')->textInput(['class' => 'span5', 'maxlength' => 64]); ?>
 
-<?= $form->field($model, 'description')->textarea(); ?>
-
-
+<?= $form->field($model, 'description')->hiddenInput(); ?>
 <?php
-echo \vova07\imperavi\Widget::widget([
-    'name' => 'redactor',
+
+echo Widget::widget([
+    'name' => 'Audio[description]',
+    'value' => $model->description,
     'settings' => [
-        'lang' => 'ru',
-        'minHeight' => 200,
-        'plugins' => [
-            'clips',
-            'fullscreen'
-        ]
+        'lang' => 'nl',
+        'minHeight' => 150,
     ]
 ]);
-//Hier moet een variant komen van ImperaviRedactorWidget
 ?>
 
 <?php

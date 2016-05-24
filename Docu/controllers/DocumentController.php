@@ -155,7 +155,7 @@ class DocumentController extends Controller {
         }
 
         render: {
-            $this->render('update', [
+            return $this->render('update', [
                 'model' => $model,
             ]);
         }

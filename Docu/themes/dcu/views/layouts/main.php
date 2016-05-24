@@ -1,10 +1,21 @@
+<?php
+
+use yii\bootstrap\Alert;
+use yii\bootstrap\ActiveForm;
+use yii\helpers\Url;
+use Yii;
+use yii\helpers\Html;
+use yii\bootstrap\NavBar;
+?>
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="language" content="en" />
         <title><?php echo yii\helpers\Html::encode($this->pageTitle); ?></title>
-        <link rel="shortcut icon" href="<?php // echo Yii::$app()->theme->baseUrl;  ?>/assets/images/favicon.png" type="image/x-icon" />
+        <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@app/themes/dcu/assets'); ?>/css/main.css" />
+        <link rel="shortcut icon" href="<?php echo Yii::getAlias('@app/themes/dcu');     ?>/assets/images/favicon.png" type="image/x-icon" />
         <?php
         //Assets laden
         /*  Yii::app()->clientScript->registerCssFile( Yii::app()->theme->baseUrl.'/assets/css/bootstrap.css' );
@@ -24,15 +35,15 @@
             <div class="container" id="page">
                 <div class="row header">
                     <div class="span7">
-                        <a href="/"><img src="<?php // echo Yii::app()->theme->baseUrl;  ?>/assets/images/documentatiecentrum-urk.png" /></a>
+                        <a href="/"><img src="<?php // echo Yii::app()->theme->baseUrl;      ?>/assets/images/documentatiecentrum-urk.png" /></a>
                     </div>
                     <div class="span5 login-form">
-                            <?php if (Yii::$app->user->isGuest): ?>
+                        <?php if (Yii::$app->user->isGuest): ?>
                             <div class="form">
                                 <?php
-                                $form = \yii\bootstrap\ActiveForm::widget([
-                                    'actions' => yii\helpers\Url::to(['site/login']),
-                                            'action' => Yii::app()->createUrl('site/login'),
+                                $form = ActiveForm::begin([
+                                            'actions' => yii\helpers\Url::to(['site/login']),
+                                            //    'action' => Yii::app()->createUrl('site/login'),
                                             'id' => 'login-form',
                                             'type' => 'inline',
                                             'enableClientValidation' => true,
@@ -43,66 +54,62 @@
                                 ?>
 
                                 <?php $model = new LoginForm; ?>
-                                <?php echo $form->textFieldRow($model, 'username', array('class' => 'span2')); ?>
-                                <?php echo $form->passwordFieldRow($model, 'password', array('class' => 'span2')); ?>
-                                <?php $this->widget('bootstrap.widgets.TbButton', array('buttonType' => 'submit', 'type' => 'primary', 'label' => 'Inloggen')); ?>
-                            <?php echo $form->checkboxRow($model, 'rememberMe'); ?>
-                            <?php $this->endWidget(); ?>
+                                <?= $form->field($model, 'username')->textInput(['class' => 'span2']) ?>
+                                <?= $form->field($model, 'password')->passwordInput(['class' => 'span2']) ?>
+                                <?= Html::submitButton('Inlogen', ['class' => 'btn btn-primary']) ?>
+                                <?= $form->field($model, 'rememberMe')->checkbox() ?>
+                                <?php ActiveForm::end(); ?>
                             </div>
-<?php else: ?>
+                        <?php else: ?>
                             <ul class="inline">
-                                <li>Je bent inlogd als: <?php echo Yii::app()->user->name; ?> (<?php echo Yii::app()->user->roles; ?>)</li>
+                                <li>Je bent inlogd als: <?php echo Yii::$app->user->identity->username; ?> (<?php echo Yii::$app->authManager->getRolesByUser(Yii::$app->user->identity->username); ?>)</li>
                                 <li>
                                     <?php
-                                    $this->widget('bootstrap.widgets.TbButton', array(
+                                    echo Button::Widget([
                                         'label' => 'Uitloggen',
-                                        'type' => 'primary',
-                                        'url' => Yii::app()->createUrl('site/logout'),
+                                        'options' => ['class' => 'btn btn-primary'],
+                                        'url' => Url::toRoute(['site/logout']),
                                         'icon' => 'off white',
-                                    ));
+                                    ]);
                                     ?>
                                 </li>
                             </ul>
-<?php endif; ?>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <div class="row">
                     <div class="span12 zoeken">
                         <div class="input-append">
                             <?php
-                            if (Yii::app()->request->getParam('q')) {
-                                $keyword = Yii::app()->request->getParam('q');
+                            if (Yii::$app->getRequest()->getQueryParam('q')) {
+                                $keyword = Yii::$app->getRequest()->getQueryParam('q');
                             } else {
                                 $keyword = '';
                             }
 
-                            echo CHtml::beginForm(
-                                    array('search/results'), 'get', array('class' => 'zoekbalk form-search')
-                            );
+                            echo Html::beginForm(['search/results'], 'get', ['class' => 'zoekbalk form-search']);
 
                             $model = new Search();
 
-                            echo Chtml::textField(
-                                    'q', $keyword, array('class' => 'searchInput', 'placeholder' => 'Zoekopdracht')
-                            );
+                            echo Html::textInput('q', $keyword, ['class' => 'searchInput', 'placeholder' => 'Zoekopdracht']);
 
                             echo '<button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>';
 
-                            echo CHtml::endForm();
+                            echo Html::endForm();
                             ?>
                         </div>
                     </div>
                 </div>
 
-<?php
+                <?php
 //Warnings
-$this->widget('bootstrap.widgets.TbAlert', array(
-    'block' => true,
-    'fade' => true,
-));
-?>
+                echo Alert::widget([
+                    'block' => true,
+                    'fade' => true,
+                ]);
+                ?>
 
-                <?php echo $content; //Pagina zelf  ?>
+                <?php echo $content; //Pagina zelf    ?>
 
             </div>
 
@@ -148,7 +155,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
                                 <h3>Ook meehelpen?</h3>
                                 <p>Met uw steun zorgt u er samen met ons voor dat ons grote cultuurbezit, 'oenze taol', blijft bestaan!</p><p>Steun ons project en doneer een bedrag op onze bankrekening: 11.40.24.820 Rabobank Urk. Bedankt voor uw hulp!</p>
                                 <a class="btn btn-primary" href="https://www.justgiving.nl/nl/charities/83-stichting-%20urker-taol" target="_new">Direct doneren</a>
-                                <a class="btn btn-primary" href="<?php echo Yii::app()->baseUrl; ?>donateursformulier.pdf" target="_new">Donateursformulier</a>
+                                <a class="btn btn-primary" href="<?php echo Yii::$app->basePath; ?>donateursformulier.pdf" target="_new">Donateursformulier</a>
                             </div>
                         </div>
                     </div>
@@ -161,27 +168,27 @@ $this->widget('bootstrap.widgets.TbAlert', array(
             </div>
         </div>
         <?php
-        if (!Yii::app()->user->isGuest) {
-            $this->widget('bootstrap.widgets.TbNavbar', array(
+        if (!Yii::$app->user->isGuest) {
+            echo NavBar::widget([
                 'type' => 'inverse',
                 'brand' => 'Beheer',
                 'brandUrl' => 'index.php',
                 'collapse' => true,
                 'fixed' => 'bottom',
-                'items' => array(
-                    array(
+                'items' => [
+                    [
                         'class' => 'bootstrap.widgets.TbMenu',
-                        'items' => array(
-                            array('label' => 'Zoeken', 'icon' => 'search white', 'url' => array('/')),
-                            array('label' => 'Gebruikers', 'icon' => 'user white', 'url' => array('/user'), 'visible' => Yii::app()->user->checkAccess('admin')),
-                            array('label' => 'Afbeeldingen', 'icon' => 'picture white', 'url' => array('/image')),
-                            array('label' => 'Documenten', 'icon' => 'file white', 'url' => array('/document')),
-                            array('label' => 'Audio', 'icon' => 'headphones white', 'url' => array('/audio')),
-                            array('label' => 'Collecties', 'icon' => 'folder-open white', 'url' => array('/collection')),
-                        ),
-                    ),
-                ),
-            ));
+                        'items' => [
+                            ['label' => 'Zoeken', 'icon' => 'search white', 'url' => ['/']],
+                            ['label' => 'Gebruikers', 'icon' => 'user white', 'url' => ['/user'], 'visible' => !Yii::$app->user->isGuest],
+                            ['label' => 'Afbeeldingen', 'icon' => 'picture white', 'url' => ['/image']],
+                            ['label' => 'Documenten', 'icon' => 'file white', 'url' => ['/document']],
+                            ['label' => 'Audio', 'icon' => 'headphones white', 'url' => ['/audio']],
+                            ['label' => 'Collecties', 'icon' => 'folder-open white', 'url' => ['/collection']],
+                        ],
+                    ],
+                ],
+            ]);
         }
         ?>
     </body>

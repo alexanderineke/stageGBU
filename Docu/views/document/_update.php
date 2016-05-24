@@ -1,7 +1,8 @@
 <?php
+
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
+use yii\widgets\imperavi\src\Widget;
 
 $form = ActiveForm::begin([
             'id' => 'documenten-form',
@@ -16,13 +17,22 @@ $form = ActiveForm::begin([
 
 <?= $form->field($model, 'title')->textInput(['class' => 'span5', 'maxlength' => 64]); ?>
 
-<?= $form->field($model, 'description')->label('Description'); ?>
+<?= $form->field($model, 'description')->hiddenInput(); ?>
 
 <?php
-//Hier moet een ext. widget komen: ImperaviRedactorWidget.
+
+echo Widget::widget([
+    'name' => 'Document[description]',
+    'value' => $model->description,
+    'settings' => [
+        'lang' => 'nl',
+        'minHeight' => 150,
+    ]
+]);
 ?>
 
 <?php
+
 $tags = '';
 $values = [];
 foreach ($model->tags as $i => $tag) {
@@ -34,6 +44,7 @@ $tags = substr($tags, 0, -1);
 ?>
 
 <?php
+
 //Hier moet een ext. widget komen: ETagIt.
 ?>
 
@@ -46,24 +57,8 @@ $tags = substr($tags, 0, -1);
 <?= $form->field($model, 'published')->dropDownList(['1' => 'Ja', '0' => 'Nee']); ?>
 
 <?php
-echo \kato\DropZone::widget([
-    'model' => $model,
-    'attribute' => 'file',
-    'url' => $this->createUrl('document/upload'),
-    'options' => [
-        'maxFilesize' => '200',
-        'dictDefaultMessage' => 'Plaats hier het bestand dat u wilt uploaden',
-        'dictFallbackMessage' => 'Uw browser wordt niet ondersteund',
-        'dictInvalidFileType' => 'Dit bestands formaat wordt niet ondersteund. Converteer het a.u.b. naar MP3.',
-        'dictFileTooBig' => 'Het bestand dat u probeert te uploaden is te groot.',
-        'clickable' => true,
-        'accept' => ['application/pdf', 'application/x-pdf'],
-    ],
-    'clientEvents' => [
-        'complete' => "function(file){console.log(file)}",
-        'removedfile' => "function(file){alert(file.name + ' is removed')}"
-    ],
-]);
+
+//Hier moet een dropzone komen
 ?>
 
 <?= Html::submitButton($model->isNewRecord ? 'Maak aan' : 'Bewaar', ['class' => 'btn btn-primary']) ?>
