@@ -18,9 +18,11 @@ $form = ActiveForm::begin([
 <?= $form->errorSummary($model); ?>
 
 <?= $form->field($model, 'title')->textInput(['class' => 'span5', 'maxlength' => 64]); ?>
+
 <?php
+
 echo Widget::widget([
-    'name' => 'redactor',
+    'name' => 'Audio[description]',
     'value' => $model->description,
     'settings' => [
         'lang' => 'nl',

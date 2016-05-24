@@ -21,6 +21,15 @@ use yii\widgets\ActiveForm;
     <?php echo $form->field($model, 'description')->label('Description'); ?>		
     <?php
 // Hier moet een ImperaviRedactorWidget komen
+    
+    echo Widget::widget([
+    'name' => 'Image[description]',
+    'value' => $model->description,
+    'settings' => [
+        'lang' => 'nl',
+        'minHeight' => 150,
+    ]
+]);
     ?>
 
     <?=
