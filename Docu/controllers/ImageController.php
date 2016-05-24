@@ -150,7 +150,7 @@ class ImageController extends Controller {
             Yii::$app->session->set('filesToProcess', []);
         }
 
-        $this->render('update', [
+        return $this->render('update', [
             'model' => $model,
         ]);
     }
