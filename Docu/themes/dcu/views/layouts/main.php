@@ -14,7 +14,8 @@ use yii\bootstrap\NavBar;
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="language" content="en" />
         <title><?php echo yii\helpers\Html::encode($this->pageTitle); ?></title>
-        <link rel="shortcut icon" href="<?php // echo Yii::$app()->theme->baseUrl;     ?>/assets/images/favicon.png" type="image/x-icon" />
+        <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@app/themes/dcu/assets'); ?>/css/main.css" />
+        <link rel="shortcut icon" href="<?php echo Yii::getAlias('@app/themes/dcu');     ?>/assets/images/favicon.png" type="image/x-icon" />
         <?php
         //Assets laden
         /*  Yii::app()->clientScript->registerCssFile( Yii::app()->theme->baseUrl.'/assets/css/bootstrap.css' );

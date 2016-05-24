@@ -20,7 +20,7 @@ $form = ActiveForm::begin([
 
 <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-<?php echo $form->field($model, 'description')->label('Description'); ?>		
+<?= $form->field($model, 'description')->hiddenInput(); ?>		
 <?php
 
 // Hier moet een ImperaviRedactorWidget komen
@@ -61,19 +61,7 @@ foreach ($model->tags as $i => $tag) {
 <?= $form->field($model, 'published')->dropDownList(['1' => 'Ja', '0' => 'Nee']); ?>
 
 <?php
-
-echo $form->field($model, 'picture')->widget(DropZone::className, [
-    'options' => [
-        'maxFilesize' => '200',
-        'dictDefaultMessage' => 'Plaats hier het bestand dat u wilt uploaden',
-        'dictFallbackMessage' => 'Uw browser wordt niet ondersteund',
-        'dictInvalidFileType' => 'Dit bestands formaat wordt niet ondersteund. Converteer het a.u.b. naar PDF.',
-        'dictFileTooBig' => 'Het bestand dat u probeert te uploaden is te groot.',
-        'clickable' => true,
-        'accept' => ['image/jpeg', 'image/png', 'image/gif'],
-        'url' => $this->createUrl('image/batchupload'),
-    ]
-]);
+// dropzone
 ?>
 
 <?= Html::submitButton($model->isNewRecord ? 'Maak aan' : 'Bewaar', ['class' => 'btn btn-primary']) ?>

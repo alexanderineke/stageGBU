@@ -17,7 +17,7 @@ $form = ActiveForm::begin([
 
 <?= $form->field($model, 'title')->textInput(['class' => 'span5', 'maxlength' => 64]); ?>
 
-<?= $form->field($model, 'description')->label('Description'); ?>
+<?= $form->field($model, 'description')->hiddenInput(); ?>
 
 <?php
 

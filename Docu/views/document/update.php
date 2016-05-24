@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\widgets\Menu;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Document */
@@ -8,7 +9,7 @@ use yii\helpers\Html;
 $this->title = 'Bewerk';
 $this->params['breadcrumbs'][] = ['label' => 'Documenten', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = $this-title;
+$this->params['breadcrumbs'][] = $this->title;
 
 echo Menu::widget([
     'items' => [
@@ -21,7 +22,7 @@ echo Menu::widget([
 ]);
 ?>
 
-<h1>Bewerk document <?= $model-id; ?></h1>
+<h1>Bewerk document <?= $model->id; ?></h1>
 
     <?= $this->render('_update', [
         'model' => $model,
