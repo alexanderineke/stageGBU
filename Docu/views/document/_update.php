@@ -1,7 +1,8 @@
 <?php
+
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
+use yii\widgets\imperavi\src\Widget;
 
 $form = ActiveForm::begin([
             'id' => 'documenten-form',
@@ -19,6 +20,7 @@ $form = ActiveForm::begin([
 <?= $form->field($model, 'description')->label('Description'); ?>
 
 <?php
+
 echo Widget::widget([
     'name' => 'Document[description]',
     'value' => $model->description,
@@ -30,6 +32,7 @@ echo Widget::widget([
 ?>
 
 <?php
+
 $tags = '';
 $values = [];
 foreach ($model->tags as $i => $tag) {
@@ -41,6 +44,7 @@ $tags = substr($tags, 0, -1);
 ?>
 
 <?php
+
 //Hier moet een ext. widget komen: ETagIt.
 ?>
 
@@ -53,6 +57,7 @@ $tags = substr($tags, 0, -1);
 <?= $form->field($model, 'published')->dropDownList(['1' => 'Ja', '0' => 'Nee']); ?>
 
 <?php
+
 //Hier moet een dropzone komen
 ?>
 
