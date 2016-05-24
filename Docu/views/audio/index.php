@@ -43,7 +43,6 @@ GridView::widget([
                 return objectToTagString($data->tags);
             }],
         ['header' => 'Jaar', 'value' => 'year'],
-    //  ['class' => 'yii\grid\ActionColumn'],
     ],
     'pager' => [
         'prevPageLabel' => '&laquo;',
