@@ -6,7 +6,6 @@ use yii\widgets\ActiveForm;
 use yii\widgets\dropzone\DropZone;
 use yii\widgets\imperavi\src\Widget;
 
-    
 $form = ActiveForm::begin([
             'id' => 'image-form',
             'action' => ['image/process'],
@@ -24,7 +23,6 @@ $form = ActiveForm::begin([
 
 <?= $form->field($model, 'description')->hiddenInput(); ?>		
 <?php
-
 // Hier moet een ImperaviRedactorWidget komen
 
 echo Widget::widget([
@@ -38,7 +36,6 @@ echo Widget::widget([
 ?>
 
 <?=
-
 $tags = '';
 $values = [];
 foreach ($model->tags as $i => $tag) {
@@ -50,7 +47,6 @@ foreach ($model->tags as $i => $tag) {
 ?>
 
 <?php
-
 //Hier moet een ETagIt komen
 ?>
 
@@ -62,25 +58,20 @@ foreach ($model->tags as $i => $tag) {
 
 <?= $form->field($model, 'published')->dropDownList(['1' => 'Ja', '0' => 'Nee']); ?>
 
-    <?php
-/*
-    DropZone::Widget([
-        'options' => [
-            'maxFilesize' => '200',
-            'dictDefaultMessage' => 'Plaats hier het bestand dat u wilt uploaden',
-            'dictFallbackMessage' => 'Uw browser wordt niet ondersteund',
-            'dictInvalidFileType' => 'Dit bestands formaat wordt niet ondersteund. Converteer het a.u.b. naar PDF.',
-            'dictFileTooBig' => 'Het bestand dat u probeert te uploaden is te groot.',
-            'clickable' => true,
-        //'accept' => ['image/jpeg', 'image/png', 'image/gif'],
-        //'url' => $this->createUrl('image/batchupload'),
-        ]
-    ]);
- * */
-    ?>
+<?php
+echo DropZone::widget([
+    'options' => [
+        'maxFilesize' => '2',
+    ],
+    'clientEvents' => [
+        'complete' => "function(file){console.log(file)}",
+        'removedfile' => "function(file){alert(file.name + ' is removed')}"
+    ],
+]);
+?>
 
-  
+
 <div class="form-actions">
-    <?= Html::submitButton($model->isNewRecord ? 'Maak aan' : 'Bewaar', ['class' => 'btn btn-primary']) ?>
+<?= Html::submitButton($model->isNewRecord ? 'Maak aan' : 'Bewaar', ['class' => 'btn btn-primary']) ?>
 </div>
 <?php ActiveForm::end(); ?>

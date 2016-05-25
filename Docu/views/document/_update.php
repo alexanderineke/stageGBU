@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\widgets\imperavi\src\Widget;
+use yii\widgets\dropzone\DropZone;
 
 $form = ActiveForm::begin([
             'id' => 'documenten-form',
@@ -58,7 +59,15 @@ $tags = substr($tags, 0, -1);
 
 <?php
 
-//Hier moet een dropzone komen
+echo DropZone::widget([
+    'options' => [
+        'maxFilesize' => '2',
+    ],
+    'clientEvents' => [
+        'complete' => "function(file){console.log(file)}",
+        'removedfile' => "function(file){alert(file.name + ' is removed')}"
+    ],
+]);
 ?>
 
 <?= Html::submitButton($model->isNewRecord ? 'Maak aan' : 'Bewaar', ['class' => 'btn btn-primary']) ?>

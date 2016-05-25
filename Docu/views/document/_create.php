@@ -1,7 +1,8 @@
 <?php
+
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
+use yii\widgets\dropzone\DropZone;
 
 $form = ActiveForm::begin([
             'id' => 'document-form',
@@ -19,18 +20,9 @@ $form = ActiveForm::begin([
 <?= $form->field($model, 'title')->textInput(['class' => 'span5', 'maxlength' => 64]); ?>
 
 <?php
-echo \kato\DropZone::widget([
-    'model' => $model,
-    'attribute' => 'file',
-    'url' => $this->createUrl('document/upload'),
+echo DropZone::widget([
     'options' => [
-        'maxFilesize' => '200',
-        'dictDefaultMessage' => 'Plaats hier het bestand dat u wilt uploaden',
-        'dictFallbackMessage' => 'Uw browser wordt niet ondersteund',
-        'dictInvalidFileType' => 'Dit bestands formaat wordt niet ondersteund. Converteer het a.u.b. naar MP3.',
-        'dictFileTooBig' => 'Het bestand dat u probeert te uploaden is te groot.',
-        'clickable' => true,
-        'accept' => ['application/pdf', 'application/x-pdf'],
+        'maxFilesize' => '2',
     ],
     'clientEvents' => [
         'complete' => "function(file){console.log(file)}",

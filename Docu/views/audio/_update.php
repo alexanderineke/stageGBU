@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\widgets\imperavi\src\Widget;
+use yii\widgets\dropzone\DropZone;
 
 $form = ActiveForm::begin([
             'id' => 'audio-form',
@@ -46,6 +47,15 @@ $tags = substr($tags, 0, -1);
 
 <?php
 
+echo DropZone::widget([
+    'options' => [
+        'maxFilesize' => '2',
+    ],
+    'clientEvents' => [
+        'complete' => "function(file){console.log(file)}",
+        'removedfile' => "function(file){alert(file.name + ' is removed')}"
+    ],
+]);
 //Hier moet een variant komen van ETagIt
 ?>
 

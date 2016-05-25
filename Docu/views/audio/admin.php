@@ -37,13 +37,14 @@ $this->params['menu'][] = [
 
 <?= Html::a('Geavanceerd zoeken', '#', ['class' => 'btn btn-default']) ?>
 <div class="search-form" style="display: none">
-    <?php $this->render('_search', ['model' => $model], true); ?>
+    <?php Yii::$app->controller->renderPartial('_search', ['model' => $model, true]) ?>
 </div>
 
 <?=
 GridView::widget([
     'id' => 'audio-grid',
     'dataProvider' => $model->search(),
+   // 'filterModel' => $model,
     'columns' => [
         ['class' => 'yii\grid\SerialColumn'],
         'title',
