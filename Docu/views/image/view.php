@@ -2,6 +2,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\widgets\Menu;
+use app\models\User;
 /* @var $this yii\web\View */
 /* @var $model app\models\Image */
 
@@ -42,12 +43,14 @@ echo Menu::widget([
         $tags .= $tag->name . ', ';
         $tags = substr($tags, 0, -2);
     }
+    $user = User::findIdentity($model->user_id);
     ?>
     <?=
         DetailView::widget([
             'model' => $model,
             'attributes' => [
                 'title',
+                ['label' => 'Uploader', 'value' => $user->username],
                 'description:html',
                 ['label' => 'Steekwoorden', 'value' => $tags],
                 'year',

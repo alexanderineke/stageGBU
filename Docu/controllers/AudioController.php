@@ -23,7 +23,7 @@ use yii\data\ActiveDataProvider;
  */
 class AudioController extends Controller {
 
-  //  public $layout = '@app/views/layouts/column2.php';
+    //  public $layout = '@app/views/layouts/column2.php';
     protected $tags = [];
 
     public function filters() {
@@ -36,19 +36,19 @@ class AudioController extends Controller {
                 'class' => \yii\filters\AccessControl::className(),
                 'only' => ['index', 'view', 'update', 'create', 'process', 'upload', 'batchupload', 'admin', 'delete'],
                 'rules' => [
-                    [   'allow' => true,
+                    [ 'allow' => true,
                         'actions' => ['index', 'view'],
                         'roles' => ['?'],
                     ],
-                    [   'allow' => true,
+                    [ 'allow' => true,
                         'actions' => ['index', 'view', 'update', 'create', 'process', 'upload', 'batchupload'],
                         'roles' => ['moderator'],
                     ],
-                    [   'allow' => true,
+                    [ 'allow' => true,
                         'actions' => ['index', 'view', 'update', 'create', 'process', 'upload', 'batchupload', 'admin', 'delete'],
                         'roles' => ['@'],
                     ],
-                    [   'allow' => false,
+                    [ 'allow' => false,
                         'roles' => ['?'],
                     ],
                 ],
@@ -56,17 +56,16 @@ class AudioController extends Controller {
         ];
     }
 
-    /*
-      public function action() !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!{
-      return [
-      'upload'=>[
-      'class'=>''
-      ]
-      ]
-      }
-     */
+    public function actions() {
+        return [
+            'upload' => [
+                'class' => 'xupload.actions.XUploadAction',
+                'path' => Yii::getAlias('@app/../uploads/'),
+                'publicPath' => Yii::getAlias('@app/uploads/'),
+            ],
+        ];
+    }
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public function actionView($id) {
         return $this->render('view', [
                     'model' => $this->loadModel($id),
@@ -75,7 +74,7 @@ class AudioController extends Controller {
 
     public function actionUpload() {
         $model = new AudioTemp;
-        $uploadedfile = UploadedFile::getInstanceByName('Audio[file]');
+        $uploadedFile = UploadedFile::getInstanceByName('Audio[file]');
         $rnd = rand(0, 9999);
         $folderName = date("d M Y");
         $fileName = "{$rnd}_{$uploadedFile}";
@@ -163,9 +162,8 @@ class AudioController extends Controller {
             //Yii::app()->user->setState('filesToProcess', array());
             Yii::$app->getSession()->setFlash('filesToProcess', array());
         }
-
         return $this->render('update', [
-            'model' => $model,
+                    'model' => $model,
         ]);
     }
 
@@ -183,7 +181,7 @@ class AudioController extends Controller {
     public function actionCreate() {
         $model = new Audio();
 
-        Yii::$app->getSession()->setFlash('filesToProcess', []);
+        Yii::$app->session->set('filesToProcess', []);
 
 //        if ($model->load(Yii::$app->request->post()) && $model->save()) {
 //            return $this->redirect(['view', 'id' => $model->id]);
@@ -204,13 +202,13 @@ class AudioController extends Controller {
             $model = new Audio();
         }
 
-        $fileQueue = Yii::$app->session->setFlash('filesToProcess');
+        $fileQueue = Yii::$app->getSession()->get('filesToProcess');
         if (!$fileQueue) {
             $this->redirect(['index']);
         }
 
         if (!$id && isset($_POST['Audio'])) {
-            $audioTempModel = AudioTemp::findOne($fileQueue[0]);
+            $audioTempModel = AudioTemp::findOne($fileQueue[]);
             $file = $audioTempModel->getAttributes(['file', 'format', 'location']);
             $model->attributes = $_POST['Audio'];
         } else if ($id) {
@@ -235,7 +233,7 @@ class AudioController extends Controller {
 
                 if ($model->save()) {
 
-                    if ($this -> saveTags($model->id)) {
+                    if ($this->saveTags($model->id)) {
 
                         if (!$model->audios) {
                             if (AudioFile::model()->saveAudio($this->tags[0], $file)) {
@@ -246,27 +244,27 @@ class AudioController extends Controller {
                                     $audioTempModel = AudioTemp::findOne($fileQueue[0]);
                                     $file = $audioTempModel->getAttributes(['file', 'format', 'location']);
                                 } else {
-                                    Yii::$app->session->set('succes', "Audio bestand(en) met succes toegevoegd.");
+                                    Yii::$app->session->setFlash('succes', "Audio bestand(en) met succes toegevoegd.");
                                 }
                             } else {
-                               Yii::$app->session->set('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
-                                $this->redirect(['process', 'id' => $model -> id]);
+                                Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
+                                $this->redirect(['process', 'id' => $model->id]);
                             }
                         }
                     } else {
-                        Yii::$app->session->set('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
+                        Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
                         $this->redirect(['process', 'id' => $model->id]);
                     }
                 } else {
-                    Yii::$app->session->set('error', "Er is een fout opgetreden bij het opslaan. Probeert u het alstublieft nog eens.");
+                    Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan. Probeert u het alstublieft nog eens.");
                 }
             } else {
-                Yii::$app->session->set('error', "De steekwoorden zijn ongeldig. Probeert u het alstublieft nog eens.");
+                Yii::$app->session->setFlash('error', "De steekwoorden zijn ongeldig. Probeert u het alstublieft nog eens.");
             }
         }
 
         if (!$fileQueue || !isset($file)) {
-            $this -> redirect(['index']);
+            $this->redirect(['index']);
         }
 
         $list = ArrayHelper::map(Collection::model()->findAll(
@@ -292,8 +290,8 @@ class AudioController extends Controller {
 
         $dataProvider = new ActiveDataProvider([
             'query' => Audio::find()
-                ->where($condition)
-                ->orderBy('title ASC'),
+                    ->where($condition)
+                    ->orderBy('title ASC'),
 //            'criteria' => [
 //                'condition' => $condition,
 //                'order' => 'title ASC',
@@ -301,8 +299,8 @@ class AudioController extends Controller {
         ]);
 
         return $this->render('index', [
-            'model' => new Audio(),
-            'dataProvider' => $dataProvider,
+                    'model' => new Audio(),
+                    'dataProvider' => $dataProvider,
         ]);
 
         /*
@@ -318,11 +316,11 @@ class AudioController extends Controller {
 
     public function actionAdmin() {
         $model = new Audio();
-       // $model->unsetAttributes(); // Bestaat niet!
+        // $model->unsetAttributes(); // Bestaat niet!
         if (isset($_GET['Audio'])) {
             $model->attributes = $_GET['Audio'];
         }
-        return $this -> render('admin', [
+        return $this->render('admin', [
                     'model' => $model,
         ]);
     }
@@ -356,7 +354,7 @@ class AudioController extends Controller {
                 $newSlugs[$i] = $name;
                 $newTags[$i] = mb_strtolower($newtag);
             }
-         //   $f = new Tag();
+            //   $f = new Tag();
             $selectedTags = (new Tag)->check($newSlugs); //Moet nog naar gekeken worden
             $remainingTags = array();
             $remainingSlugs = array();
@@ -424,4 +422,5 @@ class AudioController extends Controller {
             return true;
         }
     }
+
 }

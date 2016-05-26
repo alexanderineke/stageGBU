@@ -3,7 +3,8 @@
 namespace app\models;
 
 use Yii;
-
+use app\models\User;
+use yii\data\ActiveDataProvider;
 /**
  * This is the model class for table "{{%audio_temp}}".
  *

@@ -22,7 +22,7 @@ $form = ActiveForm::begin([
 <?php
 echo DropZone::widget([
     'options' => [
-        'maxFilesize' => '2',
+        'maxFilesize' => '200',
     ],
     'clientEvents' => [
         'complete' => "function(file){console.log(file)}",

@@ -187,7 +187,7 @@ class ImageController extends Controller {
             $model = new Image();
         }
 
-        $fileQueue = Yii::$app->session->set('filesToProcess', []);
+        $fileQueue = Yii::$app->session->get('filesToProcess');
         if (!$fileQueue) {
             $this->redirect(['index']);
         }
@@ -206,6 +206,8 @@ class ImageController extends Controller {
             }
         } else {
             $imageTempModel = ImageTemp::findOne($fileQueue[0]);
+//            print_r($fileQueue);
+//            exit;
             $file = $imageTempModel->getAttributes(['file', 'format', 'location']);
         }
 

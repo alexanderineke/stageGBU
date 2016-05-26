@@ -7,22 +7,6 @@ use yii\helpers\Html;
 use yii\db\ActiveRecord;
 use yii\data\ActiveDataProvider;
 
-/**
- * This is the model class for table "{{%document}}".
- *
- * @property string $id
- * @property integer $user_id
- * @property string $title
- * @property string $description
- * @property string $content
- * @property integer $year
- * @property string $owner
- * @property string $created_on
- * @property string $modified_on
- * @property integer $published
- *
- * @property User $user
- */
 class Document extends ActiveRecord {
 
     public $tag_search, $count, $tagName;
@@ -101,39 +85,4 @@ class Document extends ActiveRecord {
 
         return $dataProvider;
     }
-/*
-    public function searchDocuments($model, $query) {
-        $q = Document::find();
-
-        $dataProvider = new ActiveDataProvider([
-            'query' => $q,
-            'pagination' => [
-                'pageSize' => 25,
-            ],
-            'sort' => ['attributes' => ['tag_search' => [
-                        'asc' => ['tags.slug' => SORT_ASC],
-                        'desc' => ['tags.slug' => SORT_DESC],
-                    ]],
-                '*'],
-        ]);
-
-        if (!$this->validate()) {
-            return $dataProvider;
-        }
-
-        $q
-                ->andFilterWhere(['or', ['like', 'description', $query],
-                    ['like', 'year', $query],
-                    ['like', 'title', $query],
-                    ['like', 'tags.slug', $query]])
-                ->andFilterWhere([['like', 'title', $this->title],
-                    ['like', 'description', $this->description],
-                    ['like', 'tags.slug', $this->year],
-                    ['like', 'year', $this->owner],
-                    ['like', 'tags.state', $this->published]])
-                ->groupBy('t.id');
-
-        return $dataProvider;
-    }
-*/
 }

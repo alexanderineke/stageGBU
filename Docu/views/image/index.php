@@ -18,6 +18,7 @@ echo Menu::widget([
         ['label' => 'Beheer afbeeldingen', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::$app->user->getIdentity('admin')],
     ],
 ]);
+
 function objectToTagString($tags) {
     $string = [];
     foreach ($tags as $tag) {
@@ -25,6 +26,7 @@ function objectToTagString($tags) {
     }
     return implode(", ", $string);
 }
+
 function fileLocation($id, $title) {
     return Yii::getAlias($title, ['audio/view', 'id' => $id]);
 }
@@ -32,34 +34,28 @@ function fileLocation($id, $title) {
 <div class="image-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-<?php // echo $this->render('_search', ['model' => $searchModel]);  ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]);   ?>
 
     <p>
-<?= Html::a('Create Image', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Image', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-<?=
-GridView::widget([
-    'id' => 'image-grid',
-    // 'type' => 'striped bordered',
-    'dataProvider' => $model->search(),
-    'columns' => [
-       ['header' => 'Naam imagebestand', 'value' => function($data) {
-                $file = fileLocation($data->id, $data->title);
-                return Html::a(Html::encode($file), 'index.php?r=image%2Fview&id=' . $data->id);
-            }, 'format' => 'raw'],
-        ['header' => 'Tags', 'value' => function($data) {
-                return objectToTagString($data->tags);
-            }],
-        ['header' => 'Jaar', 'value' => 'year'],
-    //  ['class' => 'yii\grid\ActionColumn'],
-    ],
-    //  'enableHistory' => true,
-    'pager' => [
-        'prevPageLabel' => '&laquo;',
-        'nextPageLabel' => '&raquo;',
-    ],
-]);
-?>
-
+    <?=
+    GridView::widget([
+        'id' => 'image-grid',
+        // 'type' => 'striped bordered',
+        'dataProvider' => $model->search(),
+        'columns' => [
+        //    ['header' => 'Voorbeeld', 'value'=>'CHtml::image("uploads/afbeeldingen/".$data->images[0]->location."/thumb/".$data->images[0]->file.$data->images[0]->format)'], 
+            ['header' => 'Naam imagebestand', 'value' => function($data) {
+                    $file = fileLocation($data->id, $data->title);
+                    return Html::a(Html::encode($file), 'index.php?r=image%2Fview&id=' . $data->id);
+                }, 'format' => 'raw'],
+        ],
+        'pager' => [
+            'prevPageLabel' => '&laquo;',
+            'nextPageLabel' => '&raquo;',
+        ],
+    ]);
+    ?>
 </div>
