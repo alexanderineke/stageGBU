@@ -43,14 +43,23 @@ function fileLocation($id, $title) {
     <?=
     GridView::widget([
         'id' => 'image-grid',
-        // 'type' => 'striped bordered',
         'dataProvider' => $model->search(),
         'columns' => [
-        //    ['header' => 'Voorbeeld', 'value'=>'CHtml::image("uploads/afbeeldingen/".$data->images[0]->location."/thumb/".$data->images[0]->file.$data->images[0]->format)'], 
-            ['header' => 'Naam imagebestand', 'value' => function($data) {
+            ['header' => 'Voorbeeld',
+                'format' => 'image',
+                'label' => 'vhiujtk',
+                'value' => function($data) {
+                    $filelocation = "@app/uploads/afbeeldingen/" . $data->images[0]->location . "/thumb/" . $data->images[0]->file . $data->images[0]->format;
+                    return Html::img($filelocation, []);                   
+                }
+            ],
+            ['header' => 'Naam imagebestand',
+                'format' => 'raw',
+                'value' => function($data) {
                     $file = fileLocation($data->id, $data->title);
                     return Html::a(Html::encode($file), 'index.php?r=image%2Fview&id=' . $data->id);
-                }, 'format' => 'raw'],
+                },
+            ],
         ],
         'pager' => [
             'prevPageLabel' => '&laquo;',

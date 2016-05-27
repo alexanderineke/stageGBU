@@ -59,7 +59,7 @@ foreach ($model->tags as $i => $tag) {
     $tags = substr($tags, 0, -2);
 }
 
-$user = User::findIdentity($model->id);
+$user = User::findIdentity($model->user_id);
 ?>
 
 <h1><?php echo $model->title; ?></h1>

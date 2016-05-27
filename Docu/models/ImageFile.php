@@ -83,59 +83,43 @@ class ImageFile extends \yii\db\ActiveRecord {
             $fileInfo = pathinfo(Yii::$app->basePath . '/../uploads/' . $file['location'] . '/' . $file['file']);
 
             //Map voor afbeeldingen
-            if (!is_dir(Yii::$app->basePath . '/../uploads/afbeeldingen/')) {
-                mkdir(Yii::$app->basePath . '/../uploads/afbeeldingen/');
+            if (!is_dir(\Yii::getAlias('@app/uploads/afbeeldingen/'))) {
+                mkdir(\Yii::getAlias('@app/uploads/afbeeldingen/'));
             }
 
             //Map voor de normale versie (max: 750x500)
-            if (!is_dir(Yii::$app->basePath . '/../uploads/afbeeldingen/' . $folder_name . '/')) {
-                mkdir(Yii::$app->basePath . '/../uploads/afbeeldingen/' . $folder_name . '/');
+            if (!is_dir(\Yii::getAlias('@app/uploads/afbeeldingen/' . $folder_name . '/'))) {
+                mkdir(\Yii::getAlias('@app/uploads/afbeeldingen/' . $folder_name . '/'));
             }
 
             //Map voor de thumbnail (fixed: 100x100)
-            if (!is_dir(Yii::$app->basePath . '/../uploads/afbeeldingen/' . $folder_name . '/thumb/')) {
-                mkdir(Yii::$app->basePath . '/../uploads/afbeeldingen/' . $folder_name . '/thumb/');
+            if (!is_dir(\Yii::getAlias('@app/uploads/afbeeldingen/' . $folder_name . '/thumb/'))) {
+                mkdir(\Yii::getAlias('@app/uploads/afbeeldingen/' . $folder_name . '/thumb/'));
             }
 
             //Map voor de full versie
-            if (!is_dir(Yii::$app->basePath . '/../uploads/afbeeldingen/' . $folder_name . '/full/')) {
-                mkdir(Yii::$app->basePath . '/../uploads/afbeeldingen/' . $folder_name . '/full/');
+            if (!is_dir(\Yii::getAlias('@app/uploads/afbeeldingen/' . $folder_name . '/full/'))) {
+                mkdir(\Yii::getAlias('@app/uploads/afbeeldingen/' . $folder_name . '/full/'));
             }
 
-            //Genereer normale versie
-            $thumb = Yii::$app->phpThumb->create(Yii::$app->basePath . '/../uploads/' . $file['location'] . '/' . $file['file']);
+            //Genereer normale versie 
+            $thumb = \Yii::$app->phpThumb->create(\Yii::getAlias('@app/uploads/' . $file['location'] . '/' . $file['file']));
             $thumb->resize(750, 500);
-            if (!$thumb->save(Yii::$app->basePath . '/../uploads/afbeeldingen/' . $folder_name . '/' . $fileInfo['filename'] . '.jpg', 'JPG')) {
+            if (!$thumb->save(\Yii::getAlias('@app/uploads/afbeeldingen/' . $folder_name . '/' . $fileInfo['filename'] . '.jpg', 'JPG'))) {
                 $errorOccured = true;
             }
             //Genereer thumbnail versie
-            $thumb = Yii::$app->phpThumb->create(Yii::$app->basePath . '/../uploads/' . $file['location'] . '/' . $file['file']);
+            $thumb = \Yii::$app->phpThumb->create(\Yii::getAlias('@app/uploads/' . $file['location'] . '/' . $file['file']));
             $thumb->adaptiveResize(100, 100);
-            if (!$thumb->save(Yii::$app->basePath . '/../uploads/afbeeldingen/' . $folder_name . '/thumb/' . $fileInfo['filename'] . '.jpg', 'JPG')) {
+            if (!$thumb->save(\Yii::getAlias('@app/uploads/afbeeldingen/' . $folder_name . '/thumb/' . $fileInfo['filename'] . '.jpg', 'JPG'))) {
                 $errorOccured = true;
             }
             //Genereer full versie
-            $thumb = Yii::$app->phpThumb->create(Yii::$app->basePath . '/../uploads/' . $file['location'] . '/' . $file['file']);
-            if (!$thumb->save(Yii::$app->basePath . '/../uploads/afbeeldingen/' . $folder_name . '/full/' . $fileInfo['filename'] . '.jpg', 'JPG')) {
+            $thumb = \Yii::$app->phpThumb->create(\Yii::getAlias('@app/uploads/' . $file['location'] . '/' . $file['file']));
+            if (!$thumb->save(\Yii::getAlias('@app/uploads/afbeeldingen/' . $folder_name . '/full/' . $fileInfo['filename'] . '.jpg', 'JPG'))) {
                 $errorOccured = true;
             }
-            //Up into the clouds~
-            // $fileContents = file_get_contents(Yii::$app->basePath.'/../uploads/'.$file['location'].'/'.$file['file']);
-            // require_once 'google-api-php-client/src/Google_Client.php';
-            // require_once 'google-api-php-client/src/contrib/Google_StorageService.php';
-            // $client = new Google_Client();
-            // $client->setApplicationName('Documentatie Centrum Website');
-            // $key = file_get_contents('protected/6ecc407906ebf13b86f5413e89de1ca36ae1e7fe-privatekey.p12');
-            // $client->setAssertionCredentials(new Google_AssertionCredentials('405222382916-rr450c1pf978fcfnhkfeq37n3er0t591@developer.gserviceaccount.com',
-            //   array('https://www.googleapis.com/auth/devstorage.full_control'),
-            //   $key));
-            // $StorageService = new Google_StorageService($client);
-            // $objects = $StorageService->objects;
-            // $postbody = array('data' => $fileContents, 'mimeType' =>'image/jpeg');
-            // $gso = new Google_StorageObject();
-            // $gso->setName($folder_name.'/'.$fileInfo['filename'].'.jpg');
-            // $resp = $objects->insert('dcu-image', $gso, $postbody);
-            //Alle oude afbeeldingen op state 0
+
             $this->updateAll(['state' => 0], 'image_id=' . $image_id);
 
             //Insert de nieuwe afbeelding
@@ -158,5 +142,4 @@ class ImageFile extends \yii\db\ActiveRecord {
     public function getImage() {
         return $this->Belongs_to(Image::className(), ['id' => 'image_id']);
     }
-
 }

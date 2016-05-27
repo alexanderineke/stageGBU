@@ -107,7 +107,7 @@ class Image extends \yii\db\ActiveRecord {
     }
 
     public function getImages() {
-        return $this->hasMany(ImageFile::className(), ['id' => 'image_id'])->andWhere('state=1');
+        return $this->hasMany(ImageFile::className(), ['image_id' => 'id'])->andWhere('state=1');
     }
 
 }

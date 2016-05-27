@@ -39,6 +39,8 @@ foreach ($model->tags as $i => $tag) {
     $values[$i]['tag'] = $tag->name;
 }
 $tags = substr($tags, 0, -1);
+
+// Hier moet een externe widget komen
 ?>
 
 <?= $form->field($model, 'tags_previous')->hiddenInput(['value' => $tags]) ?>

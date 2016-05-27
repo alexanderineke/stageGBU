@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use app\models\User;
 use yii\data\ActiveDataProvider;
+
 /**
  * This is the model class for table "{{%audio_temp}}".
  *
@@ -20,6 +21,10 @@ class AudioTemp extends \yii\db\ActiveRecord {
     /**
      * @inheritdoc
      */
+    public static function model($className = __CLASS__) {
+        return parent::model($className);
+    }
+
     public static function tableName() {
         return '{{%audio_temp}}';
     }
@@ -81,7 +86,7 @@ class AudioTemp extends \yii\db\ActiveRecord {
     public function addTempFile($filename, $location) {
         $sql->createCommand()
                 ->insert('tbl_audio_temp', [
-                    'user_id' => Yii::$app->user->getId(),
+                    'user_id' => \Yii::$app->user->getId(),
                     'create_date' => 'NOW()',
                     'file' => $filename,
                     'format' => 'pdf',

@@ -104,9 +104,9 @@ class AudioController extends Controller {
         if ($uploadedFile->saveAs(Yii::getAlias('@app' . '/../uploads/' . $folderName . '/' . $fileName))) {
             $id = $model->addTempFile($fileName, $folderName);
             if ($id) {
-                $fileQueue = Yii::app()->user->getState('filesToProcess');
+                $fileQueue = Yii::$app->session->get('filesToProcess');
                 array_push($fileQueue, $id);
-                Yii::$app->user->setState('filesToProcess', $fileQueue);
+                Yii::$app->session->set('filesToProcess', [$fileQueue]);
             } else {
                 throw new HttpException(400, 'Upload niet gelukt.');
             }
@@ -202,7 +202,7 @@ class AudioController extends Controller {
             $model = new Audio();
         }
 
-        $fileQueue = Yii::$app->getSession()->get('filesToProcess');
+        $fileQueue = Yii::$app->session->get('filesToProcess');
         if (!$fileQueue) {
             $this->redirect(['index']);
         }
