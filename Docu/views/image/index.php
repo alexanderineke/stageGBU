@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Menu;
+use yii\helpers\BaseUrl;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\Search */
@@ -28,11 +29,11 @@ function objectToTagString($tags) {
 }
 
 function fileLocation($id, $title) {
-    return Yii::getAlias($title, ['audio/view', 'id' => $id]);
+    return Yii::getAlias($title, ['image/view', 'id' => $id]);
 }
 ?>
 <div class="image-index">
-
+    
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]);   ?>
 
@@ -46,11 +47,13 @@ function fileLocation($id, $title) {
         'dataProvider' => $model->search(),
         'columns' => [
             ['header' => 'Voorbeeld',
-                'format' => 'image',
-                'label' => 'vhiujtk',
+                'format' => 'html',
                 'value' => function($data) {
-                    $filelocation = "@app/uploads/afbeeldingen/" . $data->images[0]->location . "/thumb/" . $data->images[0]->file . $data->images[0]->format;
-                    return Html::img($filelocation, []);                   
+                    $filelocation = Yii::$app->getUrlManager()->getBaseUrl()."/uploads/afbeeldingen/" . $data->images[0]->location . "/thumb/" . $data->images[0]->file . $data->images[0]->format;
+                    return Html::img(yii\helpers\Url::to($filelocation));
+                  //  echo $filelocation;
+                 //   echo Yii::getAlias($filelocation);
+                  //  return Html::img(Yii::getAlias('@app'.$filelocation));                   
                 }
             ],
             ['header' => 'Naam imagebestand',

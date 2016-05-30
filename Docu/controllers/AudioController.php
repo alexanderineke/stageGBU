@@ -4,7 +4,6 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Audio;
-use app\models\Search;
 use app\models\Tag;
 use app\models\AudioTag;
 use app\models\AudioFile;
@@ -15,7 +14,6 @@ use yii\web\UploadedFile;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\HttpException;
-use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 
 /**
@@ -60,7 +58,7 @@ class AudioController extends Controller {
         return [
             'upload' => [
                 'class' => 'xupload.actions.XUploadAction',
-                'path' => Yii::getAlias('@app/../uploads/'),
+                'path' => Yii::getAlias('@app/uploads/'),
                 'publicPath' => Yii::getAlias('@app/uploads/'),
             ],
         ];
@@ -85,7 +83,7 @@ class AudioController extends Controller {
             $id = $model->addTempFile($fileName, $folderName);
             if ($id) {
                 // Yii::$app->user->setState('filesToProcess', array($id));
-                Yii::$app->session->set('filesToProcess', [$id]);
+                Yii::$app->session->setFlash('filesToProcess', [$id]);
             } else {
                 throw new HttpException(400, 'Upload niet gelukt.');
             }
@@ -104,9 +102,9 @@ class AudioController extends Controller {
         if ($uploadedFile->saveAs(Yii::getAlias('@app' . '/../uploads/' . $folderName . '/' . $fileName))) {
             $id = $model->addTempFile($fileName, $folderName);
             if ($id) {
-                $fileQueue = Yii::$app->session->get('filesToProcess');
+                $fileQueue = Yii::$app->session->getFlash('filesToProcess');
                 array_push($fileQueue, $id);
-                Yii::$app->session->set('filesToProcess', [$fileQueue]);
+                Yii::$app->session->setFlash('filesToProcess', [$fileQueue]);
             } else {
                 throw new HttpException(400, 'Upload niet gelukt.');
             }
@@ -118,7 +116,7 @@ class AudioController extends Controller {
 
         if (isset($_POST['Audio'])) {
             // $fileQueue = Yii::app()->user->getState('filesToProcess');
-            $fileQueue = Yii::$app->session->get('filesToProcess');
+            $fileQueue = Yii::$app->session->getFlash('filesToProcess');
             if ($fileQueue) {
                 $audioTempModel = AudioTemp::findOne($fileQueue[0]);
                 $file = $audioTempModel->getAttributes(['file', 'format', 'location']);
@@ -137,7 +135,7 @@ class AudioController extends Controller {
                             if (AudioFile::model()->saveAudio($model->id, $this->tags[0], $file)) {
                                 array_shift($fileQueue);
                                 //Yii::app()->user->setState('filesToProcess', $fileQueue);
-                                Yii::$app->session->set('filesToProcess', $fileQueue);
+                                Yii::$app->session->setFlash('filesToProcess', $fileQueue);
                                 $this->redirect(['view', 'id' => $model->id]);
                             } else {
                                 // Yii::app()->user - setFlash('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
@@ -181,7 +179,8 @@ class AudioController extends Controller {
     public function actionCreate() {
         $model = new Audio();
 
-        Yii::$app->session->set('filesToProcess', []);
+        //       Yii::$app->session->setFlash('filesToProcess', []);
+        Yii::$app->session->setFlash('filesToProcess');
 
 //        if ($model->load(Yii::$app->request->post()) && $model->save()) {
 //            return $this->redirect(['view', 'id' => $model->id]);
@@ -202,13 +201,13 @@ class AudioController extends Controller {
             $model = new Audio();
         }
 
-        $fileQueue = Yii::$app->session->get('filesToProcess');
+        $fileQueue = Yii::$app->session->getFlash('filesToProcess');
         if (!$fileQueue) {
             $this->redirect(['index']);
         }
 
         if (!$id && isset($_POST['Audio'])) {
-            $audioTempModel = AudioTemp::findOne($fileQueue[]);
+            $audioTempModel = AudioTemp::findOne($fileQueue[0]);
             $file = $audioTempModel->getAttributes(['file', 'format', 'location']);
             $model->attributes = $_POST['Audio'];
         } else if ($id) {
@@ -219,7 +218,7 @@ class AudioController extends Controller {
                 $audioTempModel = AudioTemp::findOne($fileQueue[0]);
                 $file = $audioTempModel->getAttributes(['file', 'format', 'location']);
             }
-        } else {
+        } else {            
             $audioTempModel = AudioTemp::findOne($fileQueue[0]);
             $file = $audioTempModel->getAttributes(['file', 'format', 'location']);
         }

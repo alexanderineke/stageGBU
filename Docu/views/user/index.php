@@ -18,6 +18,10 @@ echo Menu::widget([
         ['label' => 'Beheer gebruikers', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::$app->user->getIdentity('admin')],
     ]
 ]);
+
+function fileLocation($id, $title) {
+    return Yii::getAlias($title, ['user/view', 'id' => $id]);
+}
 ?>
 <div class="user-index">
 
@@ -26,8 +30,15 @@ echo Menu::widget([
     GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
-            'username',
-            'email:email',
+            ['class' => 'yii\grid\SerialColumn'],
+            ['header' => 'Gebruikersnaam',
+                'format' => 'raw',
+                'value' => function($data) {
+                    $file = fileLocation($data->id, $data->username);
+                    return Html::a(Html::encode($file), 'index.php?r=user%2Fview&id=' . $data->id);
+                },
+            ],
+            'email',
             'roles',
         ],
     ]);

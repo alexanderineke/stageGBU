@@ -74,10 +74,10 @@ return [
         // ),
 
         'db'=>[
-            'connectionString' => 'mysql:host=localhost;dbname=docu',
+            'connectionString' => 'mysql:host=localhost:3306;dbname=docu',
             'emulatePrepare' => true,
-            'username' => 'docu',
-            'password' => 'docu',
+            'username' => 'root',
+            'password' => '',
             'charset' => 'utf8',
             'tablePrefix' => 'tbl_',
        ],

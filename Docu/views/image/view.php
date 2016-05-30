@@ -7,7 +7,7 @@ use app\models\User;
 /* @var $model app\models\Image */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Images', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Afbeeldingen', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 echo Menu::widget([
@@ -15,7 +15,7 @@ echo Menu::widget([
         ['label' => 'Acties', 'visible' => Yii::$app->user->getIdentity('moderator')],
         ['label' => 'Lijst van afbeeldingen', 'url' => ['index'], 'icon' => 'list', 'visible' => Yii::$app->user->getIdentity('moderator')],
         ['label' => 'Maak afbeeldingen aan', 'url' => ['create'], 'icon' => 'file', 'visible' => Yii::$app->user->getIdentity('user')],   ['label' => 'Bewerk afbeelding', 'url' => ['update','id'=>$model->id], 'pencil' => 'eye-open', 'visible' => Yii::$app->user->getIdentity('moderator')],
-      //  ['label' => 'Verwijder afbeelding', 'url' => '#', 'icon' => 'trash', 'linkOptions' => ['submit' => ['delete', 'id' => $model->id]], 'confirm' => 'Weet je zeker dat je deze afbeelding wilt verwijderen?'],'visible'=>Yii::$app->user->getIdentity('admin'),
+        ['label' => 'Verwijder afbeelding', 'url' => '#', 'icon' => 'trash', 'linkOptions' => ['submit' => ['delete', 'id' => $model->id]], 'confirm' => 'Weet je zeker dat je deze afbeelding wilt verwijderen?'],
         ['label' => 'Beheer afbeeldingen', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::$app->user->getIdentity('admin')],
   ], 
 ]);
@@ -24,6 +24,8 @@ echo Menu::widget([
 <div class="image-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
+    
+    <?= Html::img(Yii::$app->getUrlManager()->getBaseUrl()."/uploads/afbeeldingen/".$model->images[0]->location.'/'.$model->images[0]->file.$model->images[0]->format); ?>
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>

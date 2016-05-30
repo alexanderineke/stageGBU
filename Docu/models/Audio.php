@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
+use app\models\AudioFile;
 
 class Audio extends \yii\db\ActiveRecord {
 
@@ -53,12 +54,8 @@ class Audio extends \yii\db\ActiveRecord {
                         ->viaTable('tbl_audio_tag', ['audio_id' => 'id']);
     }
 
-    public function getAudioTags() {
-        $this->HasMany(AudioTag::className(), ['id' => 'audio_id']);
-    }
-
     public function getAudios() {
-        $this->hasMany(AudioFile::className(), ['id' => 'audio_id'])->andWhere('state=1');
+        return $this->hasOne(AudioFile::className(), ['audio_id' => 'id'])->andWhere('state=1');
     }
 
     public function search() {
