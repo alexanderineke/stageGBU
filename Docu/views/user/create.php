@@ -5,8 +5,8 @@ use yii\widgets\Menu;
 /* @var $this yii\web\View */
 /* @var $model app\models\User */
 
-$this->title = 'Maak Gebruiker aan';
-$this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
+$this->title = 'Aanmaken';
+$this->params['breadcrumbs'][] = ['label' => 'Gebruiker', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 

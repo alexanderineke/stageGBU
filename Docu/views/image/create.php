@@ -5,8 +5,8 @@ use yii\widgets\Menu;
 /* @var $this yii\web\View */
 /* @var $model app\models\Image */
 
-$this->title = 'Maak Afbeelding Aan';
-$this->params['breadcrumbs'][] = ['label' => 'Images', 'url' => ['index']];
+$this->title = 'Aanmaken';
+$this->params['breadcrumbs'][] = ['label' => 'Afbeeldingen', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 echo Menu::widget([

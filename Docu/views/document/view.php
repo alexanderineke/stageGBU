@@ -59,10 +59,10 @@ if (isset($model->documents[0]->location) && isset($model->documents[0]->file) &
 echo DetailView::widget([
     'model' => $model,
     'attributes' => [
-        ['label' => 'Uploader', 'value' => $user->username],
+        ['label' => 'Uploader', 'value' => !empty($user->username) ? $user->username : "Niet opgegeven"],
         'description:html',
         ['label' => 'Steekwoorden', 'value' => $tags],
-        'year',
+        ['label' => 'Jaar', 'value' => !empty($model->year) ? $model->year : "Niet opgegeven"],
         ['label' => 'Eigenaar', 'value' => !empty($model->owner) ? $model->owner : "Niet opgegeven"],
         ['label' => 'Aanmaakdatum', 'value' => ($model->created_on !== "0000-00-00 00:00:00" ? $model->created_on : "Niet beschikbaar")],
         ['label' => 'Laatste wijzigingsdatum', 'value' => ($model->created_on !== "0000-00-00 00:00:00" ? $model->created_on : "Niet beschikbaar")],

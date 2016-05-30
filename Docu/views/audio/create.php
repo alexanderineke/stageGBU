@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\Menu;
 
 $this->title = 'Aanmaken';
-$this->params['breadcrumbs'][] = ['label' => 'Documneten', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Audiobestanden', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 echo Menu::widget([

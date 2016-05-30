@@ -4,8 +4,8 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Menu;
 
-$this->title = 'Beheer Gebruikers';
-$this->params['breadcrumbs'][] = ['label' => 'User', 'url' => ['index']];
+$this->title = 'Beheer';
+$this->params['breadcrumbs'][] = ['label' => 'Gebruikers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 echo Menu::widget([
