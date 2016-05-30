@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\widgets\Menu;
+use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model app\models\Collection */
 
@@ -12,15 +13,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
 echo Menu::widget([
     'items'=>[
-   	['label'=>'Acties','visible'=>Yii::$app->user->getIdentity('moderator')],
-	['label'=>'Lijst van collecties','url'=>['index'],'icon'=>'list','visible'=>Yii::$app->user->getIdentity('moderator')],
-	['label'=>'Maak collectie aan','url'=>['create'],'icon'=>'file','visible'=>Yii::$app->user->getIdentity('moderator')],
-        ['label'=>'Bewerk collectie','url'=>['update','id'=>$model->id],'icon'=>'pencil','visible'=>Yii::$app->user->getIdentity('moderator')],
-        ['label'=>'Verwijder collectie','url'=>'#','icon'=>'trash','linkOptions'=>['submit'=>['delete','id'=>$model->id],'confirm'=>'Weet je zeker dat je deze collectie wilt verwijderen?'],'visible'=>Yii::$app->user->getIdentity('admin')],
+   	['label'=>'Acties','visible'=>!Yii::$app->user->isGuest],
+	['label'=>'Lijst van collecties','url'=>['index'],'icon'=>'list','visible'=>!Yii::$app->user->isGuest],
+	['label'=>'Maak collectie aan','url'=>['create'],'icon'=>'file','visible'=>!Yii::$app->user->isGuest],
+        ['label'=>'Bewerk collectie','url'=>['update','id'=>$model->id],'icon'=>'pencil','visible'=>!Yii::$app->user->isGuest],
+        ['label'=>'Verwijder collectie','url'=>'#','icon'=>'trash','linkOptions'=>['submit'=>['delete','id'=>$model->id],'confirm'=>'Weet je zeker dat je deze collectie wilt verwijderen?'],'visible'=>!Yii::$app->user->isGuest],
         ['label'=>'Beheer collectie','url'=>['admin'],'icon'=>'list-alt','visible'=>Yii::$app->user->getIdentity('admin')],
         
 ]]);
-
 
 ?>
 
@@ -30,7 +30,7 @@ echo Menu::widget([
     <div class="row">
 	<?php if($model->thumb){ ?>
 	<div class="span3">
-		<?php echo CHtml::image('uploads/afbeeldingen/'.$model->thumb->location.'/'.$model->thumb->file.$model->thumb->format, $model->title, ['class'=>'img-polaroid']); ?>
+		<?= Html::img('uploads/afbeeldingen/'.$model->thumb->location.'/'.$model->thumb->file.$model->thumb->format, ['class'=>'img-polaroid']); ?>
 	</div>
         <?php } ?>
 	<div class="span9">
@@ -51,15 +51,15 @@ echo Menu::widget([
                             <div class="span1">
                                 <?php
                                 if ($collection->thumb) {
-                                    echo CHtml::image('uploads/afbeeldingen/' . $collection->thumb->location . '/thumb/' . $collection->thumb->file . $collection->thumb->format, $collection->title, ['class' => 'img-polaroid collection-thumb-img']);
+                                    echo Html::img('uploads/afbeeldingen/' . $collection->thumb->location . '/thumb/' . $collection->thumb->file . $collection->thumb->format, $collection->title, ['class' => 'img-polaroid collection-thumb-img']);
                                 }
                                 ?>
                                 <?php if (!Yii::$app->user->isGuest) { ?>
-                                    <?php echo CHtml::link("<i class=\"icon-trash icon-white\"></i>", Yii::$app->createUrl("collection/deletecollection", ["id" => $_GET["id"], "collection" => $collection->id]), ["class" => "btn btn-primary"]); ?>
+                                    <?php echo Html::a("<i class=\"icon-trash icon-white\"></i>", Url::to("collection/deletecollection", ["id" => $_GET["id"], "collection" => $collection->id]), ["class" => "btn btn-primary"]); ?>
                                 <?php } ?>
                             </div>
                         <?php } ?>
-                        <a href="<?php echo Yii::$app->createUrl("collection/view", ["id" => $collection->id]); ?>"  class="span3">
+                        <a href="<?php echo Url::to("collection/view", ["id" => $collection->id]); ?>"  class="span3">
                             <h3 class="collection-thumb-title"><?php echo $collection->title; ?></h3>
                             <p><?php echo substr(strip_tags($collection->description), 0, 70); ?>...</p>
                             <small class="collection-thumb-items"><?php echo (count($collection->documents) + count($collection->images) + count($collection->collections)); ?> items</small>

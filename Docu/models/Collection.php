@@ -4,6 +4,8 @@ namespace app\models;
 
 use Yii;
 use yii\data\ActiveDataProvider;
+use app\models\ImageFile;
+
 /**
  * This is the model class for table "{{%collection}}".
  *
@@ -112,12 +114,12 @@ class Collection extends \yii\db\ActiveRecord {
 
     public function getImages() {
         return $this->hasMany(Image::className(), ['id' => 'image_id'])
-                        ->viaTable('tbl_collection_images');
+                        ->viaTable('tbl_collection_image', ['collection_id' => 'id']);
     }
 
-    public function getThunmb() {
+    public function getThumb() {
         return $this->hasOne(ImageFile::className(), ['image_id' => 'image_id'])
-                        ->viaTable('tbl_collection_images');
+                        ->viaTable('tbl_collection_image', ['collection_id' => 'id']);
     }
 
     public function getCollection_documents() {
@@ -125,8 +127,8 @@ class Collection extends \yii\db\ActiveRecord {
     }
 
     public function getDocuments() {
-        return $this->hasMany(Document::className(), ['document_id' => 'id'])
-                        ->viaTable('tbl_collection_documents');
+        return $this->hasMany(Document::className(), ['id' => 'document_id'])
+                        ->viaTable('tbl_collection_document', ['collection_id' => 'id']);
     }
 
     public function getCollection_collections() {
@@ -134,8 +136,8 @@ class Collection extends \yii\db\ActiveRecord {
     }
 
     public function getCollections() {
-        return $this->hasMany(Collection::className(), ['collection_col_id' => 'id'])
-                        ->viaTable('tbl_collection_collections');
+        return $this->hasMany(Collection::className(), ['id' => 'id']);
+                        //->viaTable('tbl_collection_collections');
     }
 
 }
