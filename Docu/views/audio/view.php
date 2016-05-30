@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\widgets\Menu;
 use app\models\User;
-use yii\bootstrap\Button;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Audio */
@@ -37,7 +37,7 @@ $user = User::findIdentity($model->user_id);
 
 <?php
 if (isset($model->audios->location) && isset($model->audios->file) && isset($model->audios->format)) {
-    $button = Html::a('Speel audio bestand af', ["/uploads/audio/" . $model->audios->location . '/' . $model->audios->file . $model->audios->format], ['class' => 'btn btn-primary btn-xs']);
+    $button = Html::a('Speel audio bestand af', Url::to('@web/uploads/audio/') . $model->audios->location . '/' . $model->audios->file . $model->audios->format, ['class' => 'btn btn-primary btn-xs']);
 } else {
     $button = '<span class="null">Niet opgegeven</span>';
 }

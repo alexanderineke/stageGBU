@@ -4,6 +4,8 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\widgets\Menu;
 use app\models\User;
+use yii\helpers\Url;
+use yii\bootstrap\Button;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Document */
@@ -27,13 +29,13 @@ echo Menu::widget([
 
 <h1><?= $model->title; ?></h1>
 
-<?= Html::img(Yii::$app->getUrlManager()->getBaseUrl()."/uploads/documenten/".$model->documents[0]->location.'/'.$model->documents[0]->file.'_b.jpg'); ?>
-<?= Html::img(Yii::$app->getUrlManager()->getBaseUrl()."/uploads/documenten/".$model->documents[0]->location.'/'.$model->documents[0]->file.'_c.jpg'); ?>
-<?= Html::img(Yii::$app->getUrlManager()->getBaseUrl()."/uploads/documenten/".$model->documents[0]->location.'/'.$model->documents[0]->file.'_z.jpg'); ?>
-<?= Html::img(Yii::$app->getUrlManager()->getBaseUrl()."/uploads/documenten/".$model->documents[0]->location.'/'.$model->documents[0]->file.'.jpg'); ?>
-<?= Html::img(Yii::$app->getUrlManager()->getBaseUrl()."/uploads/documenten/".$model->documents[0]->location.'/'.$model->documents[0]->file.'_n.jpg'); ?>
-<?= Html::img(Yii::$app->getUrlManager()->getBaseUrl()."/uploads/documenten/".$model->documents[0]->location.'/'.$model->documents[0]->file.'_m.jpg'); ?>
-<?= Html::img(Yii::$app->getUrlManager()->getBaseUrl()."/uploads/documenten/".$model->documents[0]->location.'/'.$model->documents[0]->file.'_t.jpg'); ?>
+<?= Html::img("uploads/documenten/" . $model->documents[0]->location . '/' . $model->documents[0]->file . '_b.jpg'); ?>
+<?= Html::img("uploads/documenten/" . $model->documents[0]->location . '/' . $model->documents[0]->file . '_c.jpg'); ?>
+<?= Html::img("uploads/documenten/" . $model->documents[0]->location . '/' . $model->documents[0]->file . '_z.jpg'); ?>
+<?= Html::img("uploads/documenten/" . $model->documents[0]->location . '/' . $model->documents[0]->file . '.jpg'); ?>
+<?= Html::img("uploads/documenten/" . $model->documents[0]->location . '/' . $model->documents[0]->file . '_n.jpg'); ?>
+<?= Html::img("uploads/documenten/" . $model->documents[0]->location . '/' . $model->documents[0]->file . '_m.jpg'); ?>
+<?= Html::img("uploads/documenten/" . $model->documents[0]->location . '/' . $model->documents[0]->file . '_t.jpg'); ?>
 
 <?php
 $tags = '';
@@ -46,12 +48,11 @@ $user = User::findIdentity($model->id);
 ?>
 
 <?php
-
-  if (isset($model->documents[0]->location) && isset($model->documents[0]->file) && isset($model->documents[0]->format)) {
-  $button = Html::a('Geef document weer', ['uploads/documenten/' . $model->documents[0]->location . '/' . $model->documents[0]->file . $model->documents[0]->format], ['class' => 'btn btn-primary btn-xs', 'target' => '_blank']);
-  } else {
-  $button = '<span class="null">Niet opgegeven</span>';
-  }
+if (isset($model->documents[0]->location) && isset($model->documents[0]->file) && isset($model->documents[0]->format)) {
+    $button = Html::a('Geef document weer', Url::to('@web/uploads/documenten/') . $model->documents[0]->location . '/' . $model->documents[0]->file . $model->documents[0]->format, ['class' => 'btn btn-primary btn-xs', 'target' => '_blank']);
+} else {
+    $button = '<span class="null">Niet opgegeven</span>';
+}
 ?>
 
 <?php
@@ -65,7 +66,7 @@ echo DetailView::widget([
         ['label' => 'Eigenaar', 'value' => !empty($model->owner) ? $model->owner : "Niet opgegeven"],
         ['label' => 'Aanmaakdatum', 'value' => ($model->created_on !== "0000-00-00 00:00:00" ? $model->created_on : "Niet beschikbaar")],
         ['label' => 'Laatste wijzigingsdatum', 'value' => ($model->created_on !== "0000-00-00 00:00:00" ? $model->created_on : "Niet beschikbaar")],
-          ['label' => 'Bestand', 'value' => $button, 'format' => 'raw'],
+        ['label' => 'Bestand', 'value' => $button, 'format' => 'raw'],
         ['label' => 'Gepubliceerd', 'label' => 'Gepubliceerd', 'value' => $model->published ? "Ja" : "Nee"]
     ],
 ]);

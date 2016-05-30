@@ -15,7 +15,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface{
     }
 
     public function rules() {
-        if ($this->scenario === 'update') {
+        if ($this->scenario == 'update') {
             return [
                 [['username'], 'unique'],
                 [['username', 'email', 'roles'], 'required'],
@@ -37,12 +37,12 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface{
             ];
         }
     }
-
+    
     /**
      * @inheritdoc
      */
     public function attributeLabels() {
-        if ($this->scenario === 'update') {
+        if ($this->scenario == 'update') {
             return [
                 'id' => 'ID',
                 'username' => 'Gebruikersnaam',

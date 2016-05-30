@@ -49,7 +49,7 @@ function fileLocation($id, $title) {
             ['header' => 'Voorbeeld',
                 'format' => 'html',
                 'value' => function($data) {
-                    $filelocation = Yii::$app->getUrlManager()->getBaseUrl()."/uploads/afbeeldingen/" . $data->images[0]->location . "/thumb/" . $data->images[0]->file . $data->images[0]->format;
+                    $filelocation = "uploads/afbeeldingen/" . $data->images[0]->location . "/thumb/" . $data->images[0]->file . $data->images[0]->format;
                     return Html::img(yii\helpers\Url::to($filelocation));
                   //  echo $filelocation;
                  //   echo Yii::getAlias($filelocation);

@@ -25,7 +25,7 @@ echo Menu::widget([
 
     <h1><?= Html::encode($this->title) ?></h1>
     
-    <?= Html::img(Yii::$app->getUrlManager()->getBaseUrl()."/uploads/afbeeldingen/".$model->images[0]->location.'/'.$model->images[0]->file.$model->images[0]->format); ?>
+    <?= Html::img("uploads/afbeeldingen/".$model->images[0]->location.'/'.$model->images[0]->file.$model->images[0]->format); ?>
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
