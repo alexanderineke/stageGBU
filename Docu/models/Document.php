@@ -44,7 +44,7 @@ class Document extends ActiveRecord {
     }
 
     public function getDocuments() {
-        return $this->hasMany(DocumentFile::className(), ['id' => 'document_id'])->andWhere('state=1');
+        return $this->hasMany(DocumentFile::className(), ['document_id' => 'id'])->andWhere('state=1');
     }
 
     public function attributeLabels() {
