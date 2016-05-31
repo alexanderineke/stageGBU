@@ -60,7 +60,7 @@ echo Menu::widget([
                                 <?php } ?>
                             </div>
                         <?php } ?>
-                        <a href="<?php echo Url::to("collection/view", ["id" => $collection->id]); ?>"  class="span3">
+                        <a href="<?php echo Url::to("@web/index.php?r=collection%2Fview&id=" .  $collection->id); ?>"  class="span3">
                             <h3 class="collection-thumb-title"><?php echo $collection->title; ?></h3>
                             <p><?php echo substr(strip_tags($collection->description), 0, 70); ?>...</p>
                             <small class="collection-thumb-items"><?php echo (count($collection->documents) + count($collection->images) + count($collection->collections)); ?> items</small>
