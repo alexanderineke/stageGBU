@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\widgets\imperavi\src\Widget;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Collection */
@@ -14,8 +15,17 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'title')->textInput(['class' => 'span5', 'maxlength' => 64]) ?>
 
-    <?= $form->field($model, 'description')->textArea(['minHeight'=>150,'class' => 'span8', 'lang' => 'nl']) ?>
+    <?= $form->field($model, 'description')->hiddenInput() ?>
    
+    <?= Widget::widget([
+    'name' => 'Document[description]',
+    'value' => $model->description,
+    'settings' => [
+        'lang' => 'nl',
+        'minHeight' => 150,
+    ]
+]); ?>
+    
     <?= $form->field($model, 'published')->dropDownList(['1'=>'Ja', '0'=>'Nee']) ?>
 
     <div class="form-group">
