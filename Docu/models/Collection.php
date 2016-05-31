@@ -136,8 +136,8 @@ class Collection extends \yii\db\ActiveRecord {
     }
 
     public function getCollections() {
-        return $this->hasMany(Collection::className(), ['id' => 'id']);
-                        //->viaTable('tbl_collection_collections');
+        return $this->hasMany(Collection::className(), ['id' => 'collection_col_id'])
+                        ->viaTable('tbl_collection_collection', ['collection_id' => 'id']);
     }
 
 }

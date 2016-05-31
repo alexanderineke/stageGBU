@@ -96,9 +96,9 @@ echo Menu::widget([
             [
                 'header' => 'Acties',
                 'format' => 'raw',
-          //      'htmlOptions' => [
-          //          'style' => 'width: 100px; text-align: center;',
-          //      ],
+                'contentOptions' => [
+                    'style' => 'width: 100px; text-align: center;',
+                ],
                 'value' => 'Html::a( "<i class=\"icon-trash icon-white\"></i>", Url::to("collection/deletedocument", ["id"=>$_GET["id"], "document"=>$data->id]))',
             ]
                 ] :
@@ -138,9 +138,9 @@ echo Menu::widget([
             [
                 'header' => 'Acties',
                 'format' => 'raw',
-               'contentOptions' => [
+                'contentOptions' => [
                     'style' => 'width: 100px; text-align: center;',
-               ],
+                ],
                 'value' => 'Html::a( "<i class=\"icon-trash icon-white\"></i>", Url::to("collection/deleteimage", ["id"=>$_GET["id"], "image"=>$data->id]))',
             ]
                 ] :
