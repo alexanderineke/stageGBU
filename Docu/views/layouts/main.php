@@ -8,16 +8,23 @@ use yii\bootstrap\NavBar;
 use yii\bootstrap\Button;
 use app\models\Search;
 use yii\bootstrap\Nav;
-?>
+use app\assets\AppAsset;
+use app\models\LoginForm;
 
+AppAsset::register($this);
+?>
+<?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="language" content="en" />
-        <title><?php echo ''// yii\helpers\Html::encode($this->pageTitle);  ?></title>
+        <title><?php echo ''// yii\helpers\Html::encode($this->pageTitle);   ?></title>
+        <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@web/themes/dcu/assets'); ?>/css/bootstrap.css" />
+        <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@web/themes/dcu/assets'); ?>/css/bootstrap-responsive.min.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@web/themes/dcu/assets'); ?>/css/gbu.css" />
-        <link rel="shortcut icon" href="<?php echo Yii::getAlias('@web/themes/dcu')?>/assets/images/favicon.png" type="image/x-icon" />
+        <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@web/themes/dcu/assets'); ?>/css/font-awesome.css" />
+        <link rel="shortcut icon" href="<?php echo Yii::getAlias('@web/themes/dcu') ?>/assets/images/favicon.png" type="image/x-icon" />
         <?php
         //Assets laden
         /*  Yii::app()->clientScript->registerCssFile( Yii::app()->theme->baseUrl.'/assets/css/bootstrap.css' );
@@ -28,7 +35,12 @@ use yii\bootstrap\Nav;
           Yii::app()->clientScript->registerScriptFile( Yii::app()->theme->baseUrl.'/assets/js/bootstrap.min.js', CClientScript::POS_END);
           Yii::app()->clientScript->registerScriptFile( Yii::app()->theme->baseUrl.'/assets/js/main.js', CClientScript::POS_END);
          */
+        $this->registerCssFile(Yii::getAlias('@web/themes/dcu/assets/css/bootstrap.css'));
+        $this->registerCssFile(Yii::getAlias('@web/themes/dcu/assets/css/bootstrap-responsive.min.css'));
+        $this->registerCssFile(Yii::getAlias('@web/themes/dcu/assets/css/gbu.css'));
+        $this->registerCssFile(Yii::getAlias('@web/themes/dcu/assets/css/font-awesome.css'));
         ?>
+
     </head>
 
     <body>
@@ -37,21 +49,21 @@ use yii\bootstrap\Nav;
             <div class="container" id="page">
                 <div class="row header">
                     <div class="span7">
-                        <a href="/"><img src="<?php // echo Yii::app()->theme->baseUrl;       ?>/assets/images/documentatiecentrum-urk.png" /></a>
+                        <a href="/"><img src="<?php echo Yii::getAlias('@web'); ?>/themes/dcu/assets/images/documentatiecentrum-urk.png" /></a>
                     </div>
                     <div class="span5 login-form">
                         <?php if (Yii::$app->user->isGuest): ?>
                             <div class="form">
                                 <?php
                                 $form = ActiveForm::begin([
-                                            'actions' => yii\helpers\Url::to(['site/login']),
+                                            'action' => yii\helpers\Url::to(['site/login']),
                                             //    'action' => Yii::app()->createUrl('site/login'),
                                             'id' => 'login-form',
-                                            'type' => 'inline',
+                                         //   'type' => 'inline',
                                             'enableClientValidation' => true,
-                                            'clientOptions' => [
-                                                'validateOnSubmit' => true,
-                                            ],
+                                           // 'clientOptions' => [
+                                          //      'validateOnSubmit' => true,
+                                           // ],
                                 ]);
                                 ?>
 
@@ -67,12 +79,13 @@ use yii\bootstrap\Nav;
                                 <li>Je bent inlogd als: <?php echo Yii::$app->user->identity->username; ?> </li>
                                 <li>
                                     <?php
-                                    echo Button::Widget([
-                                        'label' => 'Uitloggen',
-                                        'options' => ['class' => 'btn btn-primary'],
-                                            //'url' => Url::toRoute(['site/logout']),
+                              //      echo Button::Widget([
+                               //         'label' => 'Uitloggen',
+                               //         'options' => ['class' => 'btn btn-primary'],
+                               //             'url' => Url::toRoute(['site/logout']),
                                             //  'icon' => 'off white',
-                                    ]);
+                               //     ]);
+                                    echo Html::a('Uitloggen', Url::to(['site/logout']), ['class' => 'btn btn-primary']);
                                     ?>
                                 </li>
                             </ul>
@@ -111,7 +124,7 @@ use yii\bootstrap\Nav;
                 //          ]);
                 ?>
 
-                <?php echo $content; //Pagina zelf    ?>
+                <?php echo $content; //Pagina zelf     ?>
 
             </div>
 
@@ -175,12 +188,10 @@ use yii\bootstrap\Nav;
             echo Nav::widget([
                 //    'type' => 'inverse',
                 //    'brand' => 'Beheer',
-             //   'brandUrl' => 'index.php',
+                //   'brandUrl' => 'index.php',
                 //   'collapse' => true,
                 //   'fixed' => 'bottom',
                 'items' => [
-                    //    [
-                    //   'class' => 'bootstrap.widgets.TbMenu',
                     //  'items' => [
                     ['label' => 'Zoeken', 'icon' => 'search white', 'url' => ['/']],
                     ['label' => 'Gebruikers', 'icon' => 'user white', 'url' => ['/user'], 'visible' => !Yii::$app->user->isGuest],

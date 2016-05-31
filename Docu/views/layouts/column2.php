@@ -16,7 +16,6 @@ use yii\widgets\Menu;
                 ])
                 ?>
             </div><!-- breadcrumbs -->
-            <?php //}  ?> 
 
             <div id="content">
 

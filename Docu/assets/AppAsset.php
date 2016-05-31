@@ -18,7 +18,7 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'themes/gbu/assets/css/gbu.css',
+        'css/site.css',
     ];
     public $js = [
     ];

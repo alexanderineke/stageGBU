@@ -23,6 +23,7 @@ class AudioController extends Controller {
 
     //  public $layout = '@app/views/layouts/column2.php';
     protected $tags = [];
+   // public $layout='/column2';
 
     public function filters() {
         return ['accesControl'];
