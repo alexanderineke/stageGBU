@@ -3,11 +3,9 @@
 use yii\bootstrap\Alert;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
+use Yii;
 use yii\helpers\Html;
 use yii\bootstrap\NavBar;
-use yii\bootstrap\Button;
-use app\models\Search;
-use yii\bootstrap\Nav;
 ?>
 
 <!DOCTYPE html>
@@ -15,9 +13,9 @@ use yii\bootstrap\Nav;
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="language" content="en" />
-        <title><?php echo ''// yii\helpers\Html::encode($this->pageTitle);  ?></title>
-        <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@web/themes/dcu/assets'); ?>/css/gbu.css" />
-        <link rel="shortcut icon" href="<?php echo Yii::getAlias('@web/themes/dcu')?>/assets/images/favicon.png" type="image/x-icon" />
+        <title><?php echo yii\helpers\Html::encode($this->pageTitle); ?></title>
+        <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@web/themes/dcu/assets'); ?>/css/main.css" />
+        <link rel="shortcut icon" href="<?php echo Yii::getAlias('@web/themes/dcu');     ?>/assets/images/favicon.png" type="image/x-icon" />
         <?php
         //Assets laden
         /*  Yii::app()->clientScript->registerCssFile( Yii::app()->theme->baseUrl.'/assets/css/bootstrap.css' );
@@ -37,7 +35,7 @@ use yii\bootstrap\Nav;
             <div class="container" id="page">
                 <div class="row header">
                     <div class="span7">
-                        <a href="/"><img src="<?php // echo Yii::app()->theme->baseUrl;       ?>/assets/images/documentatiecentrum-urk.png" /></a>
+                        <a href="/"><img src="<?php // echo Yii::app()->theme->baseUrl;      ?>/assets/images/documentatiecentrum-urk.png" /></a>
                     </div>
                     <div class="span5 login-form">
                         <?php if (Yii::$app->user->isGuest): ?>
@@ -64,14 +62,14 @@ use yii\bootstrap\Nav;
                             </div>
                         <?php else: ?>
                             <ul class="inline">
-                                <li>Je bent inlogd als: <?php echo Yii::$app->user->identity->username; ?> </li>
+                                <li>Je bent inlogd als: <?php echo Yii::$app->user->identity->username; ?> (<?php echo Yii::$app->authManager->getRolesByUser(Yii::$app->user->identity->username); ?>)</li>
                                 <li>
                                     <?php
                                     echo Button::Widget([
                                         'label' => 'Uitloggen',
                                         'options' => ['class' => 'btn btn-primary'],
-                                            //'url' => Url::toRoute(['site/logout']),
-                                            //  'icon' => 'off white',
+                                        'url' => Url::toRoute(['site/logout']),
+                                        'icon' => 'off white',
                                     ]);
                                     ?>
                                 </li>
@@ -105,10 +103,10 @@ use yii\bootstrap\Nav;
 
                 <?php
 //Warnings
-                ////            echo Alert::widget([
-                //               'block' => true,
-                //               'fade' => true,
-                //          ]);
+                echo Alert::widget([
+                    'block' => true,
+                    'fade' => true,
+                ]);
                 ?>
 
                 <?php echo $content; //Pagina zelf    ?>
@@ -171,29 +169,26 @@ use yii\bootstrap\Nav;
         </div>
         <?php
         if (!Yii::$app->user->isGuest) {
-            NavBar::begin(['brandLabel' => 'Beheer']);
-            echo Nav::widget([
-                //    'type' => 'inverse',
-                //    'brand' => 'Beheer',
-             //   'brandUrl' => 'index.php',
-                //   'collapse' => true,
-                //   'fixed' => 'bottom',
+            echo NavBar::widget([
+                'type' => 'inverse',
+                'brand' => 'Beheer',
+                'brandUrl' => 'index.php',
+                'collapse' => true,
+                'fixed' => 'bottom',
                 'items' => [
-                    //    [
-                    //   'class' => 'bootstrap.widgets.TbMenu',
-                    //  'items' => [
-                    ['label' => 'Zoeken', 'icon' => 'search white', 'url' => ['/']],
-                    ['label' => 'Gebruikers', 'icon' => 'user white', 'url' => ['/user'], 'visible' => !Yii::$app->user->isGuest],
-                    ['label' => 'Afbeeldingen', 'icon' => 'picture white', 'url' => ['/image']],
-                    ['label' => 'Documenten', 'icon' => 'file white', 'url' => ['/document']],
-                    ['label' => 'Audio', 'icon' => 'headphones white', 'url' => ['/audio']],
-                    ['label' => 'Collecties', 'icon' => 'folder-open white', 'url' => ['/collection']],
-                //   ],
-                //   ],
+                    [
+                        'class' => 'bootstrap.widgets.TbMenu',
+                        'items' => [
+                            ['label' => 'Zoeken', 'icon' => 'search white', 'url' => ['/']],
+                            ['label' => 'Gebruikers', 'icon' => 'user white', 'url' => ['/user'], 'visible' => !Yii::$app->user->isGuest],
+                            ['label' => 'Afbeeldingen', 'icon' => 'picture white', 'url' => ['/image']],
+                            ['label' => 'Documenten', 'icon' => 'file white', 'url' => ['/document']],
+                            ['label' => 'Audio', 'icon' => 'headphones white', 'url' => ['/audio']],
+                            ['label' => 'Collecties', 'icon' => 'folder-open white', 'url' => ['/collection']],
+                        ],
+                    ],
                 ],
-                'options' => ['class' => 'navbar-nav'],
             ]);
-            NavBar::end();
         }
         ?>
     </body>
