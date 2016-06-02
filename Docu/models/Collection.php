@@ -54,14 +54,13 @@ class Collection extends \yii\db\ActiveRecord {
         ];
     }
 
-    public function search($params) {
+    public function search() {
         // @todo Please modify the following code to remove attributes that should not be searched.
         $query = Collection::find();
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
 
-        $this->load($params);
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');

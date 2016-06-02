@@ -1,4 +1,5 @@
 <?php
+namespace app\views\layouts;
 
 use yii\bootstrap\Alert;
 use yii\bootstrap\ActiveForm;
@@ -11,6 +12,7 @@ use yii\bootstrap\Nav;
 use app\assets\AppAsset;
 use app\models\LoginForm;
 use yii\web\View;
+use Yii;
 
 AppAsset::register($this);
 ?>

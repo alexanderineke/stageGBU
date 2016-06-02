@@ -27,9 +27,9 @@ AppAsset::register($this)?>
                 <?php endif; ?>
                         <article class="span4 collection-thumb">
                             <?php if($subcollection->thumb): ?>
-                                <?php echo Html::img('uploads/afbeeldingen/'.$subcollection->thumb->location.'/thumb/'.$subcollection->thumb->file.$subcollection->thumb->format, $subcollection->title, array('class'=>'img-polaroid collection-thumb-img span5')); ?>
+                                <?php echo Html::img('uploads/afbeeldingen/'.$subcollection->thumb->location.'/thumb/'.$subcollection->thumb->file.$subcollection->thumb->format, $subcollection->title, ['class'=>'img-polaroid collection-thumb-img span5']); ?>
                             <?php endif; ?>
-                            <a href="<?php echo Url::to("collection/view",array("id"=>$subcollection->id)); ?>"  class="span7">
+                            <a href="<?php echo Url::to("collection/view", ["id"=>$subcollection->id]); ?>"  class="span7">
                                 <h3 class="collection-thumb-title"><?php echo $subcollection->title; ?></h3>
                                 <p><?php echo substr(strip_tags($subcollection->description), 0, 70); ?>...</p>
                                 <small class="collection-thumb-items"><?php echo (count($subcollection->documents)+count($subcollection->images)+count($subcollection->collections)); ?> items</small>

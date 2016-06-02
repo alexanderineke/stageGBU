@@ -7,11 +7,15 @@ use app\models\Search;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\Document;
+use app\models\Image;
+use app\models\Tag;
+use app\models\Audio;
 
 /**
  * UserController implements the CRUD actions for User model.
  */
-class UserController extends Controller {
+class SearchController extends Controller {
 
     public function behaviors() {
         return [
@@ -24,7 +28,7 @@ class UserController extends Controller {
         ];
     }
 
-    public function actionTag($params) {
+    public function actionTag() {
          $model = new Search();
 
         //Images
@@ -32,9 +36,9 @@ class UserController extends Controller {
 
         //Documents
         $documentModel = new Document;
-        if (Yii::app()->request->getParam('Document')) {
-            $doc = Yii::app()->request->getParam('Document');
-            $documentModel->unsetAttributes();
+        if (Yii::$app->getRequest()->getQueryParam('Document')) {
+            $doc = Yii::$app->getRequest()->getQueryParam('Document');
+        //    $documentModel->unsetAttributes();
             $documentModel->attributes = $doc;
             $documentModel->tag_search = $doc['tag_search'];
         }
@@ -42,9 +46,9 @@ class UserController extends Controller {
 
         //Audio
         $audioModel = new Audio;
-        if (Yii::app()->request->getParam('Audio')) {
-            $au = Yii::app()->request->getParam('Audio');
-            $audioModel->unsetAttributes();
+        if (Yii::$app->getRequest()->getQueryParam('Audio')) {
+            $au = Yii::$app->getRequest()->getQueryParam('Audio');
+       //     $audioModel->unsetAttributes();
             $audioModel->attributes = $au;
             $audioModel->tag_search = $au['tag_search'];
         }
@@ -62,7 +66,7 @@ class UserController extends Controller {
     public function actionResults()
     {
         //Zoek variablen
-        $keyword = Yii::app()->request->getParam('q');
+        $keyword = Yii::$app->getRequest()->getQueryParam('q');
 
         $model = new Search();
 
@@ -72,9 +76,9 @@ class UserController extends Controller {
         $documentModel = null;
         $documentSearch = null;
         $documentModel = new Document;
-        if(Yii::app()->request->getParam('Document')){
-            $doc = Yii::app()->request->getParam('Document');
-            $documentModel->unsetAttributes();
+        if(Yii::$app->getRequest()->getQueryParam('Document')){
+            $doc = Yii::$app->getRequest()->getQueryParam('Document');
+         //   $documentModel->unsetAttributes();
             $documentModel->attributes=$doc;
             $documentModel->tag_search = $doc['tag_search'];
         }
@@ -83,9 +87,9 @@ class UserController extends Controller {
         $audioModel = null;
         $audioSearch = null;
         $audioModel = new Audio;
-        if(Yii::app()->request->getParam('Audio')){
-            $au = Yii::app()->request->getParam('Audio');
-            $audioModel->unsetAttributes();
+        if(Yii::$app->getRequest()->getQueryParam('Audio')){
+            $au = Yii::$app->getRequest()->getQueryParam('Audio');
+      //      $audioModel->unsetAttributes();
             $audioModel->attributes=$au;
             $audioModel->tag_search = $au['tag_search'];
         }
@@ -102,4 +106,3 @@ class UserController extends Controller {
     }
 
 }
-

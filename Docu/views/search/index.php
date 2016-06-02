@@ -1,4 +1,8 @@
 <?php
+
+use yii\bootstrap\ActiveForm;
+use yii\helpers\Html;
+
 $this->title = 'Zoeken';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -6,12 +10,13 @@ $this->params['breadcrumbs'][] = $this->title;
 <h1><?= Html::encode($this->title) ?></h1>
 
 <?php
-$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', [
-    'action' => ['search/results'],
-    //'method'=>'get',
-    'id' => 'searchForm',
-    'type' => 'search',
-    'htmlOptions' => ['class' => 'well'],
+$form = ActiveForm::begin([
+            'action' => ['search/results'],
+            'method' => 'get',
+            'id' => 'searchForm',
+            'type' => 'search',
+            'enableAjaxValidation' => false,
+            'options' => ['class' => 'well'],
         ]);
 ?>
 
@@ -19,9 +24,8 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', [
 
 <?= $form->field($model, 'checkboxes')->checkboxList(['Afbeeldingen', 'Documenten', 'Audio',]) ?>
 
+<?= Html::submitButton('Zoek') ?>
 
-<?php $this->widget('bootstrap.widgets.TbButton', ['buttonType' => 'submit', 'label' => 'Zoek']); ?>
-
-<?php $this->endWidget(); ?>
+<?php ActiveForm::end() ?>
 
 

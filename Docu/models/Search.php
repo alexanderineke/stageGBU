@@ -5,7 +5,11 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-
+use yii\data\Pagination;
+use app\models\Image;
+use app\models\Document;
+use app\models\Audio;
+use app\models\Tag;
 
 class Search {
 
@@ -20,36 +24,76 @@ class Search {
         return Model::scenarios();
     }
 
-    public static function searchDocuments($params) {
-        $query = Document::find()
-                ->joinWith('tags')
+    public static function searchDocuments($params, $query) {
+        $q = Document::find();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $q,
+            'pagination' => [
+                'pageSize' => 25
+            ],
+        ]);
+
+        $q
+                ->with('tags')
                 ->andFilterWhere([
                     'or',
-                    ['like', 'content', $params['content'] . '%', true],
-                    ['like', 'description', $params['description'] . '%', true],
-                    ['like', 'year', $params['year'] . '%', true],
-                    ['like', 'title', $params['title'] . '%', true],
-                    ['like', 'tags.slug', $params['tags.slug'] . '%', true],
+                    ['like', 'content', $query['content'] . '%', true],
+                    ['like', 'description', $query['description'] . '%', true],
+                    ['like', 'year', $query['year'] . '%', true],
+                    ['like', 'title', $query['title'] . '%', true],
+                        //       ['like', 'tags.slug', $query['tags.slug'] . '%', true],
                 ])
                 ->andFilterWhere([
                     ['like', 'title', $params['title'] . '%', true],
                     ['like', 'description', $params['description'] . '%', true],
-                    ['like', 'tags.slug', $params['tags.slug'] . '%', true],
+                    //           ['like', 'tags.slug', $params['tags.slug'] . '%', true],
                     ['like', 'year', $params['year'] . '%', true],
                     ['like', 'tags.state', 1 . '%', false],
                 ])
                 ->groupBy('id');
-
-        $countQuery = clone $query;
-        $pages = new Pagination(['totalCount' => $countQuery->count(), 'defaultPageSize' => 25]);
-        $datas = $query->offset($pages->offset)
-                ->limit($pages->limit)
-                ->all();
-        return [
-            'datas' => $datas,
-            'pages' => $pages
-        ];
+        $dataProvider->setSort([
+            'tag_search' => [
+                'asc' => 'tags.slug',
+                'desc' => 'tags.slug DESC',
+            ],
+            '*',
+        ]);
+        return $dataProvider;
     }
+
+    /*
+      public static function searchDocuments($params) {
+      $query = Document::find()
+      ->with('tags')
+      ->andFilterWhere([
+      'or',
+      ['like', 'content', $params['content'] . '%', true],
+      ['like', 'description', $params['description'] . '%', true],
+      ['like', 'year', $params['year'] . '%', true],
+      ['like', 'title', $params['title'] . '%', true],
+      ['like', 'tags.slug', $params['tags.slug'] . '%', true],
+      ])
+      ->andFilterWhere([
+      ['like', 'title', $params['title'] . '%', true],
+      ['like', 'description', $params['description'] . '%', true],
+      ['like', 'tags.slug', $params['tags.slug'] . '%', true],
+      ['like', 'year', $params['year'] . '%', true],
+      ['like', 'tags.state', 1 . '%', false],
+      ])
+      ->groupBy('id');
+
+      $countQuery = clone $query;
+      $pages = new Pagination(['totalCount' => $countQuery->count(), 'defaultPageSize' => 25]);
+      $datas = $query->offset($pages->offset)
+      ->limit($pages->limit)
+      ->all();
+      return [
+      'datas' => $datas,
+      'pages' => $pages
+      ];
+      }
+     */
 
     public function searchDocumentsByTag($params) {
         $query = DocumentTag::find()
@@ -131,29 +175,28 @@ class Search {
     }
 
     public function searchImages($params) {
-        $query = Image::find()
-                ->joinWith('tags')
-                ->joinWith('images')
-                ->andFilterWhere([
-                    'or',
-                    ['like', 'content', $params['content'] . '%', true],
-                    ['like', 'description', $params['description'] . '%', true],
-                    ['like', 'year', $params['year'] . '%', true],
-                    ['like', 'title', $params['title'] . '%', true],
-                    ['like', 'tags.slug', $params['tags.slug'] . '%', true],
-                ])
-                ->andFilterWhere(['like', 'tags.state', 1 . '%', false])
-                ->groupBy('id');
-
-        $countQuery = clone $query;
-        $pages = new Pagination(['totalCount' => $countQuery->count(), 'defaultPageSize' => 30]);
-        $datas = $query->offset($pages->offset)
-                ->limit($pages->limit)
-                ->all();
-        return [
-            'datas' => $datas,
-            'pages' => $pages
-        ];
+        //      $query = Image::find()
+        //              ->with('tags')
+        //              ->with('images')
+        //              ->andFilterWhere([
+        //                  'or',
+        // ['like', 'content', $params['content'] . '%', true],
+        //['like', 'description', $params['description'] . '%', true],
+        //  ['like', 'year', $params['year'] . '%', true],
+        // ['like', 'title', $params['title'] . '%', true],
+        //  ['like', 'tags.slug', $params['tag.slug'] . '%', true],
+        //             ])
+        //            ->andFilterWhere(['like', 'tags.state', 1 . '%', false])
+        //            ->groupBy('id');
+        //     $countQuery = clone $query;
+        //     $pages = new Pagination(['totalCount' => $countQuery->count(), 'defaultPageSize' => 30]);
+        //      $datas = $query->offset($pages->offset)
+        //              ->limit($pages->limit)
+        //               ->all();
+//        return [
+        //           'datas' => $datas,
+        //         'pages' => $pages
+        //     ];
     }
 
     public function searchImagesByTag($params) {
