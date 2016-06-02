@@ -124,13 +124,12 @@ class Tag extends \yii\db\ActiveRecord {
 
     public function findTagsByID($term) {
         $query = Tag::find()
-                ->andFilterWhere(['id' => $id])
-                ->andFilterWhere(['name' => $name])
-                ->andWhere(['state' => 1])
-                ->andWhere(['id' => $term])
+                ->andFilterWhere(['id' => $this->id])
+                ->andFilterWhere(['name' => $this->name])
+                ->andFilterWhere(['state' => 1])
+                ->andFilterWhere(['id' => $term])
                 ->limit(10)
-                ->all()
-                ->execute();
+                ->all();
         return $query;
     }
 

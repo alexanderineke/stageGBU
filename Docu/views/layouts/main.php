@@ -10,6 +10,7 @@ use app\models\Search;
 use yii\bootstrap\Nav;
 use app\assets\AppAsset;
 use app\models\LoginForm;
+use yii\web\View;
 
 AppAsset::register($this);
 ?>
@@ -19,30 +20,24 @@ AppAsset::register($this);
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="language" content="en" />
-        <title><?php echo ''// yii\helpers\Html::encode($this->pageTitle);   ?></title>
+        <title><?php echo ''// yii\helpers\Html::encode($this->pageTitle);     ?></title>
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@web/themes/dcu/assets'); ?>/css/bootstrap.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@web/themes/dcu/assets'); ?>/css/bootstrap-responsive.min.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@web/themes/dcu/assets'); ?>/css/gbu.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@web/themes/dcu/assets'); ?>/css/font-awesome.css" />
+        <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@web'); ?>/css/site.css" />
         <link rel="shortcut icon" href="<?php echo Yii::getAlias('@web/themes/dcu') ?>/assets/images/favicon.png" type="image/x-icon" />
         <?php
-        //Assets laden
-        /*  Yii::app()->clientScript->registerCssFile( Yii::app()->theme->baseUrl.'/assets/css/bootstrap.css' );
-          Yii::app()->clientScript->registerCssFile( Yii::app()->theme->baseUrl.'/assets/css/bootstrap-responsive.min.css' );
-          Yii::app()->clientScript->registerCssFile( Yii::app()->theme->baseUrl.'/assets/css/gbu.css' );
-          Yii::app()->clientScript->registerCssFile( Yii::app()->theme->baseUrl.'/assets/css/font-awesome.css' );
-          Yii::app()->clientScript->registerScriptFile( Yii::app()->theme->baseUrl.'/assets/js/modernizr.custom.js', CClientScript::POS_HEAD);
-          Yii::app()->clientScript->registerScriptFile( Yii::app()->theme->baseUrl.'/assets/js/bootstrap.min.js', CClientScript::POS_END);
-          Yii::app()->clientScript->registerScriptFile( Yii::app()->theme->baseUrl.'/assets/js/main.js', CClientScript::POS_END);
-         */
         $this->registerCssFile(Yii::getAlias('@web/themes/dcu/assets/css/bootstrap.css'));
         $this->registerCssFile(Yii::getAlias('@web/themes/dcu/assets/css/bootstrap-responsive.min.css'));
         $this->registerCssFile(Yii::getAlias('@web/themes/dcu/assets/css/gbu.css'));
         $this->registerCssFile(Yii::getAlias('@web/themes/dcu/assets/css/font-awesome.css'));
+   //     $this->registerJsFile(Yii::getAlias('@web/themes/dcu/assets/js/modernizr.custom.js'), View::POS_HEAD);
+    //    $this->registerJsFile(Yii::getAlias('@web/themes/dcu/assets/js/bootstrap.min.js'), View::POS_END);
+    //    $this->registerJsFile(Yii::getAlias('@web/themes/dcu/assets/js/main.js'), View::POS_END);
         ?>
 
     </head>
-
     <body>
         <span class="striept"></span>
         <div id="wrap">
@@ -57,20 +52,19 @@ AppAsset::register($this);
                                 <?php
                                 $form = ActiveForm::begin([
                                             'action' => yii\helpers\Url::to(['site/login']),
-                                            //    'action' => Yii::app()->createUrl('site/login'),
                                             'id' => 'login-form',
-                                         //   'type' => 'inline',
+                                            //   'type' => 'inline',
                                             'enableClientValidation' => true,
-                                           // 'clientOptions' => [
-                                          //      'validateOnSubmit' => true,
-                                           // ],
+                                                // 'clientOptions' => [
+                                                //      'validateOnSubmit' => true,
+                                                // ],
                                 ]);
                                 ?>
 
                                 <?php $model = new LoginForm; ?>
                                 <?= $form->field($model, 'username')->textInput(['class' => 'span2']) ?>
                                 <?= $form->field($model, 'password')->passwordInput(['class' => 'span2']) ?>
-                                <?= Html::submitButton('Inlogen', ['class' => 'btn btn-primary']) ?>
+                                <?= Html::submitButton('Inloggen', ['class' => 'btn btn-primary']) ?>
                                 <?= $form->field($model, 'rememberMe')->checkbox() ?>
                                 <?php ActiveForm::end(); ?>
                             </div>
@@ -79,12 +73,12 @@ AppAsset::register($this);
                                 <li>Je bent inlogd als: <?php echo Yii::$app->user->identity->username; ?> </li>
                                 <li>
                                     <?php
-                              //      echo Button::Widget([
-                               //         'label' => 'Uitloggen',
-                               //         'options' => ['class' => 'btn btn-primary'],
-                               //             'url' => Url::toRoute(['site/logout']),
-                                            //  'icon' => 'off white',
-                               //     ]);
+                                    //      echo Button::Widget([
+                                    //         'label' => 'Uitloggen',
+                                    //         'options' => ['class' => 'btn btn-primary'],
+                                    //             'url' => Url::toRoute(['site/logout']),
+                                    //  'icon' => 'off white',
+                                    //     ]);
                                     echo Html::a('Uitloggen', Url::to(['site/logout']), ['class' => 'btn btn-primary']);
                                     ?>
                                 </li>
@@ -124,7 +118,7 @@ AppAsset::register($this);
                 //          ]);
                 ?>
 
-                <?php echo $content; //Pagina zelf     ?>
+                <?php echo $content; //Pagina zelf      ?>
 
             </div>
 
@@ -192,15 +186,12 @@ AppAsset::register($this);
                 //   'collapse' => true,
                 //   'fixed' => 'bottom',
                 'items' => [
-                    //  'items' => [
                     ['label' => 'Zoeken', 'icon' => 'search white', 'url' => ['/']],
                     ['label' => 'Gebruikers', 'icon' => 'user white', 'url' => ['/user'], 'visible' => !Yii::$app->user->isGuest],
                     ['label' => 'Afbeeldingen', 'icon' => 'picture white', 'url' => ['/image']],
                     ['label' => 'Documenten', 'icon' => 'file white', 'url' => ['/document']],
                     ['label' => 'Audio', 'icon' => 'headphones white', 'url' => ['/audio']],
                     ['label' => 'Collecties', 'icon' => 'folder-open white', 'url' => ['/collection']],
-                //   ],
-                //   ],
                 ],
                 'options' => ['class' => 'navbar-nav'],
             ]);
