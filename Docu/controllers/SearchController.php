@@ -30,6 +30,7 @@ class SearchController extends Controller {
 
     public function actionTag() {
          $model = new Search();
+         $tag = Yii::$app->getRequest()->getQueryParam('tag');
 
         //Images
         $imageSearch = $model->searchImagesByTag($tag);

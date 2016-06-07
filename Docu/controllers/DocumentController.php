@@ -299,6 +299,9 @@ class DocumentController extends Controller {
             'query' => Document::find()
                     ->where($condition)
                     ->orderBy('title ASC'),
+        //    'pagination' => [
+        //    'pageSize' => 20,
+   // ],
                 //      'criteria' => [
                 //         'condition' => $condition,
                 //         'order' => 'title ASC',

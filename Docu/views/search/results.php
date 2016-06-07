@@ -1,37 +1,66 @@
 <?php
 
-$this->widget('bootstrap.widgets.TbButton', [
-    'htmlOptions' => ['id' => 'selector-button', 'data-toggle' => 'false'],
+use yii\data\ArrayDataProvider;
+use yii\grid\GridView;
+use yii\widgets\ListView;
+use yii\bootstrap\Tabs;
+use yii\helpers\Html;
+use yii\bootstrap\Button;
+use app\models\Document;
+use app\models\Audio;
+use yii\helpers\Url;
+
+echo Button::widget([
+    'options' => ['id' => 'selector-button', 'data-toggle' => 'false'],
     'label' => 'Maak een selectie',
-    'type' => 'primary',
-    'icon' => 'inbox white'
 ]);
 
-$gridDataProvider = new CArrayDataProvider([
-    ['id' => 0, 'type' => '', 'title' => 'Geen selectie'],
-        ]);
+//$this->widget('bootstrap.widgets.TbButton', [
+//    'htmlOptions' => ['id' => 'selector-button', 'data-toggle' => 'false'],
+//    'label' => 'Maak een selectie',
+//    'type' => 'primary',
+//    'icon' => 'inbox white'
+//]);
 
-$this->widget('bootstrap.widgets.TbGridView', [
-    'type' => 'striped bordered condensed',
+$gridDataProvider = new ArrayDataProvider([
+    ['id' => 0, 'title' => 'Geen selectie'],]);
+
+echo GridView::widget([
     'dataProvider' => $gridDataProvider,
     'template' => '{items}',
     'columns' => [
-        ['name' => 'type', 'type' => 'raw', 'header' => 'Type', 'htmlOptions' => ['width' => '15%']],
-        ['name' => 'title', 'header' => 'Naam'],
-        ['name' => 'action', 'header' => 'Verwijder']
+        ['header' => 'Type', 'format' => 'raw', 'options' => ['width' => '15%']],
+        ['header' => 'Naam'],
+        ['header' => 'Verwijder']
     ],
-    'htmlOptions' => [
+    'options' => [
         'style' => 'display:none;',
         'id' => 'selection-widget'
     ]
 ]);
+/*
+  $this->widget('bootstrap.widgets.TbGridView', [
+  'type' => 'striped bordered condensed',
+  'dataProvider' => $gridDataProvider,
+  'template' => '{items}',
+  'columns' => [
+  ['name' => 'type', 'type' => 'raw', 'header' => 'Type', 'htmlOptions' => ['width' => '15%']],
+  ['name' => 'title', 'header' => 'Naam'],
+  ['name' => 'action', 'header' => 'Verwijder']
+  ],
+  'htmlOptions' => [
+  'style' => 'display:none;',
+  'id' => 'selection-widget'
+  ]
+  ]);
+ */
 
 function objectToTagString($tags) { //Vertaalt de verschillende tags naar 1 string met alle tags.
-    return Document::model()->findByPk($tags)->tagshelper;
+    return Document::model()->findOne($tags)->tagshelper;
 }
 
 function objectToTagStringAudio($tags) { //Vertaalt de verschillende tags naar 1 string met alle tags.
-    return Audio::model()->findByPk($tags)->tagshelper;
+    return Audio::model()->findOne($tags)->tagshelper;
 }
 
 if ($imageSearch->totalItemCount != 0) {
@@ -78,7 +107,7 @@ if (($documentSearch->totalItemCount != 0 && !Yii::$app->request->isAjaxRequest)
     $results[] = [
         'label' => '<i class="icon-file icon-white"></i>  Documenten <span class="badge">' . $documentSearch->totalItemCount . '</span>',
         'id' => 'document-grid-tab',
-        'content' => $this->widget('bootstrap.widgets.TbListView', [
+        'content' => ListView::widget([
             'dataProvider' => $documentSearch,
             'itemView' => '_documents',
             'itemsCssClass' => 'documentList',
@@ -111,18 +140,20 @@ if (($audioSearch->totalItemCount != 0 && !Yii::$app->request->isAjaxRequest) ||
     $results[] = [
         'label' => '<i class="icon-headphones icon-white"></i> Audio <span class="badge">' . $audioSearch->totalItemCount . '</span>',
         'id' => 'audio-grid-tab',
-        'content' => $this->widget('bootstrap.widgets.TbGridView', [
-            'type' => 'striped bordered',
+        'content' => GridView::widget([
+            //      'type' => 'striped bordered',
             'dataProvider' => $audioSearch,
             'filter' => $audioModel,
             'columns' => [
-                ['name' => 'title', 'header' => 'Naam document', 'value' => 'CHtml::link($data->title, Yii::$app->createUrl("audio/view",array("id"=>$data->id)))', 'type' => 'raw', 'filter' => CHtml::activeTextField($audioModel, 'title', ['placeholder' => 'Zoek op titel..'])],
-                ['name' => 'tag_search', 'header' => 'Steekwoorden', 'value' => 'objectToTagStringAudio($data->id)', 'filter' => CHtml::activeTextField($audioModel, 'tag_search', ['placeholder' => 'Zoek op steekwoord..'])], //Omdat een result meerdere tags kan hebben moeten we deze verwerken.
-                ['name' => 'created_on', 'header' => 'Toegevoegd op', 'value' => '($data->created_on !== "0000-00-00 00:00:00" ? strftime("%e %B %Y", strtotime($data->created_on)) : "Datum niet beschikbaar")', 'filter' => ''],
+                ['header' => 'Naam document', 'value' => 'Html::a($data->title, Utl::to("audio/view", ["id"=>$data->id]))', 'format' => 'raw', 'filter' => Html::activeTextInput($audioModel, 'title', ['placeholder' => 'Zoek op titel..'])],
+                ['header' => 'Steekwoorden', 'value' => 'objectToTagStringAudio($data->id)', 'filter' => Html::activeTextInput($audioModel, 'tag_search', ['placeholder' => 'Zoek op steekwoord..'])], //Omdat een result meerdere tags kan hebben moeten we deze verwerken.
+                ['header' => 'Toegevoegd op', 'value' => '($data->created_on !== "0000-00-00 00:00:00" ? strftime("%e %B %Y", strtotime($data->created_on)) : "Datum niet beschikbaar")', 'filter' => ''],
             ],
             'enableHistory' => true,
-            'pager' => ['class' => 'bootstrap.widgets.TbPager', 'prevPageLabel' => '&laquo;', 'nextPageLabel' => '&raquo;'],
-                ], true),
+            'pager' => [
+                'prevPageLabel' => '&laquo;',
+                'nextPageLabel' => '&raquo;',
+    ]]),
         'active' => $documentSearch->totalItemCount == 0 && $imageSearch->totalItemCount == 0
     ];
 } else {
@@ -131,10 +162,8 @@ if (($audioSearch->totalItemCount != 0 && !Yii::$app->request->isAjaxRequest) ||
         'content' => '<span class=\'empty\'>Geen resultaten gevonden.</span>',
     ];
 }
-
-$this->widget('bootstrap.widgets.TbTabs', [
-    'type' => 'tabs', // 'tabs' or 'pills'
+echo Tabs::widget([
+    'items' => $results,
     'encodeLabel' => false,
-    'tabs' => $results,
 ]);
 ?>

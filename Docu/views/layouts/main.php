@@ -1,4 +1,5 @@
 <?php
+
 namespace app\views\layouts;
 
 use yii\bootstrap\Alert;
@@ -22,31 +23,31 @@ AppAsset::register($this);
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="language" content="en" />
-        <title><?php echo ''// yii\helpers\Html::encode($this->pageTitle);     ?></title>
-        <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@web/themes/dcu/assets'); ?>/css/bootstrap.css" />
-        <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@web/themes/dcu/assets'); ?>/css/bootstrap-responsive.min.css" />
-        <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@web/themes/dcu/assets'); ?>/css/gbu.css" />
-        <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@web/themes/dcu/assets'); ?>/css/font-awesome.css" />
+        <title><?php echo ''// yii\helpers\Html::encode($this->pageTitle);        ?></title>
+ 
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@web'); ?>/css/site.css" />
         <link rel="shortcut icon" href="<?php echo Yii::getAlias('@web/themes/dcu') ?>/assets/images/favicon.png" type="image/x-icon" />
         <?php
+        $this->registerCssFile(Yii::getAlias('@web/css/site.css'));
         $this->registerCssFile(Yii::getAlias('@web/themes/dcu/assets/css/bootstrap.css'));
         $this->registerCssFile(Yii::getAlias('@web/themes/dcu/assets/css/bootstrap-responsive.min.css'));
         $this->registerCssFile(Yii::getAlias('@web/themes/dcu/assets/css/gbu.css'));
         $this->registerCssFile(Yii::getAlias('@web/themes/dcu/assets/css/font-awesome.css'));
-   //     $this->registerJsFile(Yii::getAlias('@web/themes/dcu/assets/js/modernizr.custom.js'), View::POS_HEAD);
-    //    $this->registerJsFile(Yii::getAlias('@web/themes/dcu/assets/js/bootstrap.min.js'), View::POS_END);
-    //    $this->registerJsFile(Yii::getAlias('@web/themes/dcu/assets/js/main.js'), View::POS_END);
-        ?>
 
+        //     $this->registerJsFile(Yii::getAlias('@web/themes/dcu/assets/js/modernizr.custom.js'), self::POS_HEAD);
+        //    $this->registerJsFile(Yii::getAlias('@web/themes/dcu/assets/js/bootstrap.min.js'), View::POS_END);
+        //    $this->registerJsFile(Yii::getAlias('@web/themes/dcu/assets/js/main.js'), View::POS_END);
+        $this->head();
+        ?>
     </head>
     <body>
+        <?php $this->beginBody(); ?>
         <span class="striept"></span>
         <div id="wrap">
             <div class="container" id="page">
                 <div class="row header">
                     <div class="span7">
-                        <a href="/"><img src="<?php echo Yii::getAlias('@web'); ?>/themes/dcu/assets/images/documentatiecentrum-urk.png" /></a>
+                        <a href=<?php Yii::$app->homeUrl ?>><img src="<?php echo Yii::getAlias('@web'); ?>/themes/dcu/assets/images/documentatiecentrum-urk.png" /></a>
                     </div>
                     <div class="span5 login-form">
                         <?php if (Yii::$app->user->isGuest): ?>
@@ -81,8 +82,10 @@ AppAsset::register($this);
                                     //             'url' => Url::toRoute(['site/logout']),
                                     //  'icon' => 'off white',
                                     //     ]);
-                                    echo Html::a('Uitloggen', Url::to(['site/logout']), ['class' => 'btn btn-primary']);
+                                    //    
+                                    //  echo Html::a('Uitloggen', Url::to(['site/logout']), ['class' => 'btn btn-primary']);
                                     ?>
+                                    <?= Html::a('Logout', ['site/logout'], ['data' => ['method' => 'post']]) ?>               
                                 </li>
                             </ul>
                         <?php endif; ?>
@@ -120,7 +123,7 @@ AppAsset::register($this);
                 //          ]);
                 ?>
 
-                <?php echo $content; //Pagina zelf      ?>
+                <?php echo $content; //Pagina zelf         ?>
 
             </div>
 
@@ -179,26 +182,28 @@ AppAsset::register($this);
             </div>
         </div>
         <?php
-        if (!Yii::$app->user->isGuest) {
-            NavBar::begin(['brandLabel' => 'Beheer']);
-            echo Nav::widget([
-                //    'type' => 'inverse',
-                //    'brand' => 'Beheer',
-                //   'brandUrl' => 'index.php',
-                //   'collapse' => true,
-                //   'fixed' => 'bottom',
-                'items' => [
-                    ['label' => 'Zoeken', 'icon' => 'search white', 'url' => ['/']],
-                    ['label' => 'Gebruikers', 'icon' => 'user white', 'url' => ['/user'], 'visible' => !Yii::$app->user->isGuest],
-                    ['label' => 'Afbeeldingen', 'icon' => 'picture white', 'url' => ['/image']],
-                    ['label' => 'Documenten', 'icon' => 'file white', 'url' => ['/document']],
-                    ['label' => 'Audio', 'icon' => 'headphones white', 'url' => ['/audio']],
-                    ['label' => 'Collecties', 'icon' => 'folder-open white', 'url' => ['/collection']],
-                ],
-                'options' => ['class' => 'navbar-nav'],
-            ]);
-            NavBar::end();
-        }
+        //   if (!Yii::$app->user->isGuest) {
+        //       NavBar::begin(['brandLabel' => 'Beheer', ]);
+        echo Nav::widget([
+            //    'type' => 'inverse',
+            //    'brand' => 'Beheer',
+            //   'brandUrl' => 'index.php',
+            //   'collapse' => true,
+            //   'fixed' => 'bottom',
+            'items' => [
+                ['label' => 'Zoeken', 'icon' => 'search white', 'url' => ['/']],
+                ['label' => 'Gebruikers', 'icon' => 'user white', 'url' => ['/user']],
+                ['label' => 'Afbeeldingen', 'icon' => 'picture white', 'url' => ['/image']],
+                ['label' => 'Documenten', 'icon' => 'file white', 'url' => ['/document']],
+                ['label' => 'Audio', 'icon' => 'headphones white', 'url' => ['/audio']],
+                ['label' => 'Collecties', 'icon' => 'folder-open white', 'url' => ['/collection']],
+            ],
+            'options' => ['class' => 'navbar-nav'],
+        ]);
+        //      NavBar::end();
+        //  }
+        $this->endBody();
         ?>
     </body>
 </html>
+<?php $this->endPage() ?>

@@ -43,9 +43,9 @@ GridView::widget([
             }],
         ['header' => 'Jaar', 'value' => 'year'],
     ],
-    'pager' => [
-        'prevPageLabel' => '&laquo;',
-        'nextPageLabel' => '&raquo;',
-    ],
+  //  'pager' => [
+  //      'prevPageLabel' => '&laquo;',
+  //      'nextPageLabel' => '&raquo;',
+  //  ],
 ])
 ?>

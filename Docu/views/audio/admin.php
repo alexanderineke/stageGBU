@@ -52,7 +52,7 @@ GridView::widget([
         'created_on',
         'modified_on',
         ['class' => 'yii\grid\ActionColumn'],
-    // ['class' => 'btn btn-default'],
+   //  ['class' => 'btn btn-default'],
     ],
 ])
 ?>

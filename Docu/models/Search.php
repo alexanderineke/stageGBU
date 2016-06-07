@@ -200,22 +200,26 @@ class Search {
     }
 
     public function searchImagesByTag($params) {
-        $query = ImageTag::find()
-                ->joinWith('tags')
-                ->joinWith('images')
-                ->andFilterWhere('or', ['like', 'tags.slug', $params['tags.slug'] . '%', true])
-                ->andFilterWhere(['like', 'tags.state', 1 . '%', false])
-                ->groupBy('id');
-
-        $countQuery = clone $query;
-        $pages = new Pagination(['totalCount' => $countQuery->count(), 'defaultPageSize' => 30]);
-        $datas = $query->offset($pages->offset)
-                ->limit($pages->limit)
+        $query = Image::find()
+                ->with('tags')
+                ->with('images')
+                //->Where(['tags.slug' => $params])
+                // ->andFilterWhere('or', ['like', 'tags.slug', $params['tags.slug'] . '%', true])
+                ->where(['tags.state' => 1])
+                ->groupBy('id')
                 ->all();
-        return [
-            'datas' => $datas,
-            'pages' => $pages
-        ];
+  //      $countQuery = clone $query;
+ //       $pages = new Pagination(['totalCount' => $countQuery->count(), 'defaultPageSize' => 30]);
+  //      $datas = $query->offset($pages->offset)
+  //              ->limit($pages->limit)
+  //              ->all();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+   //         'pages' => $pages,
+    //        'datas' => $datas
+        ]);
+        return $dataProvider;
     }
 
     public function popularTags() {

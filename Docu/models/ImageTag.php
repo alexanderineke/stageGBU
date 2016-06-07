@@ -44,6 +44,11 @@ class ImageTag extends \yii\db\ActiveRecord {
         ];
     }
 
+    public function getTags(){
+        return $this->belongs_to(Tag::className(), ['id' => 'tag_id']);
+    }
+
+
     public function search($params) {
         $query = ImageTag::find();
         $dataProvider = new ActiveDataProvider([
