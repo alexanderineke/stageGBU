@@ -7,6 +7,7 @@ use yii\helpers\Url;
 use Yii;
 use app\models\Collection;
 use app\assets\AppAsset;
+
 ?>
 <?php $collection = new Collection; 
 AppAsset::register($this)?>
