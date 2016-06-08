@@ -37,22 +37,22 @@ class SearchController extends Controller {
 
         //Documents
         $documentModel = new Document;
-        if (Yii::$app->getRequest()->getQueryParam('Document')) {
-            $doc = Yii::$app->getRequest()->getQueryParam('Document');
-        //    $documentModel->unsetAttributes();
-            $documentModel->attributes = $doc;
-            $documentModel->tag_search = $doc['tag_search'];
-        }
+//        if (Yii::$app->getRequest()->getQueryParam('Document')) {
+//            $doc = Yii::$app->getRequest()->getQueryParam('Document');
+//        //    $documentModel->unsetAttributes();
+//            $documentModel->attributes = $doc;
+//            $documentModel->tag_search = $doc['tag_search'];
+//        }
         $documentSearch = $model->searchDocumentsByTag($documentModel, $tag);
 
         //Audio
         $audioModel = new Audio;
-        if (Yii::$app->getRequest()->getQueryParam('Audio')) {
-            $au = Yii::$app->getRequest()->getQueryParam('Audio');
-       //     $audioModel->unsetAttributes();
-            $audioModel->attributes = $au;
-            $audioModel->tag_search = $au['tag_search'];
-        }
+//        if (Yii::$app->getRequest()->getQueryParam('Audio')) {
+//            $au = Yii::$app->getRequest()->getQueryParam('Audio');
+//            $audioModel->unsetAttributes();
+//            $audioModel->attributes = $au;
+//            $audioModel->tag_search = $au['tag_search'];
+//        }
         $audioSearch = $model->searchAudioByTag($audioModel, $tag);
 
         return $this->render('results', [
@@ -72,7 +72,7 @@ class SearchController extends Controller {
         $model = new Search();
 
         $imageSearch = null;
-        //$imageSearch = $model->searchImages($keyword);
+        $imageSearch = $model->searchImages($keyword);
 
         $documentModel = null;
         $documentSearch = null;
@@ -87,7 +87,7 @@ class SearchController extends Controller {
 
         $audioModel = null;
         $audioSearch = null;
-//        $audioModel = new Audio;
+        $audioModel = new Audio;
         
            
 //        if(Yii::$app->getRequest()->getQueryParam('Audio')){
@@ -96,7 +96,7 @@ class SearchController extends Controller {
 //            $audioModel->attributes=$au;
 //            $audioModel->tag_search = $au['tag_search'];
 //        }
-//        $audioSearch = $model->searchAudio($audioModel, $keyword);
+        $audioSearch = $model->searchAudio($audioModel, $keyword);
 
 
         return $this->render('results',[

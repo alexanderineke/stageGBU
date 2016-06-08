@@ -23,8 +23,8 @@ AppAsset::register($this);
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="language" content="en" />
-        <title><?php echo ''// yii\helpers\Html::encode($this->pageTitle);        ?></title>
- 
+        <title><?php echo ''// yii\helpers\Html::encode($this->pageTitle);         ?></title>
+
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@web'); ?>/css/site.css" />
         <link rel="shortcut icon" href="<?php echo Yii::getAlias('@web/themes/dcu') ?>/assets/images/favicon.png" type="image/x-icon" />
         <?php
@@ -34,9 +34,9 @@ AppAsset::register($this);
         $this->registerCssFile(Yii::getAlias('@web/themes/dcu/assets/css/gbu.css'));
         $this->registerCssFile(Yii::getAlias('@web/themes/dcu/assets/css/font-awesome.css'));
 
-        //     $this->registerJsFile(Yii::getAlias('@web/themes/dcu/assets/js/modernizr.custom.js'), self::POS_HEAD);
-        //    $this->registerJsFile(Yii::getAlias('@web/themes/dcu/assets/js/bootstrap.min.js'), View::POS_END);
-        //    $this->registerJsFile(Yii::getAlias('@web/themes/dcu/assets/js/main.js'), View::POS_END);
+        $this->registerJs(Yii::getAlias('@web/themes/dcu/assets/js/modernizr.custom.js'), View::POS_HEAD);
+        $this->registerJs(Yii::getAlias('@web/themes/dcu/assets/js/bootstrap.min.js'), View::POS_END);
+        $this->registerJs(Yii::getAlias('@web/themes/dcu/assets/js/main.js'), View::POS_END);
         $this->head();
         ?>
     </head>
@@ -202,7 +202,7 @@ AppAsset::register($this);
         ]);
         //      NavBar::end();
         //  }
-      //  $this->endBody();
+        // $this->endBody();
         ?>
     </body>
 </html>
