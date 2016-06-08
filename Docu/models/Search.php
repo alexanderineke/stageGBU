@@ -24,42 +24,68 @@ class Search {
         return Model::scenarios();
     }
 
-    public static function searchDocuments($params, $query) {
-        $q = Document::find();
-
-        $dataProvider = new ActiveDataProvider([
-            'query' => $q,
-            'pagination' => [
-                'pageSize' => 25
-            ],
-        ]);
-
-        $q
+    public static function searchDocuments($params, $keyword) {
+        $query = Document::find()
                 ->with('tags')
                 ->andFilterWhere([
-                    'or',
-                    ['like', 'content', $query['content'] . '%', true],
-                    ['like', 'description', $query['description'] . '%', true],
-                    ['like', 'year', $query['year'] . '%', true],
-                    ['like', 'title', $query['title'] . '%', true],
-                        //       ['like', 'tags.slug', $query['tags.slug'] . '%', true],
-                ])
-                ->andFilterWhere([
-                    ['like', 'title', $params['title'] . '%', true],
-                    ['like', 'description', $params['description'] . '%', true],
-                    //           ['like', 'tags.slug', $params['tags.slug'] . '%', true],
-                    ['like', 'year', $params['year'] . '%', true],
-                    ['like', 'tags.state', 1 . '%', false],
-                ])
-                ->groupBy('id');
-        $dataProvider->setSort([
-            'tag_search' => [
-                'asc' => 'tags.slug',
-                'desc' => 'tags.slug DESC',
-            ],
-            '*',
+            'or',
+            ['like', 'content', $keyword],
+            ['like', 'description', $keyword],
+            ['like', 'year', $keyword],
+            ['like', 'title', $keyword],
+          //  ['like', 'tags.slug', $keyword],
         ]);
-        return $dataProvider;
+
+        $provider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'title' => SORT_ASC,
+                ]
+            ],
+        ]);
+
+// returns an array of Post objects
+//$posts = $provider->getModels();
+//
+//        $dataProvider = new ActiveDataProvider([
+//            'query' => $query,
+//            'pagination' => [
+//                'pageSize' => 25
+//            ],
+//        ]);
+//print_r($params);
+//print($keyword);
+//exit;
+//        $query
+//                ->with('tags')
+//                ->andFilterWhere([
+//                    'or',
+//                    ['like', 'content', $keyword],
+//                    ['like', 'description', $keyword],
+//                    ['like', 'year', $keyword],
+//                    ['like', 'title', $keyword],
+//                        //       ['like', 'tags.slug', $query['tags.slug'] . '%', true],
+//                ])
+//                ->andFilterWhere([
+//                    ['like', 'title', $params['title'] . '%', true],
+//                    ['like', 'description', $params['description'] . '%', true],
+//                    //           ['like', 'tags.slug', $params['tags.slug'] . '%', true],
+//                    ['like', 'year', $params['year'] . '%', true],
+//                    ['like', 'tags.state', 1 . '%', false],
+//                ])
+//                ->groupBy('id');
+//        $dataProvider->setSort([
+//            'tag_search' => [
+//                'asc' => 'tags.slug',
+//                'desc' => 'tags.slug DESC',
+//            ],
+//            '*',
+//        ]);
+        return $provider;
     }
 
     /*
@@ -208,16 +234,16 @@ class Search {
                 ->where(['tags.state' => 1])
                 ->groupBy('id')
                 ->all();
-  //      $countQuery = clone $query;
- //       $pages = new Pagination(['totalCount' => $countQuery->count(), 'defaultPageSize' => 30]);
-  //      $datas = $query->offset($pages->offset)
-  //              ->limit($pages->limit)
-  //              ->all();
+        //      $countQuery = clone $query;
+        //       $pages = new Pagination(['totalCount' => $countQuery->count(), 'defaultPageSize' => 30]);
+        //      $datas = $query->offset($pages->offset)
+        //              ->limit($pages->limit)
+        //              ->all();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-   //         'pages' => $pages,
-    //        'datas' => $datas
+                //         'pages' => $pages,
+                //        'datas' => $datas
         ]);
         return $dataProvider;
     }

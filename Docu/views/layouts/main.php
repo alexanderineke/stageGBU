@@ -202,7 +202,7 @@ AppAsset::register($this);
         ]);
         //      NavBar::end();
         //  }
-        $this->endBody();
+      //  $this->endBody();
         ?>
     </body>
 </html>
