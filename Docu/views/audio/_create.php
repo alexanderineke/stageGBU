@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\widgets\dropzone\DropZone;
+use yii\helpers\Url;
 
 $form = ActiveForm::begin([
             'id' => 'audio-form',
@@ -21,12 +22,15 @@ $form = ActiveForm::begin([
 
 <?php
 echo DropZone::widget([
-    'options' => [
-        'maxFilesize' => '200',
-    ],
-    'clientEvents' => [
-        'complete' => "function(file){console.log(file)}",
-        'removedfile' => "function(file){alert(file.name + ' is removed')}"
+  'options' => [
+  'maxFilesize' => '200',
+  //'dictDefaultMessage' => 'Plaats hier het bestand dat u wilt uploaden',
+  //'dictFallbackMessage' => 'Uw browser wordt niet ondersteund',
+ //'dictInvalidFileType' => 'Dit bestands formaat wordt niet ondersteund. Converteer het a.u.b. naar PDF.',
+ // 'dictFileTooBig' => 'Het bestand dat u probeert te uploaden is te groot.',
+  //'clickable' => true,
+ // 'accept' => ['image/jpeg', 'image/png', 'image/gif'],
+ 'url' => Url::to('audio/batchupload'),
     ],
 ]);
 ?>

@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\widgets\dropzone\DropZone;
+use yii\helpers\Url;
 
 $form = ActiveForm::begin([
             'id' => 'image-form',
@@ -19,13 +20,18 @@ $form = ActiveForm::begin([
 
 <?php
 echo DropZone::widget([
+  'name' => 'filename',
+    'storedFiles' => [],
+    'url' => 'http://localhost/stageGBU/stageGBU/docu/web/index.php?r=image/batchupload',
     'options' => [
-        'maxFilesize' => '2',
-    ],
-    'clientEvents' => [
-        'complete' => "function(file){console.log(file)}",
-        'removedfile' => "function(file){alert(file.name + ' is removed')}"
-    ],
+  
+  'maxFilesize' => '200',
+  'dictDefaultMessage' => 'Plaats hier het bestand dat u wilt uploaden',
+  'dictFallbackMessage' => 'Uw browser wordt niet ondersteund',
+  'dictInvalidFileType' => 'Dit bestands formaat wordt niet ondersteund. Converteer het a.u.b. naar PDF.',
+  'dictFileTooBig' => 'Het bestand dat u probeert te uploaden is te groot.',
+  
+    ]
 ]);
 ?>
 <div class="form-actions">

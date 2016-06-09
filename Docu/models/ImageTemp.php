@@ -3,7 +3,8 @@
 namespace app\models;
 
 use Yii;
-
+use app\models\User;
+use yii\data\ActiveDataProvider;
 /**
  * This is the model class for table "{{%image_temp}}".
  *
@@ -77,17 +78,15 @@ class ImageTemp extends \yii\db\ActiveRecord {
     }
 
     public function addTempFile($filename, $location) {
-        $sql = "insert into tbl_image_temp (user_id, create_date, file, format, location) values (:user_id, NOW(), :file, :format, :location)";
-        $parameters = [":user_id" => Yii::$app->user->getId(),
-            ":file" => $filename,
-            ":format" => 'pdf',
-            ":location" => $location];
-        if (Yii::$app->db->createCommand($sql)->execute($parameters)) {
-            $id = Yii::$app->db->getLastInsertID();
-        } else {
-            $id = false;
-        }
-        return $id;
+        $sql = Yii::$app->db->createCommand()
+                        ->insert('tbl_image_temp', [
+                            'user_id' => Yii::$app->user->identity->id,
+                            'create_date' => date("Y-m-d H:i:s"),
+                            'file' => $filename,
+                            'format' => 'pdf',
+                            'location' => $location,
+                        ])->execute();
+        return $sql;
     }
 
 }

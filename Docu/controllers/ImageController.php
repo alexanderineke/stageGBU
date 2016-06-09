@@ -11,6 +11,7 @@ use app\models\ImageFile;
 use app\models\ImageTemp;
 use app\models\Collection;
 use yii\helpers\ArrayHelper;
+use yii\helpers\BaseFileHelper;
 use yii\web\UploadedFile;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -86,19 +87,21 @@ class ImageController extends Controller {
 
     public function actionBatchupload() {
         $model = new ImageTemp;
-        $uploadedFile = UploadedFile::getInstanceByName('Image[file]');
+        $uploadedFile = UploadedFile::getInstanceByName('filename');
         $rnd = rand(0, 9999);
         $folderName = date("d M Y");
         $fileName = "{$rnd}_{$uploadedFile}";
-        if (!is_dir(Yii::getAlias('@app' . '/../uploads/' . $folderName))) {
-            mkdir(Yii::getAlias('@app' . '/../uploads/' . $folderName));
+      
+        
+        if (!is_dir(Yii::getAlias('uploads/' . $folderName))) {
+           BaseFileHelper::createDirectory(Yii::getAlias('uploads/' . $folderName));
         }
-        if ($uploadedFile->saveAs(Yii::getAlias('@app' . '/../uploads/' . $folderName . '/' . $fileName))) {
-           $id = $model->addTempFile($fileName, $folderName);
+        if ($uploadedFile->saveAs(Yii::getAlias('uploads/' . $folderName . '/' . $fileName))) {
+               $id = $model->addTempFile($fileName, $folderName);
             if ($id) {
-                $fileQueue = Yii::$app->user->getState('filesToProcess');
+                $fileQueue = Yii::$app->session->get('filesToProcess');
                 array_push($fileQueue, $id);
-                Yii::$app->user->setState('filesToProcess', $fileQueue);
+                Yii::$app->session->set('filesToProcess', $fileQueue);
             } else {
                 throw new HttpException(400, 'Upload niet gelukt.');
             }
@@ -256,7 +259,7 @@ class ImageController extends Controller {
 
         $list = ArrayHelper::map(Collection::find()->all(),'id', 'title');
 
-        $this -> render('process', [
+       return $this -> render('process', [
                     'model' => $model,
                     'file' => $file,
                     'collection_list' => $list,

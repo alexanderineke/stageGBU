@@ -23,8 +23,8 @@ AppAsset::register($this);
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="language" content="en" />
-        <title><?php echo ''// yii\helpers\Html::encode($this->pageTitle);        ?></title>
- 
+        <title><?php echo ''// yii\helpers\Html::encode($this->pageTitle);         ?></title>
+
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@web'); ?>/css/site.css" />
         <link rel="shortcut icon" href="<?php echo Yii::getAlias('@web/themes/dcu') ?>/assets/images/favicon.png" type="image/x-icon" />
         <?php
@@ -182,26 +182,32 @@ AppAsset::register($this);
             </div>
         </div>
         <?php
-        //   if (!Yii::$app->user->isGuest) {
-        //       NavBar::begin(['brandLabel' => 'Beheer', ]);
-        echo Nav::widget([
-            //    'type' => 'inverse',
-            //    'brand' => 'Beheer',
-            //   'brandUrl' => 'index.php',
-            //   'collapse' => true,
-            //   'fixed' => 'bottom',
-            'items' => [
-                ['label' => 'Zoeken', 'icon' => 'search white', 'url' => ['/']],
-                ['label' => 'Gebruikers', 'icon' => 'user white', 'url' => ['/user']],
-                ['label' => 'Afbeeldingen', 'icon' => 'picture white', 'url' => ['/image']],
-                ['label' => 'Documenten', 'icon' => 'file white', 'url' => ['/document']],
-                ['label' => 'Audio', 'icon' => 'headphones white', 'url' => ['/audio']],
-                ['label' => 'Collecties', 'icon' => 'folder-open white', 'url' => ['/collection']],
-            ],
-            'options' => ['class' => 'navbar-nav'],
-        ]);
-        //      NavBar::end();
-        //  }
+        if (!Yii::$app->user->isGuest) {
+            NavBar::begin(['brandLabel' => 'Beheer', 'brandUrl' => 'index.php', 'options' => [
+                    'class' => 'navbar-inverse navbar-bottom',]]);
+            echo Nav::widget([
+                'items' => [
+                    [
+                        'label' => 'Home',
+                        'url' => ['site/index'],
+                    // 'linkOptions' => [...],
+                    ],
+                    [
+                        'label' => 'rest',
+                        'items' => [
+                            ['label' => 'Zoeken', 'icon' => 'search white', 'url' => ['/']],
+                            ['label' => 'Gebruikers', 'icon' => 'user white', 'url' => ['/user'], 'visible' => !Yii::$app->user->isGuest],
+                            ['label' => 'Afbeeldingen', 'icon' => 'picture white', 'url' => ['/image']],
+                            ['label' => 'Documenten', 'icon' => 'file white', 'url' => ['/document']],
+                            ['label' => 'Audio', 'icon' => 'headphones white', 'url' => ['/audio']],
+                            ['label' => 'Collecties', 'icon' => 'folder-open white', 'url' => ['/collection']],
+                        ],
+                    ],
+                ],
+                'options' => ['class' => 'nav navbar-nav'],
+            ]);
+            NavBar::end();
+        }
         $this->endBody();
         ?>
     </body>
