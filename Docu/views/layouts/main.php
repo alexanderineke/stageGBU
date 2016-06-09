@@ -34,9 +34,9 @@ AppAsset::register($this);
         $this->registerCssFile(Yii::getAlias('@web/themes/dcu/assets/css/gbu.css'));
         $this->registerCssFile(Yii::getAlias('@web/themes/dcu/assets/css/font-awesome.css'));
 
-        //     $this->registerJsFile(Yii::getAlias('@web/themes/dcu/assets/js/modernizr.custom.js'), self::POS_HEAD);
-        //    $this->registerJsFile(Yii::getAlias('@web/themes/dcu/assets/js/bootstrap.min.js'), View::POS_END);
-        //    $this->registerJsFile(Yii::getAlias('@web/themes/dcu/assets/js/main.js'), View::POS_END);
+        $this->registerJs(Yii::getAlias('@web/themes/dcu/assets/js/modernizr.custom.js'), View::POS_HEAD);
+        $this->registerJs(Yii::getAlias('@web/themes/dcu/assets/js/bootstrap.min.js'), View::POS_END);
+        $this->registerJs(Yii::getAlias('@web/themes/dcu/assets/js/main.js'), View::POS_END);
         $this->head();
         ?>
     </head>
@@ -182,33 +182,28 @@ AppAsset::register($this);
             </div>
         </div>
         <?php
-        if (!Yii::$app->user->isGuest) {
-            NavBar::begin(['brandLabel' => 'Beheer', 'brandUrl' => 'index.php', 'options' => [
-                    'class' => 'navbar-inverse navbar-bottom',]]);
-            echo Nav::widget([
-                'items' => [
-                    [
-                        'label' => 'Home',
-                        'url' => ['site/index'],
-                    // 'linkOptions' => [...],
-                    ],
-                    [
-                        'label' => 'rest',
-                        'items' => [
-                            ['label' => 'Zoeken', 'icon' => 'search white', 'url' => ['/']],
-                            ['label' => 'Gebruikers', 'icon' => 'user white', 'url' => ['/user'], 'visible' => !Yii::$app->user->isGuest],
-                            ['label' => 'Afbeeldingen', 'icon' => 'picture white', 'url' => ['/image']],
-                            ['label' => 'Documenten', 'icon' => 'file white', 'url' => ['/document']],
-                            ['label' => 'Audio', 'icon' => 'headphones white', 'url' => ['/audio']],
-                            ['label' => 'Collecties', 'icon' => 'folder-open white', 'url' => ['/collection']],
-                        ],
-                    ],
-                ],
-                'options' => ['class' => 'nav navbar-nav'],
-            ]);
-            NavBar::end();
-        }
-        $this->endBody();
+
+        //   if (!Yii::$app->user->isGuest) {
+        //       NavBar::begin(['brandLabel' => 'Beheer', ]);
+        echo Nav::widget([
+            //    'type' => 'inverse',
+            //    'brand' => 'Beheer',
+            //   'brandUrl' => 'index.php',
+            //   'collapse' => true,
+            //   'fixed' => 'bottom',
+            'items' => [
+                ['label' => 'Zoeken', 'icon' => 'search white', 'url' => ['/']],
+                ['label' => 'Gebruikers', 'icon' => 'user white', 'url' => ['/user']],
+                ['label' => 'Afbeeldingen', 'icon' => 'picture white', 'url' => ['/image']],
+                ['label' => 'Documenten', 'icon' => 'file white', 'url' => ['/document']],
+                ['label' => 'Audio', 'icon' => 'headphones white', 'url' => ['/audio']],
+                ['label' => 'Collecties', 'icon' => 'folder-open white', 'url' => ['/collection']],
+            ],
+            'options' => ['class' => 'navbar-nav'],
+        ]);
+        //      NavBar::end();
+        //  }
+        // $this->endBody();
         ?>
     </body>
 </html>

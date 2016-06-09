@@ -12,8 +12,9 @@ use app\assets\AppAsset;
 <?php $collection = new Collection; 
 AppAsset::register($this)?>
 <?php if(!empty($collection)): ?>
-    <?php// $this->registerJsFile("collections-spotlight", "jQuery('#collections-spotlight').carousel();"); ?>
+    <?php $this->registerJs("collections-spotlight", "jQuery('#collections-spotlight').carousel();"); ?>
     <div id="collections-spotlight" class="carousel slide">
+        <h1>Hallo</h1>
         <div class="carousel-inner">
             <?php foreach ($collection->collections as $i => $subcollection): ?>
                 <?php if($i % 3 == 0): ?>
@@ -28,6 +29,7 @@ AppAsset::register($this)?>
                 <?php endif; ?>
                         <article class="span4 collection-thumb">
                             <?php if($subcollection->thumb): ?>
+                            
                                 <?php echo Html::img('uploads/afbeeldingen/'.$subcollection->thumb->location.'/thumb/'.$subcollection->thumb->file.$subcollection->thumb->format, $subcollection->title, ['class'=>'img-polaroid collection-thumb-img span5']); ?>
                             <?php endif; ?>
                             <a href="<?php echo Url::to("collection/view", ["id"=>$subcollection->id]); ?>"  class="span7">

@@ -40,7 +40,7 @@ class Document extends ActiveRecord {
     }
 
     public function getDocumentTags() {
-       return  $this->hasMany(DocumentTag::className(), ['id' => 'document_id']);
+        return $this->hasMany(DocumentTag::className(), ['id' => 'document_id']);
     }
 
     public function getDocuments() {
@@ -85,4 +85,44 @@ class Document extends ActiveRecord {
 
         return $dataProvider;
     }
+
+    public function searchDocuments($model, $q) {
+        $query = Document::find();
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 25
+            ],
+        ]);
+
+        if (!$this->validate()) {
+            return $dataProvider;
+        }
+
+        $query
+                ->with('tags')
+                ->andFilterWhere(['or',
+                    ['like', 'description', $q],
+                    ['like', 'year', $q],
+                    ['like', 'title', $q],
+                    ['like', 'tags.slug', $q]])
+                ->andFilterWhere([
+                    ['like', 'title', $model->title],
+                    ['like', 'description', $q],
+                    ['like', 'tags.slug', $q],
+                    ['like', 'year', $q],
+                    ['like', 'tags.state', 1]
+                ])
+                ->groupBy('t.id');
+        $dataProvider->setSort([
+            'tag_search' => [
+                'asc' => 'tags.slug',
+                'desc' => 'tags.slug DESC',
+            ],
+            '*',
+        ]);
+
+        return $dataProvider;
+    }
+
 }

@@ -1,14 +1,16 @@
 <?php
+use yii\helpers\Html;
 
-foreach ($data->images as $image) {
-    $smallImage = "/uploads/afbeeldingen/" . $image->location . "/thumb/" . $image->file . $image->format;
-    $imageLocation = "/uploads/afbeeldingen/" . $image->location . "/" . $image->file . $image->format;
+foreach ($model->images as $image) {
+    $smallImage = Yii::getAlias("@web"). "/uploads/afbeeldingen/" . $image->location . "/thumb/" . $image->file . $image->format;
+    $imageLocation = Yii::getAlias("@web"). "/uploads/afbeeldingen/" . $image->location . "/" . $image->file . $image->format;
     echo '<li>';
-    echo CHtml::link('<img src="' . $smallImage . '" alt="' . htmlspecialchars($data->title) . '"/>', ['image/view', 'id' => $data->id], ['data-largesrc' => $imageLocation,
-        'data-title' => htmlspecialchars($data->title),
-        'data-description' => htmlspecialchars($data->description)
+    echo Html::a('<img src="' . $smallImage . '" alt="' . htmlspecialchars($model->title) . '"/>', ['image/view', 'id' => $model->id], ['data-largesrc' => $imageLocation,
+        'data-title' => htmlspecialchars($model->title),
+        'data-description' => htmlspecialchars($model->description)
             ]
     );
     echo "</li>";
 }
 ?>
+
