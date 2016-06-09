@@ -89,10 +89,13 @@ class Search {
     }
 
     public function searchDocumentsByTag($documentsModel, $keyword) {
-        $query = DocumentTag::find()
-                ->with('tags')
-                ->where(['tags.state' => 1])
-                ->groupBy('id');
+        $query = Tag::find()
+                ->with('documents')
+                ->andFilterWhere([
+            'or',
+            ['like', 'state', 1],
+            ['like', 'slug', $keyword],
+        ]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -179,10 +182,13 @@ class Search {
     }
 
     public function searchAudioByTag($audioModel, $keyword) {
-        $query = AudioTag::find()
-                ->with('tags')
-                ->where(['tags.state' => 1])
-                ->groupBy('id');
+        $query = Tag::find()
+                ->with('audios')
+                ->andFilterWhere([
+            'or',
+            ['like', 'state', 1],
+            ['like', 'slug', $keyword],
+        ]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -263,26 +269,68 @@ class Search {
         //     ];
     }
 
-    public function searchImagesByTag($params) {
-        $query = ImageTag::find()
-                ->with('tags')
-               // ->with('images')
-                //->Where(['tags.slug' => $params])
-                // ->andFilterWhere('or', ['like', 'tags.slug', $params['tags.slug'] . '%', true])
-                ->where(['tags.state' => 1])
-                ->groupBy('id');
-        //      $countQuery = clone $query;
-        //       $pages = new Pagination(['totalCount' => $countQuery->count(), 'defaultPageSize' => 30]);
-        //      $datas = $query->offset($pages->offset)
-        //              ->limit($pages->limit)
-        //              ->all();
+    public function searchImagesByTag($keyword) {
+        $query1 = (new \yii\db\Query())
+                ->select("id AS idImage")
+                ->from('tbl_image');
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-                //         'pages' => $pages,
-                //        'datas' => $datas
+        $query2 = (new \yii\db\Query())
+                ->select("tag_id AS idTag")
+                ->from('tbl_image_tag')
+                ->where('idImage', 'image_id');
+
+        $query3 = (new \yii\db\Query())
+                ->select("*")
+                ->from('tbl_tag')
+                ->where('id', 'idTag')
+                ->andFilterWhere([
+            'or',
+            ['like', 'state', 1],
+            ['like', 'slug', $keyword],
         ]);
-        return $dataProvider;
+        
+        $query1->union(($query2->union($query3)));
+
+        print_r($query1);
+        
+        $query = Tag::find()
+                ->with('images')
+                ->andFilterWhere([
+            'or',
+            ['like', 'state', 1],
+            ['like', 'slug', $keyword],
+        ]);
+
+        $provider = new ActiveDataProvider([
+            'query' => $query1,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
+
+        return $provider;
+
+
+
+//        $query = ImageTag::find()
+//                ->with('tags')
+//               // ->with('images')
+//                //->Where(['tags.slug' => $params])
+//                // ->andFilterWhere('or', ['like', 'tags.slug', $params['tags.slug'] . '%', true])
+//                ->where(['tags.state' => 1])
+//                ->groupBy('id');
+//        //      $countQuery = clone $query;
+//        //       $pages = new Pagination(['totalCount' => $countQuery->count(), 'defaultPageSize' => 30]);
+//        //      $datas = $query->offset($pages->offset)
+//        //              ->limit($pages->limit)
+//        //              ->all();
+//
+//        $dataProvider = new ActiveDataProvider([
+//            'query' => $query,
+//                //         'pages' => $pages,
+//                //        'datas' => $datas
+//        ]);
+//        return $dataProvider;
     }
 
     public function popularTags() {

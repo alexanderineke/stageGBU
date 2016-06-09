@@ -11,7 +11,7 @@ return [
     'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
     'name'=>'Documentatie Centrum Urk',
     'language'=>'nl',
-    'theme'=>'dcu',
+   // 'theme'=>'dcu',
     // preloading 'log' component
     'preload'=>[
         'log',
@@ -60,7 +60,7 @@ return [
             'linkAssets' => true,
         ],
         'clientScript'=>[
-            'coreScriptPosition' => CClientScript::POS_END,
+            'coreScriptPosition' => yii\web\View::POS_END,
         ],        
         // uncomment the following to enable URLs in path-format
         

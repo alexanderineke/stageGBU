@@ -58,7 +58,7 @@ class ImageController extends Controller {
     }
 
       public function actionView($id) {
-        $model = \app\models\Image::findOne($id);
+        $model = Image::findOne($id);
         if ($model) {
             return $this->render('view', ['model' => $model]);
         } else {

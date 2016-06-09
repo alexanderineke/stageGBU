@@ -3,6 +3,9 @@
 namespace app\models;
 
 use Yii;
+use app\models\Image;
+use app\models\Document;
+use app\models\Audio;
 
 /**
  * This is the model class for table "{{%tag}}".
@@ -45,6 +48,21 @@ class Tag extends \yii\db\ActiveRecord {
         ];
     }
 
+    public function getImages() {
+        return $this->hasMany(Image::className(), ['id' => 'tag_id'])
+                        ->viaTable('tbl_image_tag', ['image_id' => 'id']);
+    }
+
+        public function getDocuments() {
+        return $this->hasMany(Document::className(), ['id' => 'tag_id'])
+                        ->viaTable('tbl_document_tag', ['document_id' => 'id']);
+    }
+    
+        public function getAudios() {
+        return $this->hasMany(Audio::className(), ['id' => 'tag_id'])
+                        ->viaTable('tbl_audio_tag', ['audio_id' => 'id']);
+    }
+    
     public function search($params) {
         $query = Tag::find();
         $dataProvider = new ActiveDataProvider([

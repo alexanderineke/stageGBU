@@ -23,11 +23,10 @@ echo Button::widget([
 
 
 //echo GridView::widget([
-//    'dataProvider' => $documentSearch,
+//    'dataProvider' => $imageSearch,
 //    'columns' => [
 //        'id',
-//        'title',
-//        'created_on'
+//        'state'
 //    ],
 //]);
 
@@ -112,9 +111,9 @@ if (($audioSearch->getTotalCount() != 0)) { // && !Yii::$app->request->isAjaxReq
             'dataProvider' => $audioSearch,
             //    'filter' => $audioModel,
             'columns' => [
-                'title',
+            //    'title',
                 'id',
-                'created_on'
+            //    'created_on'
             // ['header' => 'Naam document', 'value' => ''/* Html::a($audioModel->title, Url::to("/docu/web/index.php?r=audio%2Fview&id=" . $audioModel->id)), 'format' => 'raw', 'filter' => Html::activeTextInput($audioModel, 'title', ['placeholder' => 'Zoek op titel..']) */ ],
             //  ['header' => 'Steekwoorden', 'value' => 'objectToTagStringAudio($data->id)', 'filter' => Html::activeTextInput($audioModel, 'tag_search', ['placeholder' => 'Zoek op steekwoord..'])], //Omdat een result meerdere tags kan hebben moeten we deze verwerken.
             //   ['header' => 'Toegevoegd op', 'value' => '($data->created_on !== "0000-00-00 00:00:00" ? strftime("%e %B %Y", strtotime($data->created_on)) : "Datum niet beschikbaar")', 'filter' => ''],

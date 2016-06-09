@@ -18,11 +18,11 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'css/site.css',
-        'themes/dcu/assets/css/font-awesome.css',
-        'themes/dcu/assets/css/gbu.css',
-        'themes/dcu/assets/css/bootstrap-responsive.min.css',
-        'themes/dcu/assets/css/bootstrap.css',
+     //   'css/site.css',
+     //   'themes/dcu/assets/css/font-awesome.css',
+     //   'themes/dcu/assets/css/gbu.css',
+     //   'themes/dcu/assets/css/bootstrap-responsive.min.css',
+     //   'themes/dcu/assets/css/bootstrap.css',
     ];
     public $js = [
         'themes/dcu/assets/js/modernizr.custom.js',
