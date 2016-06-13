@@ -3,6 +3,8 @@
 namespace app\controllers;
 
 use Yii;
+use app\models;
+use app\models\Search;
 use app\models\Audio;
 use app\models\Tag;
 use app\models\AudioTag;
@@ -10,12 +12,15 @@ use app\models\AudioFile;
 use app\models\AudioTemp;
 use app\models\Collection;
 use yii\helpers\ArrayHelper;
+use yii\helpers\BaseFileHelper;
 use yii\web\UploadedFile;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\HttpException;
+use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
-
+use yii\widgets\dropzone\UploadAction;
+use yii\widgets\dropzone\RemoveAction;
 /**
  * AudioController implements the CRUD actions for Audio model.
  */
@@ -91,26 +96,29 @@ class AudioController extends Controller {
         }
     }
 
-    public function actionBatchupload() {
+      public function actionBatchupload() {
         $model = new AudioTemp;
-        $uploadedFile = UploadedFile::getInstanceByName('Audio[file]');
+        $uploadedFile = UploadedFile::getInstanceByName('filename');
         $rnd = rand(0, 9999);
         $folderName = date("d M Y");
         $fileName = "{$rnd}_{$uploadedFile}";
-        if (!is_dir(Yii::getAlias('@app' . '/../uploads/' . $folderName))) {
-            mkdir(Yii::getAlias('@app' . '/../uploads/' . $folderName));
+       
+        
+        if (!is_dir(Yii::getAlias('uploads/' . $folderName))) {
+            BaseFileHelper::createDirectory(Yii::getAlias('uploads/' . $folderName));
         }
-        if ($uploadedFile->saveAs(Yii::getAlias('@app' . '/../uploads/' . $folderName . '/' . $fileName))) {
+        if ($uploadedFile->saveAs(Yii::getAlias('uploads/' . $folderName . '/' . $fileName))) {
             $id = $model->addTempFile($fileName, $folderName);
             if ($id) {
-                $fileQueue = Yii::$app->session->getFlash('filesToProcess');
+                $fileQueue = Yii::$app->session->get('filesToProcess');
                 array_push($fileQueue, $id);
-                Yii::$app->session->setFlash('filesToProcess', [$fileQueue]);
+                Yii::$app->session->set('filesToProcess', $fileQueue);
             } else {
                 throw new HttpException(400, 'Upload niet gelukt.');
             }
         }
     }
+   
 
     public function actionUpdate($id) {
         $model = $this->loadModel($id);
@@ -178,20 +186,18 @@ class AudioController extends Controller {
     }
 
     public function actionCreate() {
-        $model = new Audio();
+      $model = new Audio();
 
-        //       Yii::$app->session->setFlash('filesToProcess', []);
-        Yii::$app->session->setFlash('filesToProcess');
+        Yii::$app->session->set('filesToProcess', []);
 
-//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-//            return $this->redirect(['view', 'id' => $model->id]);
-//        } else {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+       } else {
         return $this->render('create', [
                     'model' => $model,
         ]);
-//        }
+        }
     }
-
     public function actionProcess() {
         //$id = Yii::app()->request->getQueryParam('id');
         $id = Yii::$app->getRequest()->getQueryParam('id');

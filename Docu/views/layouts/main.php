@@ -32,9 +32,9 @@ AppAsset::register($this);
           $this->registerCssFile(Yii::getAlias('@web/themes/dcu/assets/css/bootstrap-responsive.min.css'));
           $this->registerCssFile(Yii::getAlias('@web/themes/dcu/assets/css/gbu.css'));
          $this->registerCssFile(Yii::getAlias('@web/themes/dcu/assets/css/font-awesome.css'));
-         $this->registerJs(Yii::getAlias('@web/themes/dcu/assets/js/modernizr.custom.js'), View::POS_HEAD);
-         $this->registerJs(Yii::getAlias('@web/themes/dcu/assets/js/bootstrap.min.js'), View::POS_END);
-         $this->registerJs(Yii::getAlias('@web/themes/dcu/assets/js/main.js'), View::POS_END);
+    //     $this->registerJs(Yii::getAlias('@web/themes/dcu/assets/js/modernizr.custom.js'), View::POS_HEAD);
+   //      $this->registerJs(Yii::getAlias('@web/themes/dcu/assets/js/bootstrap.min.js'), View::POS_END);
+   //      $this->registerJs(Yii::getAlias('@web/themes/dcu/assets/js/main.js'), View::POS_END);
         ?>
     </head>
     <body>
@@ -73,16 +73,16 @@ AppAsset::register($this);
                                 <li>Je bent inlogd als: <?php echo Yii::$app->user->identity->username; ?> </li>
                                 <li>
                                     <?php
-                                    //      echo Button::Widget([
-                                    //         'label' => 'Uitloggen',
-                                    //         'options' => ['class' => 'btn btn-primary'],
-                                    //             'url' => Url::toRoute(['site/logout']),
-                                    //  'icon' => 'off white',
-                                    //     ]);
-                                    //    
-                                    //  echo Html::a('Uitloggen', Url::to(['site/logout']), ['class' => 'btn btn-primary']);
+//                                          echo Button::Widget([
+//                                             'label' => 'Uitloggen',
+//                                             'options' => ['class' => 'btn btn-primary'],
+//                                                 'url' => Url::to(['site/logout']),
+//                                      'icon' => 'off white',
+//                                         ]);
+                                        
+                                      echo Html::a('Uitloggen', Url::to(['site/logout']), ['class' => 'btn btn-primary']);
                                     ?>
-                                    <?= Html::a('Logout', ['site/logout'], ['data' => ['method' => 'post']]) ?>               
+                                    <?php // Html::a('Logout', ['site/logout'], ['data' => ['method' => 'post']]) ?>               
                                 </li>
                             </ul>
                         <?php endif; ?>

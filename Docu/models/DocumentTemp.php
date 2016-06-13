@@ -3,7 +3,8 @@
 namespace app\models;
 
 use Yii;
-
+use app\models\User;
+use yii\data\ActiveDataProvider;
 /**
  * This is the model class for table "{{%document_temp}}".
  *
@@ -50,18 +51,16 @@ class DocumentTemp extends \yii\db\ActiveRecord {
     }
 
     public function addTempFile($filename, $location) {
-        $sql->createCommand()
+       $sql = Yii::$app->db->createCommand()
                 ->insert('tbl_document_temp', [
-                    'user_id' => Yii::$app->user->getId(),
-                    'create_date' => 'NOW()',
+                    'user_id' => Yii::$app->user->identity->id,
+                    'create_date' => date("Y-m-d H:i:s"),
                     'file' => $filename,
                     'format' => 'pdf',
                     'location' => $location])
                 ->execute();
-
-        $id = Yii::$app->db->getLastInsertID();
-
-        return $id;
+       
+        return $sql;
     }
 
 }

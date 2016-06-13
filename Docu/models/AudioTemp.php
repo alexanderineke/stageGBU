@@ -35,12 +35,13 @@ class AudioTemp extends \yii\db\ActiveRecord {
     public function rules() {
         return [
             [['create_date', 'user_id', 'file', 'format', 'location'], 'required'],
-            [['id, create_date, user_id, file, format, location'], 'safe'],
+            [['create_date'], 'safe'],
             [['user_id'], 'integer'],
             [['file', 'location'], 'string', 'max' => 255],
-            [['format'], 'string', 'max' => 4]
+            [['format'], 'string', 'max' => 4],
+            [['id', 'create_date', 'user_id', 'file', 'format', 'location'], 'safe', 'on' => 'search']
         ];
-    }
+    }       
 
     public function getUser() {
         return $this->Belongs_to(User::className(), ['id' => 'user_id']);
@@ -84,16 +85,14 @@ class AudioTemp extends \yii\db\ActiveRecord {
     }
 
     public function addTempFile($filename, $location) {
-        $sql->createCommand()
-                ->insert('tbl_audio_temp', [
-                    'user_id' => Yii::$app->user->getId(),
-                    'create_date' => 'NOW()',
-                    'file' => $filename,
-                    'format' => 'pdf',
-                    'location' => $location])
-                ->execute();
-
+         $sql = Yii::$app->db->createCommand()
+                        ->insert('tbl_audio_temp', [
+                            'user_id' => Yii::$app->user->identity->id,
+                            'create_date' => date("Y-m-d H:i:s"),
+                            'file' => $filename,
+                            'format' => 'pdf',
+                            'location' => $location,
+                        ])->execute();
         return $sql;
     }
-
 }
