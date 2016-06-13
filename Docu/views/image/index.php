@@ -48,12 +48,10 @@ function fileLocation($id, $title) {
         'columns' => [
             ['header' => 'Voorbeeld',
                 'format' => 'html',
-                'value' => function($data) {
+                'value' => function($data) {   
                     $filelocation = "uploads/afbeeldingen/" . $data->images[0]->location . "/thumb/" . $data->images[0]->file . $data->images[0]->format;
                     return Html::img(yii\helpers\Url::to($filelocation));
-                  //  echo $filelocation;
-                 //   echo Yii::getAlias($filelocation);
-                  //  return Html::img(Yii::getAlias('@app'.$filelocation));                   
+          
                 }
             ],
             ['header' => 'Naam imagebestand',

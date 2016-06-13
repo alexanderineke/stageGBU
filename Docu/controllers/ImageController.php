@@ -21,6 +21,7 @@ use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 use yii\widgets\dropzone\UploadAction;
 use yii\widgets\dropzone\RemoveAction;
+
 /**
  * ImageController implements the CRUD actions for Image model.
  */
@@ -32,25 +33,25 @@ class ImageController extends Controller {
         return ['accesControl'];
     }
 
-       public function behaviors() {
+    public function behaviors() {
         return [
             'acces' => [
                 'class' => \yii\filters\AccessControl::className(),
                 'only' => ['index', 'view', 'update', 'create', 'process', 'upload', 'batchupload', 'admin', 'delete'],
                 'rules' => [
-                    [   'allow' => true,
+                    [ 'allow' => true,
                         'actions' => ['index', 'view'],
                         'roles' => ['?'],
                     ],
-                    [   'allow' => true,
+                    [ 'allow' => true,
                         'actions' => ['index', 'view', 'update', 'create', 'process', 'upload', 'batchupload'],
                         'roles' => ['moderator'],
                     ],
-                    [   'allow' => true,
+                    [ 'allow' => true,
                         'actions' => ['index', 'view', 'update', 'create', 'process', 'upload', 'batchupload', 'admin', 'delete'],
                         'roles' => ['@'],
                     ],
-                    [   'allow' => false,
+                    [ 'allow' => false,
                         'roles' => ['?'],
                     ],
                 ],
@@ -58,7 +59,7 @@ class ImageController extends Controller {
         ];
     }
 
-      public function actionView($id) {
+    public function actionView($id) {
         $model = Image::findOne($id);
         if ($model) {
             return $this->render('view', ['model' => $model]);
@@ -67,19 +68,19 @@ class ImageController extends Controller {
         }
     }
 
-    public function actionUpload(){
+    public function actionUpload() {
         $model = new ImageTemp;
         $uploadedFile = UploadedFile::getInstanceByName('Image[file]');
         $rnd = rand(0, 9999);
         $folderName = date("d M Y");
         $fileName = "{$rnd}_{$uploadedFile}";
         if (!is_dir(Yii::getAlias('uploads/' . $folderName))) {
-           BaseFileHelper::createDirectory(Yii::getAlias('uploads/' . $folderName));
+            BaseFileHelper::createDirectory(Yii::getAlias('uploads/' . $folderName));
         }
-         if ($uploadedFile->saveAs(Yii::getAlias('uploads/' . $folderName . '/' . $fileName))) {
-               $id = $model->addTempFile($fileName, $folderName);
+        if ($uploadedFile->saveAs(Yii::getAlias('uploads/' . $folderName . '/' . $fileName))) {
+            $id = $model->addTempFile($fileName, $folderName);
             if ($id) {
-               Yii::$app->session->set('filesToProcess', [$id]);
+                Yii::$app->session->set('filesToProcess', [$id]);
             } else {
                 throw new HttpException(400, 'Upload niet gelukt.');
             }
@@ -92,13 +93,13 @@ class ImageController extends Controller {
         $rnd = rand(0, 9999);
         $folderName = date("d M Y");
         $fileName = "{$rnd}_{$uploadedFile}";
-        
-        
+
+
         if (!is_dir(Yii::getAlias('uploads/' . $folderName))) {
-           BaseFileHelper::createDirectory(Yii::getAlias('uploads/' . $folderName));
+            BaseFileHelper::createDirectory(Yii::getAlias('uploads/' . $folderName));
         }
         if ($uploadedFile->saveAs(Yii::getAlias('uploads/' . $folderName . '/' . $fileName))) {
-               $id = $model->addTempFile($fileName, $folderName);
+            $id = $model->addTempFile($fileName, $folderName);
             if ($id) {
                 $fileQueue = Yii::$app->session->get('filesToProcess');
                 array_push($fileQueue, $id);
@@ -137,7 +138,7 @@ class ImageController extends Controller {
                                 Yii::$app->session->set('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
                             }
                         } else {
-                            $this - redirect(['view', 'id' => $model->id]);
+                            $this->redirect(['view', 'id' => $model->id]);
                         }
                     } else {
                         Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
@@ -149,13 +150,13 @@ class ImageController extends Controller {
                 Yii::$app->session->setFlash('error', "De steekwoorden zijn ongeldig. Probeert u het alstublieft nog eens.");
             }
         } else {
-             // Yii::$app->session->setState('filesToProcess', []);
+            // Yii::$app->session->setState('filesToProcess', []);
 
             Yii::$app->session->set('filesToProcess', []);
         }
 
         return $this->render('update', [
-            'model' => $model,
+                    'model' => $model,
         ]);
     }
 
@@ -176,12 +177,13 @@ class ImageController extends Controller {
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
-       } else {
-        return $this->render('create', [
-                    'model' => $model,
-        ]);
+        } else {
+            return $this->render('create', [
+                        'model' => $model,
+            ]);
         }
     }
+
     public function actionProcess() {
         $id = Yii::$app->request->getQueryParam('id');
 
@@ -195,7 +197,7 @@ class ImageController extends Controller {
         if (!$fileQueue) {
             $this->redirect(['index']);
         }
- 
+
         if (!$id && isset($_POST['Image'])) {
             $imageTempModel = ImageTemp::findOne($fileQueue[0]);
             $file = $imageTempModel->getAttributes(['file', 'format', 'location']);
@@ -222,7 +224,7 @@ class ImageController extends Controller {
 
                 if ($model->save()) {
 
-                    if ($this -> saveTags($model->id)) {
+                    if ($this->saveTags($model->id)) {
 
                         if (!$model->images) {
                             if (ImageFile::model()->saveImage($this->tags[0], $file)) {
@@ -236,7 +238,7 @@ class ImageController extends Controller {
                                     Yii::$app->user->setFlash('succes', "Afbeelding bestand(en) met succes toegevoegd.");
                                 }
                             } else {
-                                Yii::$app->user-> setFlash('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
+                                Yii::$app->user->setFlash('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
                                 $this->redirect(['process', 'id' => $model->id]);
                             }
                         }
@@ -253,12 +255,12 @@ class ImageController extends Controller {
         }
 
         if (!$fileQueue || !isset($file)) {
-            $this -> redirect(['index']);
+            $this->redirect(['index']);
         }
 
-        $list = ArrayHelper::map(Collection::find()->all(),'id', 'title');
+        $list = ArrayHelper::map(Collection::find()->all(), 'id', 'title');
 
-       return $this -> render('process', [
+        return $this->render('process', [
                     'model' => $model,
                     'file' => $file,
                     'collection_list' => $list,
@@ -271,16 +273,16 @@ class ImageController extends Controller {
         } else {
             $condition = '';
         }
-            $dataProvider = new ActiveDataProvider([
-                'query' => Image::find()->
-                        where($condition)
-            ]);
-            return $this->render('index', [
+        $dataProvider = new ActiveDataProvider([
+            'query' => Image::find()->
+                    where($condition)
+        ]);
+        return $this->render('index', [
 
-                        'model' => new Image(),
-                        'dataProvider' => $dataProvider,
-            ]);
-        
+                    'model' => new Image(),
+                    'dataProvider' => $dataProvider,
+        ]);
+
         /*
           $searchModel = new Search();
           $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -293,15 +295,15 @@ class ImageController extends Controller {
     }
 
     public function actionAdmin() {
-       $condition = '';
+        $condition = '';
         $dataProvider = new ActiveDataProvider([
             'query' => Image::find()
-                 ->where($condition)
-                ]);
-       /* */
+                    ->where($condition)
+        ]);
+        /* */
         return $this->render('admin', [
-            'model' => new Image(),
-            'dataProvider' => $dataProvider,
+                    'model' => new Image(),
+                    'dataProvider' => $dataProvider,
         ]);
     }
 

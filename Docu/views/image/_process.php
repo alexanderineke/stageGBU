@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\widgets\dropzone\DropZone;
 use yii\helpers\Url;
+use yii\widgets\imperavi\src\Widget;
 
 $form = ActiveForm::begin([
             'id' => 'images-form',
@@ -20,9 +21,20 @@ $form = ActiveForm::begin([
 
 <?= $form->errorSummary($model); ?>
 
-<?= $form->field($model, 'title')->textInput(['class' => 'span5', 'maxlength' => 64]); ?>
+<?= $form->field($model, 'title')->textInput(['maxlength' => 64]); ?>
 
-<?= $form->field($model, 'description')->label('Description'); ?>	
+<?= $form->field($model, 'description')->hiddenInput(); ?>	
+
+<?php
+echo Widget::widget([
+    'name' => 'Image[description]',
+    'value' => $model->description,
+    'settings' => [
+        'lang' => 'nl',
+        'minHeight' => 150,
+    ]
+]);
+?>
 
 <?=
 $tags = '';
@@ -36,7 +48,6 @@ foreach ($model->tags as $i => $tag) {
 ?>
 
 <?php
-
 //$this->widget('ext.tagIt.ETagIt', [
 //    'id' => 'Image_tags',
 //    'url' => Url::to('tag/search'),
@@ -45,30 +56,27 @@ foreach ($model->tags as $i => $tag) {
 //]);
 ?>
 
-<?= $form->field($model, 'tags_previous')->hiddenInput(['value' => $tags]) ?>
+<?php // $form->field($model, 'tags_previous')->hiddenInput(['value' => $tags])  ?>
+
+<?php //$form->field($model, 'collection')->label(['Collection']);  ?>	
+
+<?php // $form->field($model, 'Image[collection]')->dropDownList($collection_list, ['empty' => Yii::t('none', 'Geen collectie')]);  ?>
+
+<?= $form->field($model, 'year')->textInput() ?>
+
+<?= $form->field($model, 'owner')->textInput(['maxlength' => 45]) ?>
 
 <?= $form->field($model, 'included_file')->hiddenInput(['value' => $file['location'] . '/' . $file['file']]) ?>
 
-<?php //$form->field($model, 'collection')->label(['Collection']); ?>	
-
-<?php // $form->field($model, 'Image[collection]')->dropDownList($collection_list, ['empty' => Yii::t('none', 'Geen collectie')]); ?>
-
-<?= $form->field($model, 'year')->textInput(['class' => 'span5']) ?>
-
-<?= $form->field($model, 'owner')->textInput(['class' => 'span5', 'maxlength' => 45]) ?>
-
 <?php
-
 if (isset($file)) {
-   echo $button = Html::a('Geef afbeelding ' . $file['file'] . ' weer', ['uploads/' . $file['location'] . '/' . $file['file']], ['class' => 'btn btn-primary btn-xs', 'target' => '_blank']);
+    echo $button = Html::a('Geef afbeelding ' . $file['file'] . ' weer', Url::to('@web') . '/uploads/' . $file['location'] . '/' . $file['file'], ['class' => 'btn btn-primary btn-xs', 'target' => '_blank']);
 } else {
-  echo $button = '<span class="null">Niet opgegeven</span>';
+    echo $button = '<span class="null">Niet opgegeven</span>';
 }
 ?>
 
 <?php // $form->field($model, 'file')->label(['File']); ?>	
-
-<?= Html::Button() ?>
 
 <?= $form->field($model, 'published')->dropDownList(['1' => 'Ja', '0' => 'Nee']); ?>
 
