@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\Menu;
 
-$this->title = 'Verwerk document';
+$this->title = 'Verwerk document ' . $file['file'];
 $this->params['breadcrumbs'][] = ['label' => 'Images', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 

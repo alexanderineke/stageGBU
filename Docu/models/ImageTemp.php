@@ -79,15 +79,16 @@ class ImageTemp extends \yii\db\ActiveRecord {
     }
 
     public function addTempFile($filename, $location) {
-        $sql = Yii::$app->db->createCommand()
-                        ->insert('tbl_image_temp', [
-                            'user_id' => Yii::$app->user->identity->id,
-                            'create_date' => date("Y-m-d H:i:s"),
-                            'file' => $filename,
-                            'format' => 'pdf',
-                            'location' => $location,
-                        ])->execute();
-        return $sql;
+        Yii::$app->db->createCommand()
+                ->insert('tbl_image_temp', [
+                    'user_id' => Yii::$app->user->identity->id,
+                    'create_date' => date("Y-m-d H:i:s"),
+                    'file' => $filename,
+                    'format' => 'pdf',
+                    'location' => $location,
+                ])->execute();
+        $id = Yii::$app->db->getLastInsertID();
+        return $id;
     }
 
 }

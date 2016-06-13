@@ -103,7 +103,7 @@ class ImageController extends Controller {
             if ($id) {
                 $fileQueue = Yii::$app->session->get('filesToProcess');
                 array_push($fileQueue, $id);
-                Yii::$app->session->set('filesToProcess', [$fileQueue]);
+                Yii::$app->session->set('filesToProcess', $fileQueue);
             } else {
                 throw new HttpException(400, 'Upload niet gelukt.');
             }
@@ -185,6 +185,8 @@ class ImageController extends Controller {
     }
 
     public function actionProcess() {
+        $request = Yii::$app->request;
+        
         $id = Yii::$app->request->getQueryParam('id');
 
         if ($id) {
@@ -198,11 +200,10 @@ class ImageController extends Controller {
             $this->redirect(['index']);
         }
 
-        if (!$id && isset($_POST['Image'])) {
-
+        if (!$id && $request->post('Image')) {
             $imageTempModel = ImageTemp::findOne($fileQueue[0]);
             $file = $imageTempModel->getAttributes(['file', 'format', 'location']);
-            $model->attributes = $_GET['Image'];
+            $model->attributes = $request->post('Image');
         } elseif ($id) {
 
             if ($model->images) {
@@ -215,20 +216,22 @@ class ImageController extends Controller {
             $imageTempModel = ImageTemp::findOne($fileQueue[0]);
             $file = $imageTempModel->getAttributes(['file', 'format', 'location']);
         }
+        
 
-        if (isset($_GET['Image']['included_file'])) {
+        if ($request->post('Image', 'included_file')) {
             $model->setAttribute('user_id', Yii::$app->user->identity->id);
             $model->setAttribute('created_on', date("Y-m-d H:i:s"));
             $model->setAttribute('modified_on', date("Y-m-d H:i:s"));
+       //     $model->setAttribute('title', "ja");
+         //   $model->setAttribute('published', 1);
 
-            if ($this->generateTags()) {
-
+        //    if ($this->generateTags()) {
                 if ($model->save()) {
-
-                    if ($this->saveTags($model->id)) {
+                    
+                //    if ($this->saveTags($model->id)) {
 
                         if (!$model->images) {
-                            if (ImageFile::model()->saveImage($this->tags[0], $file)) {
+                            if ((new ImageFile)->saveImage($model->id, $this->tags[0], $file)) {
                                 array_shift($fileQueue);
                                 Yii::$app->session->set('filesToProcess', $fileQueue);
 
@@ -236,23 +239,23 @@ class ImageController extends Controller {
                                     $imageTempModel = ImageTemp::findOne($fileQueue[0]);
                                     $file = $imageTempModel->getAttributes(['file', 'format', 'location']);
                                 } else {
-                                    Yii::$app->user->setFlash('succes', "Afbeelding bestand(en) met succes toegevoegd.");
+                                    Yii::$app->session->setFlash('succes', "Afbeelding bestand(en) met succes toegevoegd.");
                                 }
                             } else {
-                                Yii::$app->user->setFlash('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
+                                Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
                                 $this->redirect(['process', 'id' => $model->id]);
                             }
                         }
                     } else {
-                        Yii::$app->user->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
+                        Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
                         $this->redirect(['process', 'id' => $model->id]);
                     }
-                } else {
-                    yii::$app->user->setFlash('error', "Er is een fout opgetreden bij het opslaan. Probeert u het alstublieft nog eens.");
-                }
-            } else {
-                Yii::$app->user->setFlash('error', "De steekwoorden zijn ongeldig. Probeert u het alstublieft nog eens.");
-            }
+               // } else {
+              //      yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan. Probeert u het alstublieft nog eens.");
+            //    }
+        //    } else {
+        //        Yii::$app->session->setFlash('error', "De steekwoorden zijn ongeldig. Probeert u het alstublieft nog eens.");
+         //   }
         }
 
         if (!$fileQueue || !isset($file)) {
@@ -317,16 +320,17 @@ class ImageController extends Controller {
     }
 
     protected function generateTags() {
+        $request = Yii::$app->request;
         $tags = [];
-        if (isset($_POST['tags'])) {
-            foreach ($_POST['tags'] as $tag) {
+        if ($request->post('tags')) {
+            foreach ($request->post('tags') as $tag) {
                 $tags[] = (int) $tag;
             }
         }
-        if (isset($_POST['newtags'])) {
+        if ($request->post('newtags')) {
             $newSlugs = [];
             $newTags = [];
-            foreach ($_POST['newtags'] as $i => $newtag) {
+            foreach ($request->post('newtags') as $i => $newtag) {
                 $name = (string) $newtag;
                 setlocale(LC_ALL, 'nl_NL');
                 $name = iconv('UTF-8', 'ASCII//TRANSLIT', $name);
@@ -359,7 +363,7 @@ class ImageController extends Controller {
             }
 
             if (isset($remainingTags) && sizeof($remainingTags)) {
-                if ($addedTags = Tag::model()->add($remainingTags, $remainingSlugs)) {
+                if ($addedTags = (new Tag)->add($remainingTags, $remainingSlugs)) {
                     foreach ($addedTags as $i) {
                         $tags[] = $i;
                     }
@@ -382,12 +386,13 @@ class ImageController extends Controller {
     }
 
     protected function saveTags($image_id) {
+        $request = Yii::$app->request;
         $errorOccured = false;
 
-        if (!ImageTag::model()->add($image_id, array_unique($this->tags))) {
+        if (!(new ImageTag)->add($image_id, array_unique($this->tags))) {
             $errorOccured = true;
         }
-        $prevTags = explode(',', $_POST['Image']['tags_previous']);
+        $prevTags = explode(',', $request->post('Image', 'tags_previous'));
         $prevTagsArr = [];
         foreach ($prevTags as $i) {
             if ((int) $i) {
@@ -396,7 +401,7 @@ class ImageController extends Controller {
         }
         $deleteTagsArr = array_dif($prevTagsArr, $this->tags);
         if (sizeof($deleteTagsArr) && sizeof($prevTagsArr)) {
-            if (!ImageTag::model()->deleteTags($image_id, $deleteTagsArr)) {
+            if (!(new ImageTag)->deleteTags($image_id, $deleteTagsArr)) {
                 $errorOccured = true;
             }
         }

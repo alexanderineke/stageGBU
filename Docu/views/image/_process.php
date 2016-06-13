@@ -10,7 +10,7 @@ $form = ActiveForm::begin([
             'id' => 'images-form',
             'action' => ['image/process'],
             'enableAjaxValidation' => false,
-            'method' => 'get',
+            'method' => 'post',
             //?↓
             'options' => ['enctype' => 'multipart/form-data'],
                 //
@@ -56,7 +56,7 @@ foreach ($model->tags as $i => $tag) {
 //]);
 ?>
 
-<?php // $form->field($model, 'tags_previous')->hiddenInput(['value' => $tags])  ?>
+<?=  $form->field($model, 'tags_previous')->textInput(['value' => $tags])  ?>
 
 <?php //$form->field($model, 'collection')->label(['Collection']);  ?>	
 
