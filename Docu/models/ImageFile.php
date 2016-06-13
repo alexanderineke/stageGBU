@@ -74,13 +74,13 @@ class ImageFile extends \yii\db\ActiveRecord {
         return $dataProvider;
     }
 
-    public function saveImage($image_id, $tag_id, $file) {
+    public function saveImage($image_id, $tag, $file) {
         $errorOccured = false;
 
         if ($file) {
             //Bestandsnamen, bestandslocaties
-            $tags = Tag::model()->find('id=?', [$tag_id]);
-            $folder_name = preg_replace('/[^a-z0-9-_\.]/', '', strtolower($tags->name));
+            //$tags = Tag::model()->find('id=?', [$tag_id]);
+            $folder_name = preg_replace('/[^a-z0-9-_\.]/', '', strtolower($tag->name));
             $fileInfo = pathinfo(Yii::$app->basePath . '/../uploads/' . $file['location'] . '/' . $file['file']);
 
             //Map voor afbeeldingen
