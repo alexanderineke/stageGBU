@@ -26,14 +26,14 @@ class Search {
 
     public static function searchDocuments($params, $keyword) {
         $query = Document::find()
-                ->with('tags')
+                ->joinWith('tags tags')
                 ->andFilterWhere([
             'or',
             ['like', 'content', $keyword],
             ['like', 'description', $keyword],
             ['like', 'year', $keyword],
             ['like', 'title', $keyword],
-                //  ['like', 'tags.slug', $keyword],
+            ['like', 'tags.slug', $keyword],
         ]);
 
         $provider = new ActiveDataProvider([
@@ -89,12 +89,12 @@ class Search {
     }
 
     public function searchDocumentsByTag($documentsModel, $keyword) {
-        $query = Tag::find()
-                ->with('documents')
+        $query = Document::find()
+                ->joinWith('tags tags')
                 ->andFilterWhere([
             'or',
-            ['like', 'state', 1],
-            ['like', 'slug', $keyword],
+            ['like', 'tags.state', 1],
+            ['like', 'tags.slug', $keyword],
         ]);
 
         $dataProvider = new ActiveDataProvider([
@@ -127,13 +127,13 @@ class Search {
 
     public function searchAudio($audioModel, $keyword) {
         $query = Audio::find()
-                ->with('tags')
+                ->joinWith('tags tags')
                 ->andFilterWhere([
             'or',
             ['like', 'description', $keyword],
             ['like', 'year', $keyword],
             ['like', 'title', $keyword],
-                //  ['like', 'tags.slug', $keyword],
+            ['like', 'tags.slug', $keyword],
         ]);
 
         $provider = new ActiveDataProvider([
@@ -182,12 +182,12 @@ class Search {
     }
 
     public function searchAudioByTag($audioModel, $keyword) {
-        $query = Tag::find()
-                ->with('audios')
+        $query = Audio::find()
+                ->joinWith('tags tags')
                 ->andFilterWhere([
             'or',
-            ['like', 'state', 1],
-            ['like', 'slug', $keyword],
+            ['like', 'tags.state', 1],
+            ['like', 'tags.slug', $keyword],
         ]);
 
         $dataProvider = new ActiveDataProvider([
@@ -221,13 +221,13 @@ class Search {
 
     public function searchImages($keyword) {
         $query = Image::find()
-                ->with('tags')
+                ->joinWith('tags tags')
                 ->andFilterWhere([
             'or',
             ['like', 'description', $keyword],
             ['like', 'year', $keyword],
             ['like', 'title', $keyword],
-                //  ['like', 'tags.slug', $keyword],
+            ['like', 'tags.slug', $keyword],
         ]);
 
         $provider = new ActiveDataProvider([
@@ -270,39 +270,16 @@ class Search {
     }
 
     public function searchImagesByTag($keyword) {
-        $query1 = (new \yii\db\Query())
-                ->select("id AS idImage")
-                ->from('tbl_image');
-
-        $query2 = (new \yii\db\Query())
-                ->select("tag_id AS idTag")
-                ->from('tbl_image_tag')
-                ->where('idImage', 'image_id');
-
-        $query3 = (new \yii\db\Query())
-                ->select("*")
-                ->from('tbl_tag')
-                ->where('id', 'idTag')
+        $query = Image::find()
+                ->joinWith('tags tags')
                 ->andFilterWhere([
             'or',
-            ['like', 'state', 1],
-            ['like', 'slug', $keyword],
-        ]);
-        
-        $query1->union(($query2->union($query3)));
-
-        print_r($query1);
-        
-        $query = Tag::find()
-                ->with('images')
-                ->andFilterWhere([
-            'or',
-            ['like', 'state', 1],
-            ['like', 'slug', $keyword],
+            ['like', 'tags.state', 1],
+            ['like', 'tags.slug', $keyword],
         ]);
 
         $provider = new ActiveDataProvider([
-            'query' => $query1,
+            'query' => $query,
             'pagination' => [
                 'pageSize' => 10,
             ],

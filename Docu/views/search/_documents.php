@@ -1,6 +1,5 @@
 <?php
 
-print_r($model);
 foreach ($model->documents as $document) {
     $documentThumb = Yii::getAlias("@web") . "/uploads/documenten/" . $document->location . "/" . $document->file . '_m.jpg';
     $documentThumbFull = Yii::getAlias("@web") . "/uploads/documenten/" . $document->location . "/" . $document->file . '_b.jpg';

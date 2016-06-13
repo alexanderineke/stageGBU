@@ -36,7 +36,7 @@ class SearchController extends Controller {
         $imageSearch = $model->searchImagesByTag($tag);
 
         //Documents
-        $documentModel = new Document;
+        $documentModel = new Tag;
 //        if (Yii::$app->getRequest()->getQueryParam('Document')) {
 //            $doc = Yii::$app->getRequest()->getQueryParam('Document');
 //        //    $documentModel->unsetAttributes();

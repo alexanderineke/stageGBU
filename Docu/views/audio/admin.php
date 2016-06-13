@@ -12,8 +12,9 @@ $this->params['menu'][] = [
     ['label' => 'Lijst van audio', 'icon' => 'list', 'url' => ['index'], 'visible' => !Yii::$app->user->isGuest], //Yii::$app->user->getIdentity('moderator')],
     ['label' => 'Maak audio bestanden aan', 'icon' => 'file', 'url' => ['create'], 'visible' => !Yii::$app->user->isGuest], //Yii::$app->user->getIdentity('user')],
 ];
-/*
-  Yii::app()->clientScript->registerScript('search', "
+
+$script = <<< JS
+          ('search', "
   $('.search-button').click(function(){
   $('.search-form').toggle();
   return false;
@@ -25,7 +26,8 @@ $this->params['menu'][] = [
   return false;
   });
   ");
- */
+JS;
+$this->registerJs($script, \yii\web\View::POS_READY);
 ?>
 
 <h1>Beheer audio bestanden</h1>
@@ -35,7 +37,7 @@ $this->params['menu'][] = [
     of <b>=</b>) gebruiken in uw zoekopdracht.
 </p>
 
-<?= Html::a('Geavanceerd zoeken', '#', ['class' => 'btn btn-default']) ?>
+<?= Html::a('Geavanceerd zoeken', '#', ['class' => 'search-button btn btn-default']) ?>
 <div class="search-form" style="display: none">
     <?php Yii::$app->controller->renderPartial('_search', ['model' => $model, true]) ?>
 </div>
@@ -44,7 +46,7 @@ $this->params['menu'][] = [
 GridView::widget([
     'id' => 'audio-grid',
     'dataProvider' => $model->search(),
-   // 'filterModel' => $model,
+    // 'filterModel' => $model,
     'columns' => [
         ['class' => 'yii\grid\SerialColumn'],
         'title',
@@ -52,7 +54,7 @@ GridView::widget([
         'created_on',
         'modified_on',
         ['class' => 'yii\grid\ActionColumn'],
-   //  ['class' => 'btn btn-default'],
+    //  ['class' => 'btn btn-default'],
     ],
 ])
 ?>

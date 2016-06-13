@@ -22,7 +22,7 @@ $form = ActiveForm::begin([
 echo DropZone::widget([
   'name' => 'filename',
     'storedFiles' => [],
-    'url' => 'http://localhost/stageGBU/stageGBU/docu/web/index.php?r=image/batchupload',
+    'url' => 'http://localhost/docu/web/index.php?r=image/batchupload',
     'options' => [
   
   'maxFilesize' => '200',
