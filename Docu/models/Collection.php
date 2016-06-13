@@ -103,9 +103,7 @@ class Collection extends \yii\db\ActiveRecord {
      * @param string $className active record class name.
      * @return Collection the static model class
      */
-    public static function model($className = __CLASS__) {
-        return parent::model($className);
-    }
+  
 
     public function getCollection_images() {
         return $this->hasMany(CollectionImage::className(), ['id' => 'collection_id']);

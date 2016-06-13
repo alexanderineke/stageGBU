@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models;
+use app\models\Tag;
 use app\models\Image;
 use app\models\Search;
 use app\models\ImageTag;
@@ -72,13 +73,13 @@ class ImageController extends Controller {
         $rnd = rand(0, 9999);
         $folderName = date("d M Y");
         $fileName = "{$rnd}_{$uploadedFile}";
-        if (!is_dir(yii::getAlias('@app' . '/../uploads/' . $folderName))) {
-            mkdir(yii::getAlias('@app' . '/../uploads/' . $folderName));
+        if (!is_dir(Yii::getAlias('uploads/' . $folderName))) {
+           BaseFileHelper::createDirectory(Yii::getAlias('uploads/' . $folderName));
         }
-        if ($uploadedFile->saveAs(yii::getAlias('@app' . '/../uploads/' . $folderName . '/' . $fileName))) {
-            $id = $model->addTempFile($fileName, $folderName);
+         if ($uploadedFile->saveAs(Yii::getAlias('uploads/' . $folderName . '/' . $fileName))) {
+               $id = $model->addTempFile($fileName, $folderName);
             if ($id) {
-                Yii::$app->user->setState('filesToProcess', [$id]);
+               Yii::$app->session->set('filesToProcess', [$id]);
             } else {
                 throw new HttpException(400, 'Upload niet gelukt.');
             }
@@ -91,7 +92,7 @@ class ImageController extends Controller {
         $rnd = rand(0, 9999);
         $folderName = date("d M Y");
         $fileName = "{$rnd}_{$uploadedFile}";
-      
+        
         
         if (!is_dir(Yii::getAlias('uploads/' . $folderName))) {
            BaseFileHelper::createDirectory(Yii::getAlias('uploads/' . $folderName));
@@ -101,7 +102,7 @@ class ImageController extends Controller {
             if ($id) {
                 $fileQueue = Yii::$app->session->get('filesToProcess');
                 array_push($fileQueue, $id);
-                Yii::$app->session->set('filesToProcess', $fileQueue);
+                Yii::$app->session->set('filesToProcess', [$fileQueue]);
             } else {
                 throw new HttpException(400, 'Upload niet gelukt.');
             }
@@ -194,7 +195,7 @@ class ImageController extends Controller {
         if (!$fileQueue) {
             $this->redirect(['index']);
         }
-
+ 
         if (!$id && isset($_POST['Image'])) {
             $imageTempModel = ImageTemp::findOne($fileQueue[0]);
             $file = $imageTempModel->getAttributes(['file', 'format', 'location']);
@@ -209,13 +210,11 @@ class ImageController extends Controller {
             }
         } else {
             $imageTempModel = ImageTemp::findOne($fileQueue[0]);
-//            print_r($fileQueue);
-//            exit;
             $file = $imageTempModel->getAttributes(['file', 'format', 'location']);
         }
 
         if (isset($_POST['Image']['included_file'])) {
-            $model->setAttribute('user_id', Yii::$app->user->getId());
+            $model->setAttribute('user_id', Yii::$app->user->identity->id);
             $model->setAttribute('created_on', \yii\db\Expression('NOW()'));
             $model->setAttribute('modified_on', \yii\db\Expression('NOW()'));
 

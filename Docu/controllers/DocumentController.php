@@ -3,6 +3,8 @@
 namespace app\controllers;
 
 use Yii;
+
+use app\models;
 use app\models\Document;
 use app\models\Search;
 use yii\web\Controller;
@@ -14,7 +16,13 @@ use app\models\DocumentFile;
 use app\models\Tag;
 use app\models\DocumentTag;
 use yii\data\ActiveDataProvider;
-
+use yii\helpers\ArrayHelper;
+use yii\helpers\BaseFileHelper;
+use yii\web\UploadedFile;
+use yii\web\HttpException;
+use yii\filters\VerbFilter;
+use yii\widgets\dropzone\UploadAction;
+use yii\widgets\dropzone\RemoveAction;
 /**
  * DocumentController implements the CRUD actions for Document model.
  */
@@ -76,15 +84,17 @@ class DocumentController extends Controller {
 
     public function actionBatchupload() {
         $model = new DocumentTemp;
-        $uploadedFile = UploadedFile::getInstanceByName('Document[file]');
+        $uploadedFile = UploadedFile::getInstanceByName('filename');
         $rnd = rand(0, 9999);
         $folderName = date("d M Y");
         $fileName = "{$rnd}_{$uploadedFile}";
-        if (!is_dir(Yii::getAlias('@app' . '/../uploads/' . $folderName))) {
-            mkdir(Yii::getAlias('@app' . '/../uploads/' . $folderName));
+        
+        
+        if (!is_dir(Yii::getAlias('uploads/' . $folderName))) {
+           BaseFileHelper::createDirectory(Yii::getAlias('uploads/' . $folderName));
         }
-        if ($uploadedFile->saveAs(Yii::getAlias('@app' . '/../uploads/' . $folderName . '/' . $fileName))) {
-            $id = $model->addTempFile($fileName, $folderName);
+        if ($uploadedFile->saveAs(Yii::getAlias('uploads/' . $folderName . '/' . $fileName))) {
+               $id = $model->addTempFile($fileName, $folderName);
             if ($id) {
                 $fileQueue = Yii::$app->session->get('filesToProcess');
                 array_push($fileQueue, $id);
@@ -185,16 +195,13 @@ class DocumentController extends Controller {
         ]);
     }
 
-    //////////////////////////////////////////
-    /////////////////////////////////////////
-    ////////////////////////////////////////
     public function actionProcess() {
-        $id = Yii::$app->request->getParams('id');
+        $id = Yii::$app->getRequest()->getQueryParam('id');
 
         if ($id) {
             $model = $this->loadModel($id);
         } else {
-            $model = new Document;
+            $model = new Document();
         }
 
         $fileQueue = Yii::$app->session->get('filesToProcess');

@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\widgets\dropzone\DropZone;
+use yii\helpers\Url;
 
 $form = ActiveForm::begin([
             'id' => 'images-form',
@@ -17,11 +18,11 @@ $form = ActiveForm::begin([
 
 <p class="help-block">Velden met een <span class="required">*</span> zijn verplicht.</p>
 
-<?php echo $form->errorSummary($model); ?>
+<?= $form->errorSummary($model); ?>
 
-<?php echo $form->field($model, 'title', ['class' => 'span5', 'maxlength' => 64]); ?>
+<?= $form->field($model, 'title')->textInput(['class' => 'span5', 'maxlength' => 64]); ?>
 
-<?php echo $form->field($model, 'description')->label(['Description']); ?>	
+<?= $form->field($model, 'description')->label('Description'); ?>	
 
 <?=
 $tags = '';
@@ -38,7 +39,7 @@ foreach ($model->tags as $i => $tag) {
 
 //$this->widget('ext.tagIt.ETagIt', [
 //    'id' => 'Image_tags',
-//    'url' => $this->createUrl('tag/search'),
+//    'url' => Url::to('tag/search'),
 //    'options' => [],
 //    'values' => $values,
 //]);
@@ -48,9 +49,9 @@ foreach ($model->tags as $i => $tag) {
 
 <?= $form->field($model, 'included_file')->hiddenInput(['value' => $file['location'] . '/' . $file['file']]) ?>
 
-<?= $form->field($model, 'collection')->label(['Collection']); ?>	
+<?php //$form->field($model, 'collection')->label(['Collection']); ?>	
 
-<?= $form->field($model, 'Image[collection]')->dropDownList($collection_list, ['empty' => Yii::t('none', 'Geen collectie')]); ?>
+<?php // $form->field($model, 'Image[collection]')->dropDownList($collection_list, ['empty' => Yii::t('none', 'Geen collectie')]); ?>
 
 <?= $form->field($model, 'year')->textInput(['class' => 'span5']) ?>
 
@@ -59,13 +60,13 @@ foreach ($model->tags as $i => $tag) {
 <?php
 
 if (isset($file)) {
-    $button = Html::a('Geef afbeelding ' . $file['file'] . ' weer', ['uploads/' . $file['location'] . '/' . $file['file']], ['class' => 'btn btn-primary btn-xs', 'target' => '_blank']);
+   echo $button = Html::a('Geef afbeelding ' . $file['file'] . ' weer', ['uploads/' . $file['location'] . '/' . $file['file']], ['class' => 'btn btn-primary btn-xs', 'target' => '_blank']);
 } else {
-    $button = '<span class="null">Niet opgegeven</span>';
+  echo $button = '<span class="null">Niet opgegeven</span>';
 }
 ?>
 
-<?= $form->field($model, 'file')->label(['File']); ?>	
+<?php // $form->field($model, 'file')->label(['File']); ?>	
 
 <?= Html::Button() ?>
 

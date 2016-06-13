@@ -3,7 +3,8 @@
 namespace app\models;
 
 use Yii;
-
+use yii\helpers\BaseFileHelper;
+use yii\data\ActiveDataProvider;
 /**
  * This is the model class for table "{{%image_file}}".
  *
@@ -83,40 +84,40 @@ class ImageFile extends \yii\db\ActiveRecord {
             $fileInfo = pathinfo(Yii::$app->basePath . '/../uploads/' . $file['location'] . '/' . $file['file']);
 
             //Map voor afbeeldingen
-            if (!is_dir(\Yii::getAlias('@app/uploads/afbeeldingen/'))) {
-                mkdir(\Yii::getAlias('@app/uploads/afbeeldingen/'));
+            if (!is_dir(\Yii::getAlias('uploads/afbeeldingen/'))) {
+               BaseFileHelper::createDirectory(\Yii::getAlias('uploads/afbeeldingen/'));
             }
 
             //Map voor de normale versie (max: 750x500)
-            if (!is_dir(\Yii::getAlias('@app/uploads/afbeeldingen/' . $folder_name . '/'))) {
-                mkdir(\Yii::getAlias('@app/uploads/afbeeldingen/' . $folder_name . '/'));
+            if (!is_dir(\Yii::getAlias('uploads/afbeeldingen/' . $folder_name . '/'))) {
+                BaseFileHelper::createDirectory(Yii::getAlias('uploads/afbeeldingen/' . $folder_name . '/'));
             }
 
             //Map voor de thumbnail (fixed: 100x100)
-            if (!is_dir(\Yii::getAlias('@app/uploads/afbeeldingen/' . $folder_name . '/thumb/'))) {
-                mkdir(\Yii::getAlias('@app/uploads/afbeeldingen/' . $folder_name . '/thumb/'));
+            if (!is_dir(\Yii::getAlias('uploads/afbeeldingen/' . $folder_name . '/thumb/'))) {
+                BaseFileHelper::createDirectory(\Yii::getAlias('uploads/afbeeldingen/' . $folder_name . '/thumb/'));
             }
 
             //Map voor de full versie
-            if (!is_dir(\Yii::getAlias('@app/uploads/afbeeldingen/' . $folder_name . '/full/'))) {
-                mkdir(\Yii::getAlias('@app/uploads/afbeeldingen/' . $folder_name . '/full/'));
+            if (!is_dir(\Yii::getAlias('uploads/afbeeldingen/' . $folder_name . '/full/'))) {
+                BaseFileHelper::createDirectory(\Yii::getAlias('uploads/afbeeldingen/' . $folder_name . '/full/'));
             }
 
             //Genereer normale versie 
-            $thumb = \Yii::$app->phpThumb->create(\Yii::getAlias('@app/uploads/' . $file['location'] . '/' . $file['file']));
+            $thumb = \Yii::$app->phpThumb->create(\Yii::getAlias('uploads/' . $file['location'] . '/' . $file['file']));
             $thumb->resize(750, 500);
-            if (!$thumb->save(\Yii::getAlias('@app/uploads/afbeeldingen/' . $folder_name . '/' . $fileInfo['filename'] . '.jpg', 'JPG'))) {
+            if (!$thumb->save(\Yii::getAlias('uploads/afbeeldingen/' . $folder_name . '/' . $fileInfo['filename'] . '.jpg', 'JPG'))) {
                 $errorOccured = true;
             }
             //Genereer thumbnail versie
-            $thumb = \Yii::$app->phpThumb->create(\Yii::getAlias('@app/uploads/' . $file['location'] . '/' . $file['file']));
+            $thumb = \Yii::$app->phpThumb->create(\Yii::getAlias('uploads/' . $file['location'] . '/' . $file['file']));
             $thumb->adaptiveResize(100, 100);
-            if (!$thumb->save(\Yii::getAlias('@app/uploads/afbeeldingen/' . $folder_name . '/thumb/' . $fileInfo['filename'] . '.jpg', 'JPG'))) {
+            if (!$thumb->save(\Yii::getAlias('uploads/afbeeldingen/' . $folder_name . '/thumb/' . $fileInfo['filename'] . '.jpg', 'JPG'))) {
                 $errorOccured = true;
             }
             //Genereer full versie
-            $thumb = \Yii::$app->phpThumb->create(\Yii::getAlias('@app/uploads/' . $file['location'] . '/' . $file['file']));
-            if (!$thumb->save(\Yii::getAlias('@app/uploads/afbeeldingen/' . $folder_name . '/full/' . $fileInfo['filename'] . '.jpg', 'JPG'))) {
+            $thumb = \Yii::$app->phpThumb->create(\Yii::getAlias('uploads/' . $file['location'] . '/' . $file['file']));
+            if (!$thumb->save(\Yii::getAlias('uploads/afbeeldingen/' . $folder_name . '/full/' . $fileInfo['filename'] . '.jpg', 'JPG'))) {
                 $errorOccured = true;
             }
 
