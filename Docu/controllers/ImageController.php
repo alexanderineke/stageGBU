@@ -199,9 +199,10 @@ class ImageController extends Controller {
         }
 
         if (!$id && isset($_POST['Image'])) {
+
             $imageTempModel = ImageTemp::findOne($fileQueue[0]);
             $file = $imageTempModel->getAttributes(['file', 'format', 'location']);
-            $model->attributes = $_POST['Image'];
+            $model->attributes = $_GET['Image'];
         } elseif ($id) {
 
             if ($model->images) {
@@ -215,10 +216,10 @@ class ImageController extends Controller {
             $file = $imageTempModel->getAttributes(['file', 'format', 'location']);
         }
 
-        if (isset($_POST['Image']['included_file'])) {
+        if (isset($_GET['Image']['included_file'])) {
             $model->setAttribute('user_id', Yii::$app->user->identity->id);
-            $model->setAttribute('created_on', \yii\db\Expression('NOW()'));
-            $model->setAttribute('modified_on', \yii\db\Expression('NOW()'));
+            $model->setAttribute('created_on', date("Y-m-d H:i:s"));
+            $model->setAttribute('modified_on', date("Y-m-d H:i:s"));
 
             if ($this->generateTags()) {
 

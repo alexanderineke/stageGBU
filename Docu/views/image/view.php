@@ -52,7 +52,7 @@ echo Menu::widget([
             'model' => $model,
             'attributes' => [
                 'title',
-                ['label' => 'Uploader', 'value' => $user->username],
+             //   ['label' => 'Uploader', 'value' => $user->username],
                 'description:html',
                 ['label' => 'Steekwoorden', 'value' => $tags],
                 'year',
