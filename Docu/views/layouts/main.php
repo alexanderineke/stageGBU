@@ -23,19 +23,18 @@ AppAsset::register($this);
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="language" content="en" />
-        <title><?php echo ''// yii\helpers\Html::encode($this->pageTitle);            ?></title>
-        <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@web'); ?>/css/site.css" />
+        <title><?php echo Html::encode($this->title); ?></title>
+      
         <link rel="shortcut icon" href="<?php echo Yii::getAlias('@web/themes/dcu') ?>/assets/images/favicon.png" type="image/x-icon" />
-        <?php
-        $this->head();
-         $this->registerCssFile(Yii::getAlias('@web/themes/dcu/assets/css/bootstrap.css'));
-          $this->registerCssFile(Yii::getAlias('@web/themes/dcu/assets/css/bootstrap-responsive.min.css'));
-          $this->registerCssFile(Yii::getAlias('@web/themes/dcu/assets/css/gbu.css'));
-         $this->registerCssFile(Yii::getAlias('@web/themes/dcu/assets/css/font-awesome.css'));
-    //     $this->registerJs(Yii::getAlias('@web/themes/dcu/assets/js/modernizr.custom.js'), View::POS_HEAD);
-   //      $this->registerJs(Yii::getAlias('@web/themes/dcu/assets/js/bootstrap.min.js'), View::POS_END);
-   //      $this->registerJs(Yii::getAlias('@web/themes/dcu/assets/js/main.js'), View::POS_END);
-        ?>
+        
+      
+         <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@web'); ?>/themes/dcu/assets/css/bootstrap.css" />
+        <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@web'); ?>/themes/dcu/assets/css/bootstrap-responsive.min.css" />
+           <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@web'); ?>/themes/dcu/assets/css/gbu.csss" />
+            <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@web'); ?>/themes/dcu/assets/css/font-awesome.css" />
+      
+    <?php $this->head();?>
+      
     </head>
     <body>
         <?php $this->beginBody(); ?>
@@ -181,12 +180,12 @@ AppAsset::register($this);
         <?php
 
         //   if (!Yii::$app->user->isGuest) {
-        //       NavBar::begin(['brandLabel' => 'Beheer', ]);
+            //   NavBar::begin();
         echo Nav::widget([
-            //    'type' => 'inverse',
+             //   'type' => 'inverse',
             //    'brand' => 'Beheer',
             //   'brandUrl' => 'index.php',
-            //   'collapse' => true,
+             //  'collapse' => true,
             //   'fixed' => 'bottom',
             'items' => [
                 ['label' => 'Zoeken', 'icon' => 'search white', 'url' => ['/']],
@@ -198,10 +197,12 @@ AppAsset::register($this);
             ],
             'options' => ['class' => 'navbar-nav'],
         ]);
-        //      NavBar::end();
+             
         //  }
-        $this->endBody();
-        ?>
-    </body>
+       
+        ?> 
+       <?php // NavBar::end();  ?> 
+   </body>
+        <?php $this->endBody(); ?>
 </html>
 <?php $this->endPage() ?>

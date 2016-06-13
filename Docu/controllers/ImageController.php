@@ -70,7 +70,7 @@ class ImageController extends Controller {
 
     public function actionUpload() {
         $model = new ImageTemp;
-        $uploadedFile = UploadedFile::getInstanceByName('Image[file]');
+        $uploadedFile = UploadedFile::getInstanceByName('ImageFile');
         $rnd = rand(0, 9999);
         $folderName = date("d M Y");
         $fileName = "{$rnd}_{$uploadedFile}";
@@ -97,10 +97,12 @@ class ImageController extends Controller {
 
         if (!is_dir(Yii::getAlias('uploads/' . $folderName))) {
             BaseFileHelper::createDirectory(Yii::getAlias('uploads/' . $folderName));
-        }
+        } 
         if ($uploadedFile->saveAs(Yii::getAlias('uploads/' . $folderName . '/' . $fileName))) {
             $id = $model->addTempFile($fileName, $folderName);
-            if ($id) {
+            print_r($id);
+        exit;
+        if ($id) {
                 $fileQueue = Yii::$app->session->get('filesToProcess');
                 array_push($fileQueue, $id);
                 Yii::$app->session->set('filesToProcess', [$fileQueue]);
@@ -202,7 +204,7 @@ class ImageController extends Controller {
 
             $imageTempModel = ImageTemp::findOne($fileQueue[0]);
             $file = $imageTempModel->getAttributes(['file', 'format', 'location']);
-            $model->attributes = $_GET['Image'];
+            $model->attributes = $_POST['Image'];
         } elseif ($id) {
 
             if ($model->images) {
@@ -216,7 +218,7 @@ class ImageController extends Controller {
             $file = $imageTempModel->getAttributes(['file', 'format', 'location']);
         }
 
-        if (isset($_GET['Image']['included_file'])) {
+        if (isset($_POST['Image']['included_file'])) {
             $model->setAttribute('user_id', Yii::$app->user->identity->id);
             $model->setAttribute('created_on', date("Y-m-d H:i:s"));
             $model->setAttribute('modified_on', date("Y-m-d H:i:s"));

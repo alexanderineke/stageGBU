@@ -38,4 +38,4 @@ echo DropZone::widget([
 <?= Html::submitButton('Maak aan', ['class' => 'btn btn-primary']) ?>
 </div>
 
-<?php ActiveForm::end(); ?>
+<?php ActiveForm::end(); ?> 

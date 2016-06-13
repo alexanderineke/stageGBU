@@ -135,4 +135,4 @@ echo Tabs::widget([
     'items' => $results,
         // 'encodeLabel' => false,
 ]);
-?>
+

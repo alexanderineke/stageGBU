@@ -30,7 +30,7 @@ function fileLocation($id, $title) {
 ?>
 
 <h1><?= Html::encode($this->title); ?></h1>
-
+<?= Html::a('Geavanceerd zoeken', '#', ['class' => 'btn btn-primary']) ?>
 <?=
 GridView::widget([
     'dataProvider' => $model->search(),

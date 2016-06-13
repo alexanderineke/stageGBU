@@ -18,16 +18,17 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-     //   'css/site.css',
-     //   'themes/dcu/assets/css/font-awesome.css',
-     //   'themes/dcu/assets/css/gbu.css',
-     //   'themes/dcu/assets/css/bootstrap-responsive.min.css',
-     //   'themes/dcu/assets/css/bootstrap.css',
+        'css/site.css',
+        'themes/dcu/assets/css/font-awesome.css',
+        'themes/dcu/assets/css/gbu.css',
+        'themes/dcu/assets/css/bootstrap-responsive.min.css',
+        'themes/dcu/assets/css/bootstrap.css',
+        'themes/dcu/assets/images/favicon.png'
     ];
     public $js = [
         'themes/dcu/assets/js/modernizr.custom.js',
-        'themes/dcu/assets/js/bootstrap.min.js',
-        'themes/dcu/assets/js/main.js',
+       'themes/dcu/assets/js/bootstrap.min.js',
+      //  'themes/dcu/assets/js/main.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

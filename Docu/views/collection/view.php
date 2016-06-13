@@ -21,8 +21,7 @@ echo Menu::widget([
         ['label' => 'Maak collectie aan', 'url' => ['create'], 'icon' => 'file', 'visible' => !Yii::$app->user->isGuest],
         ['label' => 'Bewerk collectie', 'url' => ['update', 'id' => $model->id], 'icon' => 'pencil', 'visible' => !Yii::$app->user->isGuest],
         ['label' => 'Verwijder collectie', 'url' => '#', 'icon' => 'trash', 'linkOptions' => ['submit' => ['delete', 'id' => $model->id], 'confirm' => 'Weet je zeker dat je deze collectie wilt verwijderen?'], 'visible' => !Yii::$app->user->isGuest],
-        ['label' => 'Beheer collectie', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::$app->user->getIdentity('admin')],
-]]);
+      ]]);
 ?>
 
 <div class="collection-view">

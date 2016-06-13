@@ -14,7 +14,7 @@ echo Menu::widget([
     'items' => [
    	['label'=>'Acties','visible'=>Yii::$app->user->getIdentity('moderator')],
 	['label'=>'Lijst van collecties','url'=>['index'],'icon'=>'list','visible'=>Yii::$app->user->getIdentity('moderator')],
-	['label'=>'Beheer collecties','url'=>['admin'],'icon'=>'list-alt','visible'=>Yii::$app->user->getIdentity('admin')],
+	
 ]]);
 ?>
 <div class="collection-create">

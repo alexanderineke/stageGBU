@@ -26,6 +26,7 @@ function fileLocation($id, $title) {
 <div class="user-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
+    <?= Html::a('Geavanceerd zoeken', '#', ['class' => 'btn btn-primary']) ?>
     <?=
     GridView::widget([
         'dataProvider' => $dataProvider,
