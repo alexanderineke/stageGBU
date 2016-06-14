@@ -41,7 +41,7 @@ class AudioTemp extends \yii\db\ActiveRecord {
             [['format'], 'string', 'max' => 4],
             [['id', 'create_date', 'user_id', 'file', 'format', 'location'], 'safe', 'on' => 'search']
         ];
-    }       
+    }
 
     public function getUser() {
         return $this->Belongs_to(User::className(), ['id' => 'user_id']);
@@ -85,14 +85,16 @@ class AudioTemp extends \yii\db\ActiveRecord {
     }
 
     public function addTempFile($filename, $location) {
-         $sql = Yii::$app->db->createCommand()
-                        ->insert('tbl_audio_temp', [
-                            'user_id' => Yii::$app->user->identity->id,
-                            'create_date' => date("Y-m-d H:i:s"),
-                            'file' => $filename,
-                            'format' => 'pdf',
-                            'location' => $location,
-                        ])->execute();
-        return $sql;
+        Yii::$app->db->createCommand()
+                ->insert('tbl_audio_temp', [
+                    'user_id' => Yii::$app->user->identity->id,
+                    'create_date' => date("Y-m-d H:i:s"),
+                    'file' => $filename,
+                    'format' => 'pdf',
+                    'location' => $location,
+                ])->execute();
+        $id = Yii::$app->db->getLastInsertID();
+        return $id;
     }
+
 }

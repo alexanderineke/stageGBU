@@ -27,7 +27,7 @@ echo Menu::widget([
     of <b>=</b>) gebruiken in uw zoekopdracht.
 </p>
 
-<?= Html::a('Geavanceerd zoeken', '#', ['class' => 'btn btn-primary']) ?>
+<?php // Html::a('Geavanceerd zoeken', '#', ['class' => 'btn btn-primary']) ?>
 <div class="search-form" style="display: none">
     <?php $this->render('_search', ['model' => $model], true); ?>
 </div>

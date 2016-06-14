@@ -9,7 +9,7 @@ $form = ActiveForm::begin([
             'id' => 'image-form',
             'action' => ['image/process'],
             'enableAjaxValidation' => false,
-            'method' => 'get',
+            'method' => 'post',
             'options' => ['enctype' => 'multipart/form-data'],
         ]);
 ?>

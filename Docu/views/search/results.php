@@ -13,10 +13,10 @@ use app\assets\AppAsset;
 use yii\web\View;
 
 AppAsset::register($this);
-echo Button::widget([
-    'options' => ['id' => 'selector-button', 'data-toggle' => 'false'],
-    'label' => 'Maak een selectie',
-]);
+//echo Button::widget([
+//    'options' => ['id' => 'selector-button', 'data-toggle' => 'false'],
+//    'label' => 'Maak een selectie',
+//]);
 
 //$gridDataProvider = new ArrayDataProvider([
 //  ['id' => 0, 'title' => 'Geen selectie'],]);
@@ -113,6 +113,7 @@ if (($audioSearch->getTotalCount() != 0)) { // && !Yii::$app->request->isAjaxReq
             'columns' => [
             //    'title',
                 'id',
+                'title',
             //    'created_on'
             // ['header' => 'Naam document', 'value' => ''/* Html::a($audioModel->title, Url::to("/docu/web/index.php?r=audio%2Fview&id=" . $audioModel->id)), 'format' => 'raw', 'filter' => Html::activeTextInput($audioModel, 'title', ['placeholder' => 'Zoek op titel..']) */ ],
             //  ['header' => 'Steekwoorden', 'value' => 'objectToTagStringAudio($data->id)', 'filter' => Html::activeTextInput($audioModel, 'tag_search', ['placeholder' => 'Zoek op steekwoord..'])], //Omdat een result meerdere tags kan hebben moeten we deze verwerken.

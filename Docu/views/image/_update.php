@@ -50,7 +50,7 @@ foreach ($model->tags as $i => $tag) {
 //Hier moet een ETagIt komen
 ?>
 
-<?= $form->field($model, 'tags_previous')->hiddenInput(['value' => $tags]) ?>
+<?php // $form->field($model, 'tags_previous')->hiddenInput(['value' => $tags]) ?>
 
 <?= $form->field($model, 'year')->textInput(['class' => 'span5']) ?>
 
@@ -60,13 +60,18 @@ foreach ($model->tags as $i => $tag) {
 
 <?php
 echo DropZone::widget([
+    'name' => 'filename',
+    'storedFiles' => [],
+    'url' => 'index.php?r=image/upload',
     'options' => [
-        'maxFilesize' => '2',
-    ],
-    'clientEvents' => [
-        'complete' => "function(file){console.log(file)}",
-        'removedfile' => "function(file){alert(file.name + ' is removed')}"
-    ],
+  
+  'maxFilesize' => '2000',
+  'dictDefaultMessage' => 'Plaats hier het bestand dat u wilt uploaden',
+  'dictFallbackMessage' => 'Uw browser wordt niet ondersteund',
+  'dictInvalidFileType' => 'Dit bestands formaat wordt niet ondersteund. Converteer het a.u.b. naar PDF.',
+  'dictFileTooBig' => 'Het bestand dat u probeert te uploaden is te groot.',
+  
+    ]
 ]);
 ?>
 

@@ -121,7 +121,7 @@ class DocumentController extends Controller {
                 }
             }
 
-            $model->setAttribute('user_id', Yii::$app->user->getId());
+            $model->setAttribute('user_id', Yii::$app->user->identity->id);
             $model->setAttribute('modified_on', \yii\db\Expression('NOW()'));
             $model->attribute = $_POST['Document'];
             $model->setAttribute('published', -1);

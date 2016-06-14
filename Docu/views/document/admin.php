@@ -39,7 +39,7 @@ echo Menu::widget([
     of <b>=</b>) gebruiken in uw zoekopdracht.
 </p>
 
-<?= Html::a('Geavanceerd zoeken', '#', ['class' => 'btn btn-default']); ?>
+<?php // Html::a('Geavanceerd zoeken', '#', ['class' => 'btn btn-default']); ?>
 <div class="search-form" style="display:none">
     <?php
     $this->render('_search', [

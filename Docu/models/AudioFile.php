@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\BaseFileHelper;
 
 /**
  * This is the model class for table "{{%audio_file}}".
@@ -80,23 +81,23 @@ class AudioFile extends \yii\db\ActiveRecord {
 
         if ($file) {
             //Bestandsnamen, bestandslocaties
-            $tags = Tag::findOne($tag_id);
+            $tags = Tag::find()->where(['id' => $tag_id])->one();
             $folder_name = preg_replace('/[^a-z0-9-_\.]/', '', strtolower($tags->name));
-            $fileInfo = pathinfo(Yii::getAlias('@app' . '/../uploads/' . $file['location'] . '/' . $file['file']));
+            $fileInfo = pathinfo(Yii::getAlias('@web') . '/uploads/' . $file['location'] . '/' . $file['file']);
 
             //Map voor audio files
-            if (!is_dir(Yii::getAlias('@app' . '/../uploads/audio/'))) {
-                mkdir(Yii::getAlias('@app' . '/../uploads/audio/'));
+            if (!is_dir(Yii::getAlias('@web') . '/uploads/audio/')) {
+                BaseFileHelper::createDirectory(\Yii::getAlias('@web') . '/uploads/audio/');
             }
 
             //Map voor normale versie
-            if (!is_dir(Yii::getAlias('@app' . '/../uploads/audio/' . $folder_name . '/'))) {
-                mkdir(Yii::getAlias('@app' . '/../uploads/audio/' . $folder_name . '/'));
+            if (!is_dir(Yii::getAlias('@web') . '/uploads/audio/' . $folder_name . '/')) {
+                BaseFileHelper::createDirectory(Yii::getAlias('@web') . '/uploads/audio/' . $folder_name . '/');
             }
 
             //Schrijf bestand weg
-            $fileContents = file_get_contents(Yii::getAlias('@app' . '/../uploads/' . $file['location'] . '/' . $file['file']));
-            file_put_contents(Yii::getAlias('@app' . '/../uploads/audio/' . $folder_name . '/' . $fileInfo['filename'] . '.mp3', $fileContents));
+            $fileContents = file_get_contents(Yii::getAlias('@web') . '/uploads/' . $file['location'] . '/' . $file['file']);
+            file_put_contents(Yii::getAlias('@web') . '/uploads/audio/' . $folder_name . '/' . $fileInfo['filename'] . '.mp3', $fileContents);
 
             $this->updateAll(['state' => 0], 'audio_id=' . $audio_id);
 
