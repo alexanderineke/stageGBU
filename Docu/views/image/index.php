@@ -49,8 +49,6 @@ function fileLocation($id, $title) {
             ['header' => 'Voorbeeld',
                 'format' => 'html',
                 'value' => function($data) {   
-        print_r($data->images);
-        exit;
                     $filelocation = Yii::getAlias("@web") . "/uploads/afbeeldingen/" . $data->images[0]->location . "/thumb/" . $data->images[0]->file . $data->images[0]->format;
                     return Html::img(yii\helpers\Url::to($filelocation));
           

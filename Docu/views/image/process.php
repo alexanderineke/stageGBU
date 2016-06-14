@@ -22,6 +22,6 @@ echo Menu::widget([
 $this->render('_process', [
     'model' => $model,
     'file' => $file,
-    'collection_list' => $collection_list,
+  //  'collection_list' => $collection_list,
 ])
 ?>

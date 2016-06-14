@@ -280,17 +280,17 @@ class AudioController extends Controller {
             $this->redirect(['index']);
         }
 
-        $list = ArrayHelper::map(Collection::model()->findAll(
-                                ['order' => 'title',
-                                    'condition' => 'user_id=:id AND published=1',
-                                    'params' => array(':id' => Yii::$app->user->getId())
-                                ]
-                        ), 'id', 'title');
+//        $list = ArrayHelper::map(Collection::model()->findAll(
+//                                ['order' => 'title',
+//                                    'condition' => 'user_id=:id AND published=1',
+//                                    'params' => array(':id' => Yii::$app->user->getId())
+//                                ]
+//                        ), 'id', 'title');
 
         $this->render('process', [
             'model' => $model,
             'file' => $file,
-            'collection_list' => $list,
+      //      'collection_list' => $list,
         ]);
     }
 

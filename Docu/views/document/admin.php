@@ -52,10 +52,10 @@ echo Menu::widget([
 GridView::widget([
     'id' => 'document-grid',
     'dataProvider' => $model->search(),
+   // 'filterModel' => $model,
     'columns' => [
         ['class' => 'yii\grid\SerialColumn'],
         'title',
-        //    'filter' => Html::activeInput('text', $model, 'title', ['placeholder' => 'Zoek op titel...'])
         'created_on',
         'modified_on',
         ['class' => 'yii\grid\ActionColumn'],
