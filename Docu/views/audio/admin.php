@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\grid\ActionColumn;
 
 $this->title = 'Beheer';
 $this->params['breadcrumbs'][] = ['label' => 'Audiobestanden', 'url' => ['index']];
@@ -53,7 +54,7 @@ GridView::widget([
         //    return Html::activeInput('text', $model, 'title', ['placeholder' => 'Zoek op titel...']);
         'created_on',
         'modified_on',
-        ['class' => 'yii\grid\ActionColumn'],
+        ['class' => ActionColumn::className()],
     //  ['class' => 'btn btn-default'],
     ],
 ])

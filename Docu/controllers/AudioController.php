@@ -101,8 +101,8 @@ class AudioController extends Controller {
         $rnd = rand(0, 9999);
         $folderName = date("d M Y");
         $fileName = "{$rnd}_{$uploadedFile}";
-       
-        
+
+
         if (!is_dir(Yii::getAlias('uploads/' . $folderName))) {
             BaseFileHelper::createDirectory(Yii::getAlias('uploads/' . $folderName));
         }
@@ -115,6 +115,8 @@ class AudioController extends Controller {
             } else {
                 throw new HttpException(400, 'Upload niet gelukt.');
             }
+        } else {
+             throw new HttpException(400, 'Upload niet gelukt.');
         }
     }
    
@@ -174,14 +176,17 @@ class AudioController extends Controller {
         ]);
     }
 
-    public function actionDelete($id) {
-        if (Yii::$app->request->post()) {
-            $this->loadModel($id)->delete();
-
-            return $this->redirect(['index']);
-        } else {
-            throw new HttpException(400, 'Invalid request. Please do not repeat this request again.');
-        }
+    public function actionDelete() {
+        echo 'yest';
+        exit;
+        return false;
+//        if (Yii::$app->request->post()) {
+//            $this->loadModel($id)->delete();
+//
+//            return $this->redirect(['index']);
+//        } else {
+//            throw new HttpException(400, 'Invalid request. Please do not repeat this request again.');
+//        }
     }
 
     public function actionCreate() {

@@ -77,6 +77,7 @@ class SearchController extends Controller {
         $documentModel = null;
         $documentSearch = null;
         $documentModel = new Document;
+        
 //        if(Yii::$app->getRequest()->getQueryParam('Document')){
 //            $doc = Yii::$app->getRequest()->getQueryParam('Document');
 //         //   $documentModel->unsetAttributes();
