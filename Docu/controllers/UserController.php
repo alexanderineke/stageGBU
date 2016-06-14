@@ -17,10 +17,25 @@ class UserController extends Controller {
 
     public function behaviors() {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
+            'acces' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'only' => ['index', 'view', 'update', 'create', 'admin', 'delete'],
+                'rules' => [
+                    [ 'allow' => true,
+                        'actions' => ['index', 'view'],
+                        'roles' => ['?'],
+                    ],
+                    [ 'allow' => true,
+                        'actions' => ['index', 'view', 'update', 'create'],
+                        'roles' => ['moderator'],
+                    ],
+                    [ 'allow' => true,
+                        'actions' => ['index', 'view', 'update', 'create', 'admin', 'delete'],
+                        'roles' => ['@'],
+                    ],
+                    [ 'allow' => false,
+                        'roles' => ['?'],
+                    ],
                 ],
             ],
         ];
