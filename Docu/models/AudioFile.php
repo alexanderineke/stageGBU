@@ -86,14 +86,14 @@ class AudioFile extends \yii\db\ActiveRecord {
             $fileInfo = pathinfo(Yii::$app->basePath . DIRECTORY_SEPARATOR .  'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $file['location'] . DIRECTORY_SEPARATOR . $file['file']);
 
             //Map voor audio files
-            if (!is_dir(Yii::$app->basePath . '/../uploads/audio/')) {
-                BaseFileHelper::createDirectory(Yii::$app->basePath . '/../uploads/audio/');
+            if (!is_dir(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'audio' . DIRECTORY_SEPARATOR)) {
+                BaseFileHelper::createDirectory(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'audio' . DIRECTORY_SEPARATOR);
             }
             
             
             //Map voor normale versie
-            if (!is_dir(Yii::$app->basePath . '/../uploads/audio/' . $folder_name . '/')) {
-                BaseFileHelper::createDirectory(Yii::$app->basePath . '/../uploads/audio/' . $folder_name . '/');
+            if (!is_dir(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR. 'audio' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR)) {
+                BaseFileHelper::createDirectory(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR. 'audio' . DIRECTORY_SEPARATOR . $folder_name . '/');
             }
 
             //Schrijf bestand weg

@@ -21,7 +21,7 @@ echo Menu::widget([
         ['label' => 'Lijst van documenten', 'url' => ['index'], 'icon' => 'list', 'visible' => !Yii::$app->user->isGuest], //'visible' => Yii::$app->user->getIdentity('moderator')],
         ['label' => 'Maak document aan', 'url' => ['create'], 'icon' => 'file', 'visible' => !Yii::$app->user->isGuest], //'visible' => Yii::$app->user->getIdentity('user')],
         ['label' => 'Bewerk document', 'url' => ['update', 'id' => $model->id], 'icon' => 'pencil', 'visible' => !Yii::$app->user->isGuest], //'visible' => Yii::$app->user->getIdentity('moderator')],
-        ['label' => 'Verwijder document', 'url' => '#', 'icon' => 'trash', 'linkOptions' => ['submit' => ['delete', 'id' => $model->id], 'confirm' => 'Weet je zeker dat je deze document wilt verwijderen?'], 'visible' => !Yii::$app->user->isGuest], //'visible' => Yii::$app->user->getIdentity('admin')],
+        //['label' => 'Verwijder document', 'url' => '#', 'icon' => 'trash', 'linkOptions' => ['submit' => ['delete', 'id' => $model->id], 'confirm' => 'Weet je zeker dat je deze document wilt verwijderen?'], 'visible' => !Yii::$app->user->isGuest], //'visible' => Yii::$app->user->getIdentity('admin')],
         ['label' => 'Beheer document', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => !Yii::$app->user->isGuest], //'visible' => Yii::$app->user->getIdentity('admin')],
     ],
 ]);

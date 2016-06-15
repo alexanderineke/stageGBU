@@ -1,7 +1,7 @@
 <?php
-
+use yii\widgets\Menu;
 $this->title = 'Verwerken';
-$this->params['breadcrumbs'][] = ['label' => 'Auido', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Audio', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => 'Meerdere aanmaken', 'url' => []];
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -15,4 +15,4 @@ echo Menu::widget([
 ?>
 
 <h1>Verwerk audio <?php echo $file['file']; ?></h1>
-<?php echo $this->render('_process', ['model'=>$model,'file'=>$file,'collection_list'=>$collection_list]); ?>
+<?php echo $this->render('_process', ['model'=>$model,'file'=>$file]); ?>

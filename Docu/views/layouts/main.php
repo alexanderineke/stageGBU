@@ -14,6 +14,7 @@ use app\assets\AppAsset;
 use app\models\LoginForm;
 use yii\web\View;
 use Yii;
+use app\assets\ThemeAsset; 
 
 AppAsset::register($this);
 ?>
@@ -27,12 +28,6 @@ AppAsset::register($this);
         <title><?php echo Html::encode($this->title); ?></title>
       
         <link rel="shortcut icon" href="<?php echo Yii::getAlias('@web/themes/dcu') ?>/assets/images/favicon.png" type="image/x-icon" />
-        
-      
-         <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@web'); ?>/themes/dcu/assets/css/bootstrap.css" />
-        <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@web'); ?>/themes/dcu/assets/css/bootstrap-responsive.min.css" />
-           <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@web'); ?>/themes/dcu/assets/css/gbu.css" />
-            <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@web'); ?>/themes/dcu/assets/css/font-awesome.css" />
       
     <?php $this->head()?>
     </head>

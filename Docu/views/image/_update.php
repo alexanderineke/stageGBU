@@ -64,7 +64,7 @@ echo DropZone::widget([
     'storedFiles' => [],
     'url' => 'index.php?r=image/upload',
     'options' => [
-  
+  'acceptedFiles' => ['image/jpeg', 'image/png', 'image/gif'],
   'maxFilesize' => '2000',
   'dictDefaultMessage' => 'Plaats hier het bestand dat u wilt uploaden',
   'dictFallbackMessage' => 'Uw browser wordt niet ondersteund',

@@ -24,7 +24,7 @@ echo DropZone::widget([
     'storedFiles' => [],
     'url' => 'index.php?r=document/batchupload',
     'options' => [
-  
+  'acceptedFiles' => ['application/pdf', 'application/x-pdf'],
   'maxFilesize' => '200',
   'dictDefaultMessage' => 'Plaats hier het bestand dat u wilt uploaden',
   'dictFallbackMessage' => 'Uw browser wordt niet ondersteund',

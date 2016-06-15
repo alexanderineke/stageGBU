@@ -28,7 +28,7 @@ class AppAsset extends AssetBundle
     public $js = [
         'themes/dcu/assets/js/modernizr.custom.js',
        'themes/dcu/assets/js/bootstrap.min.js',
-      //  'themes/dcu/assets/js/main.js',
+       // 'themes/dcu/assets/js/main.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

@@ -82,11 +82,11 @@ class ImageFile extends \yii\db\ActiveRecord {
             //Bestandsnamen, bestandslocaties
             $tags = Tag::find()->where(['id' => $tag_id])->one();
             $folder_name = preg_replace('/[^a-z0-9-_\.]/', '', strtolower($tags->name));
-            $fileInfo = pathinfo(Yii::$app->basePath . '/../uploads/' . $file['location'] . '/' . $file['file']);
+            $fileInfo = pathinfo(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $file['location'] . DIRECTORY_SEPARATOR . $file['file']);
 
             //Map voor afbeeldingen
-            if (!is_dir(\Yii::getAlias('@web') . ('/uploads/afbeeldingen/'))) {
-               BaseFileHelper::createDirectory(\Yii::getAlias('@web') . '/uploads/afbeeldingen/');
+            if (!is_dir(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'afbeeldingen' . DIRECTORY_SEPARATOR)) {
+               BaseFileHelper::createDirectory(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'afbeeldingen' . DIRECTORY_SEPARATOR);
             }
 
             //Map voor de normale versie (max: 750x500)
@@ -95,13 +95,13 @@ class ImageFile extends \yii\db\ActiveRecord {
             }
 
             //Map voor de thumbnail (fixed: 100x100)
-            if (!is_dir(\Yii::getAlias('@web') . '/uploads/afbeeldingen/' . $folder_name . '/thumb/')) {
-                BaseFileHelper::createDirectory(\Yii::getAlias('@web') . '/uploads/afbeeldingen/' . $folder_name . '/thumb/');
+            if (!is_dir(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR. 'afbeeldingen' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . 'thumb' . DIRECTORY_SEPARATOR)) {
+                BaseFileHelper::createDirectory(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR. 'afbeeldingen' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . 'thumb' . DIRECTORY_SEPARATOR);
             }
 
             //Map voor de full versie
-            if (!is_dir(\Yii::getAlias('@web') . '/uploads/afbeeldingen/' . $folder_name . '/full/')) {
-                BaseFileHelper::createDirectory(\Yii::getAlias('@web') . '/uploads/afbeeldingen/' . $folder_name . '/full/');
+            if (!is_dir(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR. 'afbeeldingen' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . 'full' . DIRECTORY_SEPARATOR)) {
+                BaseFileHelper::createDirectory(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR. 'afbeeldingen' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . 'full' . DIRECTORY_SEPARATOR);
             }
 
 //            //Genereer normale versie 

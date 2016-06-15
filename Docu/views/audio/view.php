@@ -19,7 +19,7 @@ echo Menu::widget([
         ['label' => 'Lijst van audio bestanden', 'url' => ['index'], 'icon' => 'list', 'visible' => !Yii::$app->user->isGuest],
         ['label' => 'Maak audio bestanden aan', 'url' => ['create'], 'icon' => 'file', 'visible' => !Yii::$app->user->isGuest],
         ['label' => 'Bewerk audio bestand', 'url' => ['update', 'id' => $model->id], 'icon' => 'pencil', 'visible' => !Yii::$app->user->isGuest],
-        ['label' => 'Verwijder audio bestand', 'url' => '#', 'icon' => 'trash', 'itemOptions' => ['submit' => ['delete', 'id' => $model->id]], 'confirm' => 'Weet je zeker dat je dit audio bestand wilt verwijderen?', 'visible' => !Yii::$app->user->isGuest],
+        //['label' => 'Verwijder audio bestand', 'url' => '#', 'icon' => 'trash', 'itemOptions' => ['submit' => ['delete', 'id' => $model->id]], 'confirm' => 'Weet je zeker dat je dit audio bestand wilt verwijderen?', 'visible' => !Yii::$app->user->isGuest],
         ['label' => 'Beheer audio bestand', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => !Yii::$app->user->isGuest],
     ],
 ]);

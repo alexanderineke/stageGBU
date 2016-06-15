@@ -24,7 +24,7 @@ echo DropZone::widget([
     'storedFiles' => [],
     'url' => 'index.php?r=image/batchupload',
     'options' => [
-  
+  'acceptedFiles' => ['image/jpeg', 'image/png', 'image/gif'],
   'maxFilesize' => '200',
   'dictDefaultMessage' => 'Plaats hier het bestand dat u wilt uploaden',
   'dictFallbackMessage' => 'Uw browser wordt niet ondersteund',
