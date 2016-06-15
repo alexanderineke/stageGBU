@@ -32,7 +32,7 @@ $('.search-form form').submit(function(){
 <h1><?= Html::encode($this->title) ?></h1>
 
 
-<?= Html::a('Geavanceerd zoeken', '#', ['class' => 'btn btn-primary']) ?>
+<?php // Html::a('Geavanceerd zoeken', '#', ['class' => 'btn btn-primary']) ?>
 <div class="search-form" style="display: none">
     <?php $this->render('_search', ['model' => $model], true); ?>
 </div>

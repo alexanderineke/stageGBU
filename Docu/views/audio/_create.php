@@ -9,7 +9,7 @@ $form = ActiveForm::begin([
             'id' => 'audio-form',
             'action' => ['audio/process'],
             'enableAjaxValidation' => false,
-            'method' => 'get',
+            'method' => 'post',
             'options' => ['enctype' => 'multipart/form-data'],
         ]);
 ?>
@@ -25,11 +25,12 @@ echo DropZone::widget([
     'url' => 'index.php?r=audio/batchupload',
     'options' => [
   
-  'maxFilesize' => '200',
+  'maxFilesize' => '2000',
   'dictDefaultMessage' => 'Plaats hier het bestand dat u wilt uploaden',
   'dictFallbackMessage' => 'Uw browser wordt niet ondersteund',
   'dictInvalidFileType' => 'Dit bestands formaat wordt niet ondersteund. Converteer het a.u.b. naar PDF.',
   'dictFileTooBig' => 'Het bestand dat u probeert te uploaden is te groot.',
+  //'acceptedFiles' => ['audio/mpeg3', 'audio/x-mpeg-3', 'audio/mpeg', 'audio/mp3'],
   
     ]
 ]);

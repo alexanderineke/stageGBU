@@ -8,7 +8,7 @@ $form = ActiveForm::begin([
             'id' => 'audio-form',
             'action' => ['audio/process'],
             'enableAjaxValidation' => false,
-            'method' => 'get',
+            'method' => 'post',
             'options' => ['enctype' => 'multipart/form-data'],
         ]);
 ?>
@@ -43,7 +43,7 @@ $tags = substr($tags, 0, -1);
 // Hier moet een externe widget komen
 ?>
 
-<?= $form->field($model, 'tags_previous')->hiddenInput(['value' => $tags]) ?>
+<?php // $form->field($model, 'tags_previous')->hiddenInput(['value' => $tags]) ?>
 
 <?= $form->field($model, 'included_file')->hiddenInput(['value' => $file['location'] . '/' . $file['file']]) ?>
 

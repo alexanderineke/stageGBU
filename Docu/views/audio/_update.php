@@ -7,9 +7,9 @@ use yii\widgets\dropzone\DropZone;
 
 $form = ActiveForm::begin([
             'id' => 'audio-form',
-            'action' => ['audio/process'],
+         //   'action' => ['audio/process'],
             'enableAjaxValidation' => false,
-            'method' => 'get',
+            'method' => 'post',
             'options' => ['enctype' => 'multipart/form-data'],
         ]);
 ?>
@@ -48,13 +48,19 @@ $tags = substr($tags, 0, -1);
 <?php
 
 echo DropZone::widget([
+    'name' => 'filename',
+    'storedFiles' => [],
+    'url' => 'index.php?r=audio/upload',
     'options' => [
-        'maxFilesize' => '2',
-    ],
-    'clientEvents' => [
-        'complete' => "function(file){console.log(file)}",
-        'removedfile' => "function(file){alert(file.name + ' is removed')}"
-    ],
+  
+  'maxFilesize' => '2000',
+  'dictDefaultMessage' => 'Plaats hier het bestand dat u wilt uploaden',
+  'dictFallbackMessage' => 'Uw browser wordt niet ondersteund',
+  'dictInvalidFileType' => 'Dit bestands formaat wordt niet ondersteund. Converteer het a.u.b. naar PDF.',
+  'dictFileTooBig' => 'Het bestand dat u probeert te uploaden is te groot.',
+  //'acceptedFiles' => ['audio/mpeg3', 'audio/x-mpeg-3', 'audio/mpeg', 'audio/mp3'],
+  
+    ]
 ]);
 //Hier moet een variant komen van ETagIt
 ?>

@@ -12,6 +12,7 @@ class Audio extends \yii\db\ActiveRecord {
     public $tag_search, $count, $tagName;
 
     public function getTagsHelper() {
+      //  $array = ArrayHelper::map(Audio::find()->all(), 'id', 'name');
         return implode(', ', array_values(Html::listData($this->tags, 'id', 'name')));        
     }
 

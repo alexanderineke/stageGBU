@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\grid\ActionColumn;
 
 $this->title = 'Beheer';
 $this->params['breadcrumbs'][] = ['label' => 'Audiobestanden', 'url' => ['index']];
@@ -13,21 +14,21 @@ $this->params['menu'][] = [
     ['label' => 'Maak audio bestanden aan', 'icon' => 'file', 'url' => ['create'], 'visible' => !Yii::$app->user->isGuest], //Yii::$app->user->getIdentity('user')],
 ];
 
-$script = <<< JS
-          ('search', "
-  $('.search-button').click(function(){
-  $('.search-form').toggle();
-  return false;
-  });
-  $('.search-form form').submit(function(){
-  $.fn.yiiGridView.update('audio-grid', {
-  data: $(this).serialize()
-  });
-  return false;
-  });
-  ");
-JS;
-$this->registerJs($script, \yii\web\View::POS_READY);
+//$script = <<< JS
+//          ('search', "
+//  $('.search-button').click(function(){
+//  $('.search-form').toggle();
+//  return false;
+//  });
+//  $('.search-form form').submit(function(){
+//  $.fn.yiiGridView.update('audio-grid', {
+//  data: $(this).serialize()
+//  });
+//  return false;
+//  });
+//  ");
+//JS;
+//$this->registerJs($script, \yii\web\View::POS_READY);
 ?>
 
 <h1>Beheer audio bestanden</h1>
@@ -37,7 +38,7 @@ $this->registerJs($script, \yii\web\View::POS_READY);
     of <b>=</b>) gebruiken in uw zoekopdracht.
 </p>
 
-<?= Html::a('Geavanceerd zoeken', '#', ['class' => 'search-button btn btn-default']) ?>
+<?php // Html::a('Geavanceerd zoeken', '#', ['class' => 'search-button btn btn-default']) ?>
 <div class="search-form" style="display: none">
     <?php Yii::$app->controller->renderPartial('_search', ['model' => $model, true]) ?>
 </div>
@@ -53,7 +54,7 @@ GridView::widget([
         //    return Html::activeInput('text', $model, 'title', ['placeholder' => 'Zoek op titel...']);
         'created_on',
         'modified_on',
-        ['class' => 'yii\grid\ActionColumn'],
+        ['class' => ActionColumn::className()],
     //  ['class' => 'btn btn-default'],
     ],
 ])

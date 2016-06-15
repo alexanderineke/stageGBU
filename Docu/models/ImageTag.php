@@ -45,10 +45,9 @@ class ImageTag extends \yii\db\ActiveRecord {
         ];
     }
 
-    public function getTags(){
+    public function getTags() {
         return $this->belongs_to(Tag::className(), ['id' => 'tag_id']);
     }
-
 
     public function search($params) {
         $query = ImageTag::find();
@@ -82,33 +81,42 @@ class ImageTag extends \yii\db\ActiveRecord {
 
         $v = 0;
         foreach ($notInDB as $i) {
-            $sql = "insert into tbl_image_tag (image_id, tag_id, state) values (:image_id, :tag_id, 1)";
-            $parameters = [":image_id" => $image_id,
-                ":tag_id" => $i];
-            if (Yii::$app->db->createCommand($sql)->execute($parameters)) {
+            $sql = Yii::$app->db->createCommand()
+                    ->insert('tbl_image_tag', [
+                        'image_id' => $image_id,
+                        'tag_id' => $i,
+                        'state' => 1])
+                    ->execute();
+             $succes = $sql->execute();
+             if ($succes) {
                 $v++;
             }
         }
+//            $sql = "insert into tbl_image_tag (image_id, tag_id, state) values (:image_id, :tag_id, 1)";
+//            $parameters = [":image_id" => $image_id,
+//                ":tag_id" => $i];
+//            if (Yii::$app->db->createCommand($sql)->execute($parameters)) {
+//                $v++;
+//            }
+//        }
 
         if ($v == sizeof($notInDB)) {
             return true;
         }
     }
-
+        
     public function check($image_id, $tagIds) {
 
         $query = ImageTag::find()
+                ->select(['tag_id'])
                 ->andFilterWhere(['image_id' => $image_id])
                 ->andFilterWhere(['tag_id' => $tagIds])
-                ->andFilterWhere(['state' => 1]);
+                ->andFilterWhere(['state' => 1])
+                ->all();
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-        if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
-            return $dataProvider;
-        }
+
         return $dataProvider;
     }
 

@@ -77,12 +77,14 @@ class SearchController extends Controller {
         $documentModel = null;
         $documentSearch = null;
         $documentModel = new Document;
-//        if(Yii::$app->getRequest()->getQueryParam('Document')){
-//            $doc = Yii::$app->getRequest()->getQueryParam('Document');
-//         //   $documentModel->unsetAttributes();
-//            $documentModel->attributes=$doc;
-//            $documentModel->tag_search = $doc['tag_search'];
-//        }
+        
+        if(Yii::$app->getRequest()->getQueryParam('Document')){
+            $doc = Yii::$app->getRequest()->getQueryParam('Document');
+         //   $documentModel->unsetAttributes();
+
+            $documentModel->attributes = $doc;
+            $documentModel->tag_search = $doc['tag_search'];
+        }
         $documentSearch = $model->searchDocuments($documentModel, $keyword);
 
         $audioModel = null;
@@ -90,12 +92,12 @@ class SearchController extends Controller {
         $audioModel = new Audio;
         
            
-//        if(Yii::$app->getRequest()->getQueryParam('Audio')){
-//            $au = Yii::$app->getRequest()->getQueryParam('Audio');
-//      //      $audioModel->unsetAttributes();
-//            $audioModel->attributes=$au;
-//            $audioModel->tag_search = $au['tag_search'];
-//        }
+        if(Yii::$app->getRequest()->getQueryParam('Audio')){
+            $au = Yii::$app->getRequest()->getQueryParam('Audio');
+      //      $audioModel->unsetAttributes();
+            $audioModel->attributes=$au;
+            $audioModel->tag_search = $au['tag_search'];
+        }
         $audioSearch = $model->searchAudio($audioModel, $keyword);
 
 

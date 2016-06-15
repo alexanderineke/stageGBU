@@ -6,6 +6,7 @@ use Yii;
 use app\models\Image;
 use app\models\Document;
 use app\models\Audio;
+use yii\data\ActiveDataProvider;
 
 /**
  * This is the model class for table "{{%tag}}".
@@ -112,11 +113,12 @@ class Tag extends \yii\db\ActiveRecord {
 
     public function check($slugArr) {
         $query = Tag::find()
-                ->andFilterWhere(['id' => $id])
+                ->select(['tag_id'])
+               // ->andFilterWhere(['id' => $id])
                 ->andFilterWhere(['slug' => $slugArr])
-                ->andFilterWhere(['state' => 1])
-                ->all()
-                ->execute();
+                ->andFilterWhere(['state' => 1]);
+              //  ->all()
+             //   ->execute();
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);

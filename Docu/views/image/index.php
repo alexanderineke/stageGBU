@@ -36,7 +36,7 @@ function fileLocation($id, $title) {
     
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]);   ?>
-<?= Html::a('Geavanceerd zoeken', '#', ['class' => 'btn btn-primary']) ?>
+<?php // Html::a('Geavanceerd zoeken', '#', ['class' => 'btn btn-primary']) ?>
     <p>
         <?= Html::a('Create Image', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
@@ -49,7 +49,7 @@ function fileLocation($id, $title) {
             ['header' => 'Voorbeeld',
                 'format' => 'html',
                 'value' => function($data) {   
-                    $filelocation = "uploads/afbeeldingen/" . $data->images[0]->location . "/thumb/" . $data->images[0]->file . $data->images[0]->format;
+                    $filelocation = Yii::getAlias("@web") . "/uploads/afbeeldingen/" . $data->images[0]->location . "/thumb/" . $data->images[0]->file . $data->images[0]->format;
                     return Html::img(yii\helpers\Url::to($filelocation));
           
                 }

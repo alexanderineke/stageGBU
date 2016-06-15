@@ -39,7 +39,7 @@ class Search {
         $provider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 10,
+                'pageSize' => 25,
             ],
             'sort' => [
                 'defaultOrder' => [
@@ -99,6 +99,9 @@ class Search {
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 25,
+            ],
         ]);
         return $dataProvider;
 
@@ -139,7 +142,7 @@ class Search {
         $provider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 10,
+                'pageSize' => 25,
             ],
             'sort' => [
                 'defaultOrder' => [
@@ -192,6 +195,9 @@ class Search {
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 25,
+            ],
         ]);
         return $dataProvider;
 
@@ -233,7 +239,7 @@ class Search {
         $provider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 10,
+                'pageSize' => 25,
             ],
             'sort' => [
                 'defaultOrder' => [
@@ -281,7 +287,7 @@ class Search {
         $provider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 10,
+                'pageSize' => 25,
             ],
         ]);
 

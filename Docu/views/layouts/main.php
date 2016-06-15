@@ -23,6 +23,7 @@ AppAsset::register($this);
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="language" content="en" />
+        <?= Html::csrfMetaTags() ?>
         <title><?php echo Html::encode($this->title); ?></title>
       
         <link rel="shortcut icon" href="<?php echo Yii::getAlias('@web/themes/dcu') ?>/assets/images/favicon.png" type="image/x-icon" />
@@ -30,14 +31,13 @@ AppAsset::register($this);
       
          <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@web'); ?>/themes/dcu/assets/css/bootstrap.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@web'); ?>/themes/dcu/assets/css/bootstrap-responsive.min.css" />
-           <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@web'); ?>/themes/dcu/assets/css/gbu.csss" />
+           <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@web'); ?>/themes/dcu/assets/css/gbu.css" />
             <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias('@web'); ?>/themes/dcu/assets/css/font-awesome.css" />
       
-    <?php $this->head();?>
-      
+    <?php $this->head()?>
     </head>
     <body>
-        <?php $this->beginBody(); ?>
+        <?php $this->beginBody() ?>
         <span class="striept"></span>
         <div id="wrap">
             <div class="container" id="page">
@@ -193,7 +193,7 @@ AppAsset::register($this);
                 ['label' => 'Afbeeldingen', 'icon' => 'picture white', 'url' => ['/image']],
                 ['label' => 'Documenten', 'icon' => 'file white', 'url' => ['/document']],
                 ['label' => 'Audio', 'icon' => 'headphones white', 'url' => ['/audio']],
-                ['label' => 'Collecties', 'icon' => 'folder-open white', 'url' => ['/collection']],
+               // ['label' => 'Collecties', 'icon' => 'folder-open white', 'url' => ['/collection']],
             ],
             'options' => ['class' => 'navbar-nav'],
         ]);
@@ -203,6 +203,6 @@ AppAsset::register($this);
         ?> 
        <?php // NavBar::end();  ?> 
    </body>
-        <?php $this->endBody(); ?>
+        <?php $this->endBody() ?>
 </html>
 <?php $this->endPage() ?>

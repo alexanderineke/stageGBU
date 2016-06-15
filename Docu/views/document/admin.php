@@ -39,7 +39,7 @@ echo Menu::widget([
     of <b>=</b>) gebruiken in uw zoekopdracht.
 </p>
 
-<?= Html::a('Geavanceerd zoeken', '#', ['class' => 'btn btn-default']); ?>
+<?php // Html::a('Geavanceerd zoeken', '#', ['class' => 'btn btn-default']); ?>
 <div class="search-form" style="display:none">
     <?php
     $this->render('_search', [
@@ -52,10 +52,10 @@ echo Menu::widget([
 GridView::widget([
     'id' => 'document-grid',
     'dataProvider' => $model->search(),
+   // 'filterModel' => $model,
     'columns' => [
         ['class' => 'yii\grid\SerialColumn'],
         'title',
-        //    'filter' => Html::activeInput('text', $model, 'title', ['placeholder' => 'Zoek op titel...'])
         'created_on',
         'modified_on',
         ['class' => 'yii\grid\ActionColumn'],

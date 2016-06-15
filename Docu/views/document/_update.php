@@ -26,26 +26,26 @@ $form = ActiveForm::begin([
 
 //work with ActiveForm
 /*
-$form->field($model, 'tags')->widget(Tagit::className(), [
-    'clientOptions' => [
-        'tagSource' => Url::to(['tag/get-autocomplete']),
-        'autocomplete' => [
-            'delay' => 200,
-            'minLength' => 1,
-        ],
-        'singleField' => true,
-        'beforeTagAdded' => new JsExpression(<<<EOF
-function(event, ui){
-    if (!ui.duringInitialization) {
-        console.log(event);
-        console.log(ui);
-    }
-}
-EOF
-        ),
-    ],
-]);
-*/
+  $form->field($model, 'tags')->widget(Tagit::className(), [
+  'clientOptions' => [
+  'tagSource' => Url::to(['tag/get-autocomplete']),
+  'autocomplete' => [
+  'delay' => 200,
+  'minLength' => 1,
+  ],
+  'singleField' => true,
+  'beforeTagAdded' => new JsExpression(<<<EOF
+  function(event, ui){
+  if (!ui.duringInitialization) {
+  console.log(event);
+  console.log(ui);
+  }
+  }
+  EOF
+  ),
+  ],
+  ]);
+ */
 echo Widget::widget([
     'name' => 'Document[description]',
     'value' => $model->description,
@@ -67,19 +67,19 @@ $tags = substr($tags, 0, -1);
 
 //hier moet een tagit widget komen
 //work with hidden input
-echo yii\helpers\Html::hiddenInput('mytag', '', ['id' => 'Document_tags']);
-echo Tagit::widget([
-    'renderTag' => false,
-    'id' => 'Document_tags',
-    'name' => 'mytag',
-    'value' => $values,
-        // 'clientOptions' => [
-        //     'availableTags' => ['aaa', 'bbb']
-        // ]
-]);
+//echo yii\helpers\Html::hiddenInput('mytag', '', ['id' => 'Document_tags']);
+//echo Tagit::widget([
+//    'renderTag' => false,
+//    'id' => 'Document_tags',
+//    'name' => 'mytag',
+//    'value' => $values,
+//        // 'clientOptions' => [
+//        //     'availableTags' => ['aaa', 'bbb']
+//        // ]
+//]);
 ?>
 
-<?= $form->field($model, 'tags_previous')->hiddenInput(['value' => $tags]); ?>
+<?php// $form->field($model, 'tags_previous')->hiddenInput(['value' => $tags]); ?>
 
 <?= $form->field($model, 'year')->textInput(['class' => 'span5']); ?>
 
@@ -90,13 +90,17 @@ echo Tagit::widget([
 <?php
 
 echo DropZone::widget([
+    'name' => 'filename',
+    'storedFiles' => [],
+    'url' => 'index.php?r=document/upload',
     'options' => [
-        'maxFilesize' => '2',
-    ],
-    'clientEvents' => [
-        'complete' => "function(file){console.log(file)}",
-        'removedfile' => "function(file){alert(file.name + ' is removed')}"
-    ],
+
+        'maxFilesize' => '2000',
+        'dictDefaultMessage' => 'Plaats hier het bestand dat u wilt uploaden',
+        'dictFallbackMessage' => 'Uw browser wordt niet ondersteund',
+        'dictInvalidFileType' => 'Dit bestands formaat wordt niet ondersteund. Converteer het a.u.b. naar PDF.',
+        'dictFileTooBig' => 'Het bestand dat u probeert te uploaden is te groot.',
+    ]
 ]);
 ?>
 
