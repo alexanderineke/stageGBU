@@ -9,12 +9,10 @@ use app\models\Collection;
 use app\assets\AppAsset;
 
 ?>
-<?php $collection = new Collection; 
-AppAsset::register($this)?>
+<?php $collection = new Collection; ?>
 <?php if(!empty($collection)): ?>
     <?php $this->registerJs("collections-spotlight", "jQuery('#collections-spotlight').carousel();"); ?>
     <div id="collections-spotlight" class="carousel slide">
-        <h1>Hallo</h1>
         <div class="carousel-inner">
             <?php foreach ($collection->collections as $i => $subcollection): ?>
                 <?php if($i % 3 == 0): ?>

@@ -111,7 +111,6 @@ if (($audioSearch->getTotalCount() != 0)) { // && !Yii::$app->request->isAjaxReq
                 //    'title',
                 'title',
                 'created_on',
-                ['header' => 'ID', 'value'=> $audioModel->id]
             //    'created_on'
             //  ['header' => 'Naam document', 'value' => /* Html::a($audioModel->title, Url::to("/docu/web/index.php?r=audio%2Fview&id=" . $audioModel->id)), 'format' => 'raw', 'filter' => Html::activeTextInput($audioModel, 'title', ['placeholder' => 'Zoek op titel..']) */ ],
             //  ['header' => 'Steekwoorden', 'value' => 'objectToTagStringAudio($data->id)', 'filter' => Html::activeTextInput($audioModel, 'tag_search', ['placeholder' => 'Zoek op steekwoord..'])], //Omdat een result meerdere tags kan hebben moeten we deze verwerken.

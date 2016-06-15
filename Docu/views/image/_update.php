@@ -8,9 +8,9 @@ use yii\widgets\imperavi\src\Widget;
 
 $form = ActiveForm::begin([
             'id' => 'image-form',
-            'action' => ['image/process'],
+          //  'action' => ['image/process'],
             'enableAjaxValidation' => false,
-            'method' => 'get',
+            'method' => 'post',
             'options' => ['enctype' => 'multipart/form-data'],
         ]);
 ?>

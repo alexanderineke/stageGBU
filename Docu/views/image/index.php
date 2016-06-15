@@ -37,9 +37,6 @@ function fileLocation($id, $title) {
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]);   ?>
 <?php // Html::a('Geavanceerd zoeken', '#', ['class' => 'btn btn-primary']) ?>
-    <p>
-        <?= Html::a('Create Image', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
 
     <?=
     GridView::widget([

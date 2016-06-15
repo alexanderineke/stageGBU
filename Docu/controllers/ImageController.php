@@ -131,7 +131,7 @@ class ImageController extends Controller {
             //    exit;
             //       if ($this->generateTags()) {
 
-            if ($this->save()) {
+            if ($model->save()) {
 
                 //               if ($this->saveTags($model->id)) {
                 if ($fileQueue) {
@@ -201,7 +201,6 @@ class ImageController extends Controller {
         }
 
         $fileQueue = Yii::$app->session->get('filesToProcess');
-
         if (!$fileQueue) {
             $this->redirect(['index']);
         }
@@ -210,7 +209,7 @@ class ImageController extends Controller {
             $imageTempModel = ImageTemp::findOne($fileQueue[0]);
             $file = $imageTempModel->getAttributes(['file', 'format', 'location']);
             $model->attributes = $request->post('Image');
-        } elseif ($id) {
+        } else if ($id) {
 
             if ($model->images) {
                 $file = $model->images[0];
@@ -232,7 +231,6 @@ class ImageController extends Controller {
 //            if ($this->generateTags()) {
 
             if ($model->save()) {
-
 //                    if ($this->saveTags($model->id)) {
 
                 if (!$model->images) {
