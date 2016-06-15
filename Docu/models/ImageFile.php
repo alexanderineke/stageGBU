@@ -103,7 +103,9 @@ class ImageFile extends \yii\db\ActiveRecord {
             if (!is_dir(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR. 'afbeeldingen' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . 'full' . DIRECTORY_SEPARATOR)) {
                 BaseFileHelper::createDirectory(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR. 'afbeeldingen' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . 'full' . DIRECTORY_SEPARATOR);
             }
-
+            $fileContents = file_get_contents(Yii::$app->basePath . DIRECTORY_SEPARATOR .  'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $file['location'] . DIRECTORY_SEPARATOR . $file['file']);
+            file_put_contents(Yii::$app->basePath . DIRECTORY_SEPARATOR .  'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'afbeeldingen' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $fileInfo['filename'] . '.jpg', $fileContents);
+            $this->updateAll(['state' => 0], 'image_id=' . $image_id);
 //            //Genereer normale versie 
 //            $thumb = \Yii::$app->phpThumb->create(\Yii::getAlias('uploads/' . $file['location'] . '/' . $file['file']));
 //            $thumb->resize(750, 500);
