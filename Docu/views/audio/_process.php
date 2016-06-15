@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\widgets\imperavi\src\Widget;
+use yii\helpers\Url;
 
 $form = ActiveForm::begin([
             'id' => 'audio-form',
@@ -43,33 +44,23 @@ $tags = substr($tags, 0, -1);
 // Hier moet een externe widget komen
 ?>
 
-<?php // $form->field($model, 'tags_previous')->hiddenInput(['value' => $tags]) ?>
-
-<?= $form->field($model, 'included_file')->hiddenInput(['value' => $file['location'] . '/' . $file['file']]) ?>
-
-<?= $form->field($model, 'collection')->hiddenInput(); ?>
-
-<?= $form->field($model, 'Audio[collection]')->dropDownList($collection_list, ['empty' => Yii::t('none', 'Geen collectie')]); ?>
-
 <?= $form->field($model, 'year')->textInput(['class' => 'span5']) ?>
 
 <?= $form->field($model, 'owner')->textInput(['class' => 'span5', 'maxlength' => 45]) ?>
+
+<?= $form->field($model, 'included_file')->hiddenInput(['value' => $file['location'] . '/' . $file['file']]) ?>
 <?php
 if (isset($file)) {
-    $button = Html::submitButton('Speel audio bestand ' . $file['file'] . ' af', ['@app/uploads/' . $file['location'] . '/' . $file['file']], ['class' => 'btn btn-primary btn-xs']);
+    echo $button = Html::a('Speel audio bestand ' . $file['file'] . ' af', Url::to('@web') . '/uploads/' . $file['location'] . '/' . $file['file'], ['class' => 'btn btn-primary btn-xs', 'target' => '_blank']);
 } else {
-    $button = '<span class="null">Niet opgegeven</span>';
+    echo $button = '<span class="null">Niet opgegeven</span>';
 }
 ?>
-
-<?= $form->field($model, 'file')->hiddenInput(); ?>
-
-<?= $button ?>
 
 <?= $form->field($model, 'published')->dropDownList(['1' => 'Ja', '0' => 'Nee']); ?>
 
 <div class="form-actions">
-<?= Html::submitButton(sizeof(Yii::$app->session->get('filesToProcess')) > 1 ? 'Volgende' : 'Bewaar', ['class' => 'btn btn-primary']) ?>
+    <?= Html::submitButton(sizeof(Yii::$app->session->get('filesToProcess')) > 1 ? 'Volgende' : 'Bewaar', ['class' => 'btn btn-primary']) ?>
 </div>
 
 <?php ActiveForm::end(); ?>

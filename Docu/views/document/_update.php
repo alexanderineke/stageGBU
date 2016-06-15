@@ -94,7 +94,7 @@ echo DropZone::widget([
     'storedFiles' => [],
     'url' => 'index.php?r=document/upload',
     'options' => [
-        'acceptedFiles' => ['application/pdf', 'application/x-pdf'],
+        //'acceptedFiles' => ['application/pdf', 'application/x-pdf'],
         'maxFilesize' => '2000',
         'dictDefaultMessage' => 'Plaats hier het bestand dat u wilt uploaden',
         'dictFallbackMessage' => 'Uw browser wordt niet ondersteund',

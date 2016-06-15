@@ -128,7 +128,7 @@ class DocumentController extends Controller {
             $model->setAttribute('modified_on', date("Y-m-d H:i:s"));
             $model->setAttribute('published', 1);
             $model->attributes = $request->post('Document');
-            
+
 //            if (!$this->generateTags()) {
 //                Yii::$app->session->setFlash('error', "De steekwoorden zijn ongeldig. Probeert u het alstublieft nog eens.");
 //                goto render;
@@ -173,32 +173,32 @@ class DocumentController extends Controller {
 //            ]);
 //        }
 //    }
-             //           if ($this->generateTags()) {
+            //           if ($this->generateTags()) {
 
-                if ($model->save()) {
+            if ($model->save()) {
 
-  //                  if ($this->saveTags($model->id)) {
-                        if ($fileQueue) {
-                            if ((new DocumentFile)->saveDocument($model->id, $this->tags[0], $file)) {
-                                array_shift($fileQueue);
-                                //Yii::app()->user->setState('filesToProcess', $fileQueue);
-                                Yii::$app->session->set('filesToProcess', $fileQueue);
-                                $this->redirect(['view', 'id' => $model->id]);
-                            } else {
-                                // Yii::app()->user - setFlash('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
-                                Yii::$app->getSession()->setFlash('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
-                            }
-                        } else {
-                            $this->redirect(['view', 'id' => $model->id]);
-                        }
+                //                  if ($this->saveTags($model->id)) {
+                if ($fileQueue) {
+                    if ((new DocumentFile)->saveDocument($model->id, $this->tags[0], $file)) {
+                        array_shift($fileQueue);
+                        //Yii::app()->user->setState('filesToProcess', $fileQueue);
+                        Yii::$app->session->set('filesToProcess', $fileQueue);
+                        $this->redirect(['view', 'id' => $model->id]);
                     } else {
-                        //Yii::app()->user->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
-                        Yii::$app->getSession()->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
+                        // Yii::app()->user - setFlash('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
+                        Yii::$app->getSession()->setFlash('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
                     }
                 } else {
-                    //Yii::app()->user->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
-                    Yii::$app->getSession()->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
+                    $this->redirect(['view', 'id' => $model->id]);
                 }
+            } else {
+                //Yii::app()->user->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
+                Yii::$app->getSession()->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
+            }
+        } else {
+            //Yii::app()->user->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
+            Yii::$app->getSession()->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
+        }
 //            } else {
 //                //Yii::app()->user->setFlash('error', "De steekwoorden zijn ongeldig. Probeert u het alstublieft nog eens.");
 //                Yii::$app->getSession()->setFlash('error', "De steekwoorden zijn ongeldig. Probeert u het alstublieft nog eens.");
@@ -268,19 +268,19 @@ class DocumentController extends Controller {
             $file = $documentTempModel->getAttributes(['file', 'format', 'location']);
         }
 
-        if ($request->post('Document','included_file')) {
+        if (isset($request->post('Document')['included_file'])) {
             $model->setAttribute('user_id', Yii::$app->user->identity->id);
             $model->setAttribute('created_on', date("Y-m-d H:i:s"));
             $model->setAttribute('modified_on', date("Y-m-d H:i:s"));
             $model->setAttribute('published', 1);
 
-            if ($this->generateTags()) {
+    //        if ($this->generateTags()) {
 
-                if ($this->getDocumentContent($model, $file)) {
+  //              if ($this->getDocumentContent($model, $file)) {
 
                     if ($model->save()) {
 
-                        if ($this->saveTags($model->id)) {
+          //              if ($this->saveTags($model->id)) {
 
                             if (isset($_POST['Document']['collection'])) {
                                 $collection = (int) $_POST['Document']['collection'];
@@ -307,16 +307,16 @@ class DocumentController extends Controller {
                                     }
                                 }
                             }
-                        } else {
-                            Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
-                            $this->redirect(['process', 'id' => $model->id]);
-                        }
-                    } else {
-                        Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan. Probeert u het alstublieft nog eens.");
-                    }
-                } else {
-                    Yii::$app->session->setFlash('error', "De steekwoorden zijn ongeldig. Probeert u het alstublieft nog eens.");
-                }
+//                        } else {
+//                            Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
+//                            $this->redirect(['process', 'id' => $model->id]);
+//                        }
+//                    } else {
+//                        Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan. Probeert u het alstublieft nog eens.");
+//                    }
+//      //          } else {
+//                    Yii::$app->session->setFlash('error', "De steekwoorden zijn ongeldig. Probeert u het alstublieft nog eens.");
+//                }
             }
 
             if (!$fileQueue || !isset($file)) {
@@ -333,7 +333,7 @@ class DocumentController extends Controller {
             $this->render('process', [
                 'model' => $model,
                 'file' => $file,
-         //       'collection_list' => $list,
+                    //       'collection_list' => $list,
             ]);
         }
     }

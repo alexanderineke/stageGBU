@@ -39,9 +39,9 @@ GridView::widget([
                 $file = fileLocation($data->id, $data->title);
                 return Html::a(Html::encode($file), 'index.php?r=audio%2Fview&id=' . $data->id);
             }, 'format' => 'raw'],
-        ['header' => 'Omschrijving', 'value' => function($data) {
-                return Html::encode($data->description);
-            }, 'format' => 'html'],
+//        ['header' => 'Omschrijving', 'value' => function($data) {
+//                return Html::encode($data->description);
+//            }, 'format' => 'raw'],
         ['header' => 'Jaar', 'value' => 'year'],
     ],
     'pager' => [

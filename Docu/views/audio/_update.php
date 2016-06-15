@@ -52,7 +52,7 @@ echo DropZone::widget([
     'storedFiles' => [],
     'url' => 'index.php?r=audio/upload',
     'options' => [
-  'acceptedFiles' => ['audio/mpeg3', 'audio/x-mpeg-3', 'audio/mpeg', 'audio/mp3'],
+ // 'acceptedFiles' => ['audio/mpeg3', 'audio/x-mpeg-3', 'audio/mpeg', 'audio/mp3'],
   'maxFilesize' => '2000',
   'dictDefaultMessage' => 'Plaats hier het bestand dat u wilt uploaden',
   'dictFallbackMessage' => 'Uw browser wordt niet ondersteund',

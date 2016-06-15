@@ -127,31 +127,30 @@ class ImageController extends Controller {
             $model->setAttribute('modified_on', date("Y-m-d H:i:s"));
             $model->setAttribute('published', 1);
             $model->attributes = $request->post('Image');
-         //   print($model->attributes());
-        //    exit;
+            //   print($model->attributes());
+            //    exit;
+            //       if ($this->generateTags()) {
 
-     //       if ($this->generateTags()) {
+            if ($this->save()) {
 
-                if ($this->save()) {
-
-     //               if ($this->saveTags($model->id)) {
-                        if ($fileQueue) {
-                            if ((new ImageFile)->saveImage($model->id, $this->tags[0], $file)) {
-                                array_shift($fileQueue);
-                                Yii::$app->session->set('filesToProcess', $fileQueue);
-                                $this->redirect(['view', 'id' => $model->id]);
-                            } else {
-                                Yii::$app->session->set('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
-                            }
-                        } else {
-                            $this->redirect(['view', 'id' => $model->id]);
-                        }
+                //               if ($this->saveTags($model->id)) {
+                if ($fileQueue) {
+                    if ((new ImageFile)->saveImage($model->id, $this->tags[0], $file)) {
+                        array_shift($fileQueue);
+                        Yii::$app->session->set('filesToProcess', $fileQueue);
+                        $this->redirect(['view', 'id' => $model->id]);
                     } else {
-                        Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
+                        Yii::$app->session->set('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
                     }
                 } else {
-                    Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
+                    $this->redirect(['view', 'id' => $model->id]);
                 }
+            } else {
+                Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
+            }
+        } else {
+            Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
+        }
 //            } else {
 //                Yii::$app->session->setFlash('error', "De steekwoorden zijn ongeldig. Probeert u het alstublieft nog eens.");
 //            }
@@ -223,7 +222,7 @@ class ImageController extends Controller {
             $imageTempModel = ImageTemp::findOne($fileQueue[0]);
             $file = $imageTempModel->getAttributes(['file', 'format', 'location']);
         }
-        if ($request->post('Image', 'included_file')) {
+        if (isset($request->post('Image')['included_file'])) {
             $model->setAttribute('user_id', Yii::$app->user->identity->id);
             $model->setAttribute('created_on', date("Y-m-d H:i:s"));
             $model->setAttribute('modified_on', date("Y-m-d H:i:s"));
@@ -232,49 +231,49 @@ class ImageController extends Controller {
 
 //            if ($this->generateTags()) {
 
-                if ($model->save()) {
+            if ($model->save()) {
 
 //                    if ($this->saveTags($model->id)) {
 
-                        if (!$model->images) {
+                if (!$model->images) {
 
-                            if ((new ImageFile)->saveImage($model->id, $this->tags[0], $file)) {
-                                array_shift($fileQueue);
-                                Yii::$app->session->set('filesToProcess', $fileQueue);
+                    if ((new ImageFile)->saveImage($model->id, $this->tags[0], $file)) {
+                        array_shift($fileQueue);
+                        Yii::$app->session->set('filesToProcess', $fileQueue);
 
-                                if (!empty($fileQueue)) {
-                                    $imageTempModel = ImageTemp::findOne($fileQueue[0]);
-                                    $file = $imageTempModel->getAttributes(['file', 'format', 'location']);
-                                } else {
-                                    Yii::$app->session->setFlash('succes', "Afbeelding bestand(en) met succes toegevoegd.");
-                                }
-                            } else {
-                                Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
-                                $this->redirect(['process', 'id' => $model->id]);
-                            }
+                        if (!empty($fileQueue)) {
+                            $imageTempModel = ImageTemp::findOne($fileQueue[0]);
+                            $file = $imageTempModel->getAttributes(['file', 'format', 'location']);
+                        } else {
+                            Yii::$app->session->setFlash('succes', "Afbeelding bestand(en) met succes toegevoegd.");
                         }
                     } else {
-                        Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
+                        Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
                         $this->redirect(['process', 'id' => $model->id]);
                     }
+                }
+            } else {
+                Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
+                $this->redirect(['process', 'id' => $model->id]);
+            }
 //                } else {
 //                    Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan. Probeert u het alstublieft nog eens.");
 //                }
 //            } else {
- //               Yii::$app->getSession()->setFlash('error', "De steekwoorden zijn ongeldig. Probeert u het alstublieft nog eens.");
- //           }
+            //               Yii::$app->getSession()->setFlash('error', "De steekwoorden zijn ongeldig. Probeert u het alstublieft nog eens.");
+            //           }
         }
 
         if (!$fileQueue || !isset($file)) {
             $this->redirect(['index']);
         }
 
-       // $list = ArrayHelper::map(Collection::find()->all(), 'id', 'title');
+        // $list = ArrayHelper::map(Collection::find()->all(), 'id', 'title');
 
         return $this->render('process', [
                     'model' => $model,
                     'file' => $file,
-        //            'collection_list' => $list,
+                        //            'collection_list' => $list,
         ]);
     }
 
@@ -334,11 +333,11 @@ class ImageController extends Controller {
                 $tags[] = (int) $tag;
             }
         }
-        
+
         if ($newTagsRaw = $request->post('Image', 'newtags')) {
             $newSlugs = [];
             $newTags = [];
-          //  $tagArray = explode(',', $request->post('Image', 'tags_previous'));
+            //  $tagArray = explode(',', $request->post('Image', 'tags_previous'));
             foreach ($newTagsRaw as $i => $newtag) {
                 $name = (string) $newtag;
                 setlocale(LC_ALL, 'nl_NL');

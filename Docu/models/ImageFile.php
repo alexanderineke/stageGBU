@@ -90,8 +90,8 @@ class ImageFile extends \yii\db\ActiveRecord {
             }
 
             //Map voor de normale versie (max: 750x500)
-            if (!is_dir(\Yii::getAlias('@web') . '/uploads/afbeeldingen/' . $folder_name . '/')) {
-                BaseFileHelper::createDirectory(Yii::getAlias('@web') . '/uploads/afbeeldingen/' . $folder_name . '/');
+            if (!is_dir(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR. 'afbeeldingen' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR)) {
+                BaseFileHelper::createDirectory(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR. 'afbeeldingen' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR);
             }
 
             //Map voor de thumbnail (fixed: 100x100)
