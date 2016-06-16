@@ -377,6 +377,7 @@ class AudioController extends Controller
 
 	protected function generateTags(){
 		$tags = array();
+
 		if(isset($_POST['tags'])){
 			foreach ($_POST['tags'] as $tag) {
 				$tags[] = (int)$tag; //Zorg dat de id's nummers zijn

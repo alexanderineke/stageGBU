@@ -42,58 +42,12 @@ foreach ($model->tags as $i => $tag) {
     $values[$i]['tag'] = $tag->name;
 }
 $tags = substr($tags, 0, -1);
-
-// Hier moet een externe widget komen
 ?>
-<?= $form->field($model, 'tags')->widget(Tagit::className(), [
-    'clientOptions' => [
-        'tagSource' => Url::to(['tag/search']),
-     //   'availableTags' => Url::to(['tag/search']),
-        'autocomplete' => [
-            'delay' => 200,
-            'minLength' => 1,
-        ],
-        'singleField' => true,
-        'beforeTagAdded' => new JsExpression(<<<EOF
-function(event, ui){
-    if (!ui.duringInitialization) {
-        console.log(event);
-        console.log(ui);
-    }
-}
-EOF
-),
-    ],
-]); 
-    ?>
- <?php
-//work with hidden input
-echo yii\helpers\Html::hiddenInput('mytag', '', ['id' => 'myTagId']);
-echo Tagit::widget([
-    'renderTag' => false,
-    'id' => 'myTagId',
-    'name' => 'mytag',
-    'value' => ['a', 'b'],
-    'clientOptions' => [
-        'availableTags' => ['aaa', 'bbb']
-    ]
-]);
-
-//work with hidden input (input init value)
-echo yii\helpers\Html::hiddenInput('mytag2', 'a,b,c,d', ['id' => 'myTagId2']);
-echo Tagit::widget([
-    'renderTag' => false,
-    'id' => 'myTagId2',
-    'name' => 'mytag2',
-    'clientOptions' => [
-        'availableTags' => ['aaa', 'bbb']
-    ]
-]);
-
-//auto render with autocomplete
+<?= $form->field($model, 'tags_previous')->hiddenInput(['value' => $tags]); ?>
+<?php
 echo Tagit::widget([
     'id' => 'Audio_tags',
-    'name' => 'tagswidget',
+    'name' => 'tags',
     'value' => $values,
     'clientOptions' => [
         'tagSource' => Url::to(['tag/get-autocomplete']),
@@ -102,7 +56,7 @@ echo Tagit::widget([
             'minLength' => 1,
         ],
     ]
-]); 
+]);
 ?>
 <?= $form->field($model, 'year')->textInput(['class' => 'span5']) ?>
 

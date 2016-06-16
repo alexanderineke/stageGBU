@@ -54,16 +54,16 @@ class Tag extends \yii\db\ActiveRecord {
                         ->viaTable('tbl_image_tag', ['image_id' => 'id']);
     }
 
-        public function getDocuments() {
+    public function getDocuments() {
         return $this->hasMany(Document::className(), ['id' => 'tag_id'])
                         ->viaTable('tbl_document_tag', ['document_id' => 'id']);
     }
-    
-        public function getAudios() {
+
+    public function getAudios() {
         return $this->hasMany(Audio::className(), ['id' => 'tag_id'])
                         ->viaTable('tbl_audio_tag', ['audio_id' => 'id']);
     }
-    
+
     public function search($params) {
         $query = Tag::find();
         $dataProvider = new ActiveDataProvider([
@@ -89,45 +89,60 @@ class Tag extends \yii\db\ActiveRecord {
     // should not be searched.
     public function add($tagArr, $slugArr) {
         $addedTags = [];
-        foreach (Tag::find()
-                ->where(['name' => $tagArr])
-                ->andFilterWhere(['slug' => $slugArr])
-                ->exists() as $i) {
-            $addedTags[] = $i->tag_id;
-        }
-        $notInDB = array_diff($tagArr, $addedTags);
-        $v = 0;
-        foreach ($addedTags as $i) {
-            $sql->createCommand()
+
+        foreach ($tagArr as $i => $tag) {
+            Yii::$app->db->createCommand()
                     ->insert('tbl_tag', [
-                        'name' => $tagArr,
-                        'slug' => $slugArr,
+                        'name' => $tag,
+                        'slug' => $slugArr[$i],
                         'state' => 1])
                     ->execute();
-            $v++;
-            if ($v == sizeof($notInDB)) {
-                return true;
-            }
+            $addedTags[] = Yii::$app->db->getLastInsertID();
         }
+        print_r($addedTags);
+        if (sizeof($addedTags) == sizeof($tagArr)) {
+            return $addedTags;
+            
+        }
+
+//        foreach (Tag::find()
+//                ->where(['name' => $tagArr])
+//                ->andFilterWhere(['slug' => $slugArr])
+//                ->exists() as $i) {
+//            $addedTags[] = $i->tag_id;
+//        }
+//        $notInDB = array_diff($tagArr, $addedTags);
+//        $v = 0;
+//        foreach ($addedTags as $i) {
+//            $sql->createCommand()
+//                    ->insert('tbl_tag', [
+//                        'name' => $tagArr,
+//                        'slug' => $slugArr,
+//                        'state' => 1])
+//                    ->execute();
+//            $v++;
+//            if ($v == sizeof($notInDB)) {
+//                return true;
+//            }
+//        }
     }
 
     public function check($slugArr) {
         $query = Tag::find()
-                ->select(['tag_id'])
-               // ->andFilterWhere(['id' => $id])
+                ->select(['id'])
+                // ->andFilterWhere(['id' => $id])
                 ->andFilterWhere(['slug' => $slugArr])
-                ->andFilterWhere(['state' => 1]);
-              //  ->all()
-             //   ->execute();
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
-        if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
-            return $dataProvider;
-        }
-        return $dataProvider;
+                ->andFilterWhere(['state' => 1])
+                ->all();
+//        $dataProvider = new ActiveDataProvider([
+//            'query' => $query,
+//        ]);
+//        if (!$this->validate()) {
+//            // uncomment the following line if you do not want to return any records when validation fails
+//            // $query->where('0=1');
+//            return $dataProvider;
+//        }
+        return $query;
     }
 
     public function findTags($term) {
@@ -137,8 +152,7 @@ class Tag extends \yii\db\ActiveRecord {
                 ->andWhere(['state' => 1])
                 ->andWhere(['slug' => $term])
                 ->limit(10)
-                ->all()
-                ->execute();
+                ->all();
         return $query;
     }
 
