@@ -3,8 +3,7 @@
 namespace app\models;
 
 use Yii;
-use yii\db\ActiveRecord;
-
+use yii\helpers\BaseFileHelper;
 /**
  * This is the model class for table "{{%document_file}}".
  *
@@ -15,7 +14,7 @@ use yii\db\ActiveRecord;
  * @property string $location
  * @property integer $state
  */
-class DocumentFile extends ActiveRecord {
+class DocumentFile extends \yii\db\ActiveRecord {
 
     public static function model($className = __CLASS__) {
         return parent::model($className);
@@ -138,43 +137,62 @@ class DocumentFile extends ActiveRecord {
     }
 
     public function saveDocument($document_id, $tag_id, $file) {
+           $errorOccured = false;
+        
         if ($file) {
-            $tags = Tag::findOne($tag_id);
+            $tags = Tag::find()->where(['id' => $tag_id])->one();
             $folder_name = preg_replace('/[^a-z0-9-_\.]/', '', strtolower($tags->name));
-            $fileInfo = pathinfo(Yii::getAlias('@app' . '/../uploads/' . $file['location'] . '/' . $file['file']));
+            $fileInfo = pathinfo(Yii::$app->basePath . DIRECTORY_SEPARATOR .  'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $file['location'] . DIRECTORY_SEPARATOR . $file['file']);
             $file_name = $fileInfo['filename'];
 
-            if (!is_dir(Yii::getAlias('@app' . '/../uploads/documenten/'))) {
-                mkdir(Yii::getAlias('@app' . '/../uploads/documenten/'));
+           if (!is_dir(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR)) {
+                BaseFileHelper::createDirectory(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR);
             }
 
-            if (!is_dir(Yii::getAlias('@app' . '/../uploads/documenten/' . $folder_name . '/'))) {
-                mkdir(Yii::getAlias('@app' . '/../uploads/documenten/' . $folder_name . '/'));
+           if (!is_dir(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR. 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR)) {
+                BaseFileHelper::createDirectory(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR. 'documenten' . DIRECTORY_SEPARATOR . $folder_name . '/');
             }
 
-            if (!$this->genThumbs($file, $folder_name, $file_name)) {
-                return false;
-            }
+       //     if (!$this->genThumbs($file, $folder_name, $file_name)) {
+       //        return false;
+       //   }
+            $fileContents = file_get_contents(Yii::$app->basePath . DIRECTORY_SEPARATOR .  'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $file['location'] . DIRECTORY_SEPARATOR . $file['file']);
+            
+           
+            
+            file_put_contents(Yii::$app->basePath . DIRECTORY_SEPARATOR .  'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'audio' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $fileInfo['filename'] . '.mp3', $fileContents);
+      
 
-            $fileContents = file_get_contents(Yii::getAlias('@app' . '/../uploads/' . $file['location'] . '/' . $file['file']));
-            if (!$fileContents || !file_put_contents(Yii::getAlias('@app' . '/../uploads/documenten/' . $folder_name . '/' . $file_name . '.pdf', $fileContents))) {
+            
+            
+            if (!$fileContents || !file_put_contents(Yii::$app->basePath . DIRECTORY_SEPARATOR .  'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $fileInfo['filename'] . '.pdf', $fileContents)) {
                 return false;
             }
             echo 'sweet';
 
             $this->updateAll(['state' => 0], 'document_id=' . $document_id);
 
-            $attributes['document_id'] = $document_id;
+          /*  $attributes['document_id'] = $document_id;
             $attributes['file'] = $file_name;
             $attributes['location'] = $folder_name;
             $attributes['format'] = '.pdf';
-            $attributes['state'] = 1;
+            $attributes['state'] = 1;*/
+            
+            $this->document_id = $document_id;
+            $this->file = $fileInfo['filename'];
+            $this->location = $folder_name;
+            $this->format = '.pdf';
+            $this->state = 1;
             $this->setIsNewRecord(true);
-            $this->attributes = $attributes;
-            if (!$this->insert())
-                return false;
+           // $this->attributes = $attributes;
+            if (!$this->insert()){
+               $errorOccured = false;
         }
-        return true;
+        
+            }
+         if (!$errorOccured) {
+            return true;
+        }
     }
 
 }

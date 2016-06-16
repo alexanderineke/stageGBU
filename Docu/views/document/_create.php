@@ -9,7 +9,7 @@ $form = ActiveForm::begin([
             'id' => 'document-form',
             'action' => ['document/process'],
             'enableAjaxValidation' => false,
-            'method' => 'get',
+            'method' => 'post',
             'options' => ['enctype' => 'multipart/form-data'],
         ]);
 ?>
@@ -24,8 +24,8 @@ echo DropZone::widget([
     'storedFiles' => [],
     'url' => 'index.php?r=document/batchupload',
     'options' => [
-  //'acceptedFiles' => ['application/pdf', 'application/x-pdf'],
-  'maxFilesize' => '200',
+ // 'acceptedFiles' => ['audio/mpeg3', 'audio/x-mpeg-3', 'audio/mpeg', 'audio/mp3'],
+  'maxFilesize' => '2000',
   'dictDefaultMessage' => 'Plaats hier het bestand dat u wilt uploaden',
   'dictFallbackMessage' => 'Uw browser wordt niet ondersteund',
   'dictInvalidFileType' => 'Dit bestands formaat wordt niet ondersteund. Converteer het a.u.b. naar PDF.',

@@ -49,18 +49,39 @@ class DocumentTemp extends \yii\db\ActiveRecord {
             'location' => 'Location',
         ];
     }
+   public function search() {
+        $query = DocumentTemp::find();
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
 
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        $query
+                ->andFilterWhere([['like', 'id', $this->id],
+                    ['like', 'create_date', $this->create_id],
+                    ['like', 'user_id', $this->user_id],
+                    ['like', 'file', $this->file],
+                    ['like', 'format', $this->format],
+                    ['like', 'location', $this->location]]);
+
+        return $dataProvider;
+    }
     public function addTempFile($filename, $location) {
-       $sql = Yii::$app->db->createCommand()
+         Yii::$app->db->createCommand()
                 ->insert('tbl_document_temp', [
                     'user_id' => Yii::$app->user->identity->id,
                     'create_date' => date("Y-m-d H:i:s"),
                     'file' => $filename,
                     'format' => 'pdf',
-                    'location' => $location])
-                ->execute();
-       
-        return $sql;
+                    'location' => $location,
+                ])->execute();
+        $id = Yii::$app->db->getLastInsertID();
+        return $id;
     }
 
 }
