@@ -56,7 +56,7 @@ foreach ($model->tags as $i => $tag) {
 //]);
 ?>
 
-<?=  $form->field($model, 'tags_previous')->textInput(['value' => $tags])  ?>
+<?php //  $form->field($model, 'tags_previous')->textInput(['value' => $tags])  ?>
 
 <?php //$form->field($model, 'collection')->label(['Collection']);  ?>	
 

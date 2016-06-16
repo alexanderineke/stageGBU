@@ -2,8 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yii\widgets\dropzone\DropZone;
 use yii\helpers\Url;
+use devgroup\dropzone\DropZone;
 
 $form = ActiveForm::begin([
             'id' => 'audio-form',

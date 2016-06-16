@@ -2,8 +2,10 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yii\widgets\imperavi\src\Widget;
-use yii\widgets\dropzone\DropZone;
+use vova07\imperavi\Widget;
+use devgroup\dropzone\DropZone;
+use xj\tagit\Tagit;
+use yii\helpers\Url;
 
 $form = ActiveForm::begin([
             'id' => 'audio-form',
@@ -38,12 +40,32 @@ echo Widget::widget([
 $tags = "";
 $values = [];
 foreach ($model->tags as $i => $tag) {
-    $tags .= $tag->id . ',';
+    $tags .= $tag->name . ',';
     $values[$i]['id'] = $tag->id;
     $values[$i]['tag'] = $tag->name;
 }
 $tags = substr($tags, 0, -1);
 ?>
+
+
+<?php  $form->field($model, 'tags_previous')->hiddenInput(['value' => $tags]); ?>
+<?php echo Tagit::widget([
+    'id' => 'Audio_tags',
+    'name' => 'tagswidget',
+    'value' => $tags,
+    'clientOptions' => [
+        'tagSource' => Url::to(['tag/get-autocomplete']),
+        'autocomplete' => [
+            'delay' => 0,
+            'minLength' => 1,
+        ],
+    ]
+]); ?>
+<?= $form->field($model, 'year')->textInput(['class' => 'span5']); ?>
+
+<?= $form->field($model, 'owner')->textInput(['class' => 'span5', 'maxlength' => 45]); ?>
+
+<?= $form->field($model, 'published')->dropDownList(['1' => 'Ja', '0' => 'Nee']); ?>
 
 <?php
 
@@ -63,19 +85,6 @@ echo DropZone::widget([
     ]
 ]);
 //Hier moet een variant komen van ETagIt
-?>
-
-<?= $form->field($model, 'tags_previous')->hiddenInput(['value' => $tags]); ?>
-
-<?= $form->field($model, 'year')->textInput(['class' => 'span5']); ?>
-
-<?= $form->field($model, 'owner')->textInput(['class' => 'span5', 'maxlength' => 45]); ?>
-
-<?= $form->field($model, 'published')->dropDownList(['1' => 'Ja', '0' => 'Nee']); ?>
-
-<?php
-
-//Hier moet de dropzone widget komen
 ?>
 
 <?= Html::submitButton($model->isNewRecord ? 'Maak aan' : 'Bewaar', ['class' => 'btn btn-primary']) ?>
