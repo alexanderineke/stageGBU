@@ -3,24 +3,17 @@
 namespace app\controllers;
 
 use Yii;
-use app\models;
 use app\models\Tag;
 use app\models\Image;
-use app\models\Search;
 use app\models\ImageTag;
 use app\models\ImageFile;
 use app\models\ImageTemp;
-use app\models\Collection;
-use yii\helpers\ArrayHelper;
 use yii\helpers\BaseFileHelper;
 use yii\web\UploadedFile;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\HttpException;
-use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
-use yii\widgets\dropzone\UploadAction;
-use yii\widgets\dropzone\RemoveAction;
 
 /**
  * ImageController implements the CRUD actions for Image model.
@@ -127,38 +120,37 @@ class ImageController extends Controller {
             $model->setAttribute('modified_on', date("Y-m-d H:i:s"));
             $model->setAttribute('published', 1);
             $model->attributes = $request->post('Image');
-            //   print($model->attributes());
-            //    exit;
-            //       if ($this->generateTags()) {
 
-            if ($model->save()) {
+            if ($this->generateTags()) {
 
-                //               if ($this->saveTags($model->id)) {
-                if ($fileQueue) {
-                    if ((new ImageFile)->saveImage($model->id, $this->tags[0], $file)) {
-                        array_shift($fileQueue);
-                        Yii::$app->session->set('filesToProcess', $fileQueue);
-                        $this->redirect(['view', 'id' => $model->id]);
+                if ($model->save()) {
+
+                    if ($this->saveTags($model->id)) {
+                        if ($fileQueue) {
+                            if ((new ImageFile)->saveImage($model->id, $this->tags[0], $file)) {
+                                array_shift($fileQueue);
+                                Yii::$app->session->set('filesToProcess', $fileQueue);
+                                $this->redirect(['view', 'id' => $model->id]);
+                            } else {
+                                Yii::$app->session->set('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
+                            }
+                        } else {
+                            $this->redirect(['view', 'id' => $model->id]);
+                        }
                     } else {
-                        Yii::$app->session->set('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
+                        Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
                     }
                 } else {
-                    $this->redirect(['view', 'id' => $model->id]);
+                    Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
                 }
             } else {
-                Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
+                Yii::$app->session->setFlash('error', "De steekwoorden zijn ongeldig. Probeert u het alstublieft nog eens.");
             }
         } else {
-            Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
+            // Yii::$app->session->setState('filesToProcess', []);
+
+            Yii::$app->session->set('filesToProcess', []);
         }
-//            } else {
-//                Yii::$app->session->setFlash('error', "De steekwoorden zijn ongeldig. Probeert u het alstublieft nog eens.");
-//            }
-//        } else {
-//            // Yii::$app->session->setState('filesToProcess', []);
-//
-//            Yii::$app->session->set('filesToProcess', []);
-//        }
 
         return $this->render('update', [
                     'model' => $model,
@@ -228,38 +220,38 @@ class ImageController extends Controller {
             //     $model->setAttribute('title', "ja");
             $model->setAttribute('published', 1);
 
-//            if ($this->generateTags()) {
+            if ($this->generateTags()) {
 
-            if ($model->save()) {
-//                    if ($this->saveTags($model->id)) {
+                if ($model->save()) {
+                    if ($this->saveTags($model->id)) {
 
-                if (!$model->images) {
+                        if (!$model->images) {
 
-                    if ((new ImageFile)->saveImage($model->id, $this->tags[0], $file)) {
-                        array_shift($fileQueue);
-                        Yii::$app->session->set('filesToProcess', $fileQueue);
+                            if ((new ImageFile)->saveImage($model->id, $this->tags[0], $file)) {
+                                array_shift($fileQueue);
+                                Yii::$app->session->set('filesToProcess', $fileQueue);
 
-                        if (!empty($fileQueue)) {
-                            $imageTempModel = ImageTemp::findOne($fileQueue[0]);
-                            $file = $imageTempModel->getAttributes(['file', 'format', 'location']);
-                        } else {
-                            Yii::$app->session->setFlash('succes', "Afbeelding bestand(en) met succes toegevoegd.");
+                                if (!empty($fileQueue)) {
+                                    $imageTempModel = ImageTemp::findOne($fileQueue[0]);
+                                    $file = $imageTempModel->getAttributes(['file', 'format', 'location']);
+                                } else {
+                                    Yii::$app->session->setFlash('succes', "Afbeelding bestand(en) met succes toegevoegd.");
+                                }
+                            } else {
+                                Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
+                                $this->redirect(['process', 'id' => $model->id]);
+                            }
                         }
                     } else {
-                        Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
+                        Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
                         $this->redirect(['process', 'id' => $model->id]);
                     }
+                } else {
+                    Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan. Probeert u het alstublieft nog eens.");
                 }
             } else {
-                Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
-                $this->redirect(['process', 'id' => $model->id]);
+                Yii::$app->getSession()->setFlash('error', "De steekwoorden zijn ongeldig. Probeert u het alstublieft nog eens.");
             }
-//                } else {
-//                    Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan. Probeert u het alstublieft nog eens.");
-//                }
-//            } else {
-            //               Yii::$app->getSession()->setFlash('error', "De steekwoorden zijn ongeldig. Probeert u het alstublieft nog eens.");
-            //           }
         }
 
         if (!$fileQueue || !isset($file)) {
@@ -290,16 +282,6 @@ class ImageController extends Controller {
                     'model' => new Image(),
                     'dataProvider' => $dataProvider,
         ]);
-
-        /*
-          $searchModel = new Search();
-          $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-          return $this->render('index', [
-          'searchModel' => $searchModel,
-          'dataProvider' => $dataProvider,
-          ]);
-         */
     }
 
     public function actionAdmin() {
@@ -325,91 +307,61 @@ class ImageController extends Controller {
 
     protected function generateTags() {
         $request = Yii::$app->request;
-        $tags = [];
         if ($request->post('tags')) {
-            foreach ($request->post('Image', 'tags') as $tag) {
-                $tags[] = (int) $tag;
-            }
-        }
-
-        if ($newTagsRaw = $request->post('Image', 'newtags')) {
-            $newSlugs = [];
-            $newTags = [];
-            //  $tagArray = explode(',', $request->post('Image', 'tags_previous'));
-            foreach ($newTagsRaw as $i => $newtag) {
-                $name = (string) $newtag;
+            $tags = [];
+            $tagArr = [];
+            foreach ($request->post('tags') as $i => $tag) {
+                $name = (string) $tag;
                 setlocale(LC_ALL, 'nl_NL');
                 $name = iconv('UTF-8', 'ASCII//TRANSLIT', $name);
                 $name = preg_replace('/[^ \w]+/', '-', $name);
                 $name = mb_strtolower($name);
                 $name = trim($name, '-');
 
-                $newSlugs[$i] = $name;
-                $newTags[$i] = mb_strtolower($newtag);
+                $tags[$name] = mb_strtolower((string) $tag);
             }
-            $selectedTags = (new Tag)->check($newSlugs);
-            $remainingTags = [];
-            $remainingSlugs = [];
+            $existingTags = (new Tag)->check($tags);
+            foreach ($existingTags as $i => $tag) {
+                $tagArr[] = $tag->id;
+                unset($tags[$tag->slug]);
+            }
 
-            if (isset($selectedTags)) {
-                $compareTags = [];
-                foreach ($selectedTags as $t) {
-                    $compareTags[$t->slug] = $t->id;
-                }
-                foreach ($newSlugs as $i => $newslug) {
-                    if (!array_key_exists($newslug, $compareTags)) {
-                        if (!in_array($newslug, $remainingSlugs)) {
-                            $remainingTags[] = $newTags[$i];
-                            $remainingSlugs[] = $newslug;
-                        }
-                    }
+            if (isset($tags) && sizeof($tags)) {
+                $addedTags = (new Tag)->add($tags);
+                foreach ($addedTags as $i) {
+                    $tagArr[] = $i;
                 }
             } else {
-                $remainingTags = $newTags;
+                $errorOccured = true;
             }
 
-            if (isset($remainingTags) && sizeof($remainingTags)) {
-                if ($addedTags = (new Tag)->add($remainingTags, $remainingSlugs)) {
-                    foreach ($addedTags as $i) {
-                        $tags[] = $i;
-                    }
-                } else {
-                    $errorOccured = true;
-                }
-            }
+            $this->tags = $tagArr;
 
-            if (isset($compareTags) && sizeof($compareTags)) {
-                foreach ($compareTags as $i) {
-                    $tags[] = $i;
-                }
+            if (sizeof($tagArr)) {
+                return true;
             }
-        }
-        $this->tags = $tags;
-
-        if (sizeof($tags)) {
-            return true;
         }
     }
 
     protected function saveTags($image_id) {
         $request = Yii::$app->request;
         $errorOccured = false;
+        (new ImageTag)->add($image_id, array_unique($this->tags));
 
         if (!(new ImageTag)->add($image_id, array_unique($this->tags))) {
             $errorOccured = true;
         }
-        $prevTags = explode(',', $request->post('Image', 'tags_previous'));
+        $prevTags = explode(',', $request->post('Image')['tags_previous']);
         $prevTagsArr = [];
         foreach ($prevTags as $i) {
             if ((int) $i) {
                 $prevTagsArr[] = (int) $i;
             }
         }
-        $deleteTagsArr = array_dif($prevTagsArr, $this->tags);
+        $deleteTagsArr = array_diff($prevTagsArr, $this->tags);
+        
         if (sizeof($deleteTagsArr) && sizeof($prevTagsArr)) {
-            if (!(new ImageTag)->deleteTags($image_id, $deleteTagsArr)) {
-                $errorOccured = true;
-            }
+            ImageTag::deleteAll(['image_id' => $image_id, 'tag_id' => $deleteTagsArr, 'state' => 1]);
         }
         if (!$errorOccured) {
             return true;

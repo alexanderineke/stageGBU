@@ -9,7 +9,7 @@ use yii\helpers\Url;
 
 $form = ActiveForm::begin([
             'id' => 'audio-form',
-         //   'action' => ['audio/process'],
+            //   'action' => ['audio/process'],
             'enableAjaxValidation' => false,
             'method' => 'post',
             'options' => ['enctype' => 'multipart/form-data'],
@@ -36,31 +36,25 @@ echo Widget::widget([
 ?>
 
 <?php
-
-$tags = "";
+$tags = '';
 $values = [];
 foreach ($model->tags as $i => $tag) {
-    $tags .= $tag->name . ',';
-    $values[$i]['id'] = $tag->id;
-    $values[$i]['tag'] = $tag->name;
+    $tags .= $tag->id . ',';
+  //  $values[$i] = $tag->id;
+    $values[$i] = $tag->name;
 }
 $tags = substr($tags, 0, -1);
 ?>
+<?= $form->field($model, 'tags_previous')->hiddenInput(['value' => $tags]); ?>
+<?php
 
-
-<?php  $form->field($model, 'tags_previous')->hiddenInput(['value' => $tags]); ?>
-<?php echo Tagit::widget([
+echo Tagit::widget([
     'id' => 'Audio_tags',
-    'name' => 'tagswidget',
-    'value' => $tags,
-    'clientOptions' => [
-        'tagSource' => Url::to(['tag/get-autocomplete']),
-        'autocomplete' => [
-            'delay' => 0,
-            'minLength' => 1,
-        ],
-    ]
-]); ?>
+    'name' => 'tags',
+    'value' => $values,
+]);
+?>
+
 <?= $form->field($model, 'year')->textInput(['class' => 'span5']); ?>
 
 <?= $form->field($model, 'owner')->textInput(['class' => 'span5', 'maxlength' => 45]); ?>
@@ -74,14 +68,13 @@ echo DropZone::widget([
     'storedFiles' => [],
     'url' => 'index.php?r=audio/upload',
     'options' => [
- // 'acceptedFiles' => ['audio/mpeg3', 'audio/x-mpeg-3', 'audio/mpeg', 'audio/mp3'],
-  'maxFilesize' => '2000',
-  'dictDefaultMessage' => 'Plaats hier het bestand dat u wilt uploaden',
-  'dictFallbackMessage' => 'Uw browser wordt niet ondersteund',
-  'dictInvalidFileType' => 'Dit bestands formaat wordt niet ondersteund. Converteer het a.u.b. naar PDF.',
-  'dictFileTooBig' => 'Het bestand dat u probeert te uploaden is te groot.',
-  //'acceptedFiles' => ['audio/mpeg3', 'audio/x-mpeg-3', 'audio/mpeg', 'audio/mp3'],
-  
+        // 'acceptedFiles' => ['audio/mpeg3', 'audio/x-mpeg-3', 'audio/mpeg', 'audio/mp3'],
+        'maxFilesize' => '2000',
+        'dictDefaultMessage' => 'Plaats hier het bestand dat u wilt uploaden',
+        'dictFallbackMessage' => 'Uw browser wordt niet ondersteund',
+        'dictInvalidFileType' => 'Dit bestands formaat wordt niet ondersteund. Converteer het a.u.b. naar PDF.',
+        'dictFileTooBig' => 'Het bestand dat u probeert te uploaden is te groot.',
+    //'acceptedFiles' => ['audio/mpeg3', 'audio/x-mpeg-3', 'audio/mpeg', 'audio/mp3'],
     ]
 ]);
 //Hier moet een variant komen van ETagIt

@@ -3,8 +3,9 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yii\widgets\dropzone\DropZone;
-use yii\widgets\imperavi\src\Widget;
+use devgroup\dropzone\DropZone;
+use vova07\imperavi\Widget;
+use xj\tagit\Tagit;
 
 $form = ActiveForm::begin([
             'id' => 'image-form',
@@ -35,22 +36,25 @@ echo Widget::widget([
 ]);
 ?>
 
-<?=
+<?php
 $tags = '';
 $values = [];
 foreach ($model->tags as $i => $tag) {
-    $tags .= $tag->name . ', ';
-    $values[$i]['id'] = $tag->id;
-    $values[$i]['tag'] = $tag->name;
-    $tags = substr($tags, 0, -1);
+    $tags .= $tag->id . ',';
+  //  $values[$i] = $tag->id;
+    $values[$i] = $tag->name;
 }
+$tags = substr($tags, 0, -1);
 ?>
-
+<?= $form->field($model, 'tags_previous')->hiddenInput(['value' => $tags]); ?>
 <?php
-//Hier moet een ETagIt komen
-?>
 
-<?php // $form->field($model, 'tags_previous')->hiddenInput(['value' => $tags]) ?>
+echo Tagit::widget([
+    'id' => 'Audio_tags',
+    'name' => 'tags',
+    'value' => $values,
+]);
+?>
 
 <?= $form->field($model, 'year')->textInput(['class' => 'span5']) ?>
 

@@ -26,10 +26,9 @@ echo Menu::widget([
 
 $tags = '';
 foreach ($model->tags as $i => $tag) {
-    $tags .= $tag->name . ', ';
+    $tags .= $tag->name. ', ';
     $tags = substr($tags, 0, -2);
 }
-
 $user = User::findIdentity($model->user_id);
 ?>
 

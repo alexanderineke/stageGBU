@@ -81,52 +81,28 @@ class ImageTag extends \yii\db\ActiveRecord {
 
         $v = 0;
         foreach ($notInDB as $i) {
-            $sql = Yii::$app->db->createCommand()
+            Yii::$app->db->createCommand()
                     ->insert('tbl_image_tag', [
                         'image_id' => $image_id,
                         'tag_id' => $i,
                         'state' => 1])
                     ->execute();
-             $succes = $sql->execute();
-             if ($succes) {
-                $v++;
+            $v++;
+            if ($v == sizeof($notInDB)) {
+                return true;
             }
         }
-//            $sql = "insert into tbl_image_tag (image_id, tag_id, state) values (:image_id, :tag_id, 1)";
-//            $parameters = [":image_id" => $image_id,
-//                ":tag_id" => $i];
-//            if (Yii::$app->db->createCommand($sql)->execute($parameters)) {
-//                $v++;
-//            }
-//        }
-
-        if ($v == sizeof($notInDB)) {
-            return true;
-        }
     }
-        
+
     public function check($image_id, $tagIds) {
-
-        $query = ImageTag::find()
-                ->select(['tag_id'])
-                ->andFilterWhere(['image_id' => $image_id])
-                ->andFilterWhere(['tag_id' => $tagIds])
-                ->andFilterWhere(['state' => 1])
-                ->all();
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
-
-        return $dataProvider;
-    }
-
-    public function deleteTags($image_id, $tagIds) {
-        $query = ImageTag::find()
-                ->andFilterWhere(['image_id' => $image_id])
-                ->andFilterWhere(['tag_id' => $tagIds])
-                ->andFilterWhere(['state' => 1])
-                ->delete()
-                ->execute();
+        foreach ($tagIds as $i => $tag) {
+            $query = ImageTag::find()
+                    ->select(['tag_id'])
+                    ->where(['image_id' => $image_id])
+                    ->andWhere(['tag_id' => $i])
+                    ->andWhere(['state' => 1])
+                    ->all();
+        }
         return $query;
     }
 

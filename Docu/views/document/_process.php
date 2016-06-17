@@ -1,7 +1,8 @@
 <?php
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yii\widgets\imperavi\src\Widget;
+use vova07\imperavi\Widget;
+use xj\tagit\Tagit;
 use yii\helpers\Url;
 
 $form = ActiveForm::begin([
@@ -35,20 +36,20 @@ echo Widget::widget([
 $tags = '';
 $values = [];
 foreach ($model->tags as $i => $tag) {
-    $tags .=$tag->id . ',';
-    $values[$i]['id'] = $tag->id;
-    $values[$i]['tag'] = $tag->name;
+    $tags .= $tag->id . ',';
+    $values[$i] = $tag->id;
+    // $values[$i]['tag'] = $tag->name;
 }
 $tags = substr($tags, 0, -1);
 ?>
-
+<?= $form->field($model, 'tags_previous')->hiddenInput(['value' => $tags]); ?>
 <?php
-//Hier moet een ext. widget komen: ETagIt.
+echo Tagit::widget([
+    'id' => 'Document_tags',
+    'name' => 'tags',
+    'value' => $values,
+]);
 ?>
-
-<?php // $form->field($model, 'tags_previous')->hiddenInput(['value' => $tags]); ?>
-
-
 
 <?php //$form->field($model, 'collection')->label('Collection'); ?>
 

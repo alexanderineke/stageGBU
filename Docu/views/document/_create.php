@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yii\widgets\dropzone\DropZone;
+use devgroup\dropzone\DropZone;
 use yii\helpers\Url;
 
 $form = ActiveForm::begin([

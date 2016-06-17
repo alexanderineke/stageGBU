@@ -132,39 +132,39 @@ class AudioController extends Controller {
             //           $modelTag = new Tag;
             //           $this->generateAllTags($modelTag->tags, $request->post('tags'));
 //            
-//                if ($this->generateTags()) {
+            if ($this->generateTags()) {
 
-            if ($model->save()) {
+                if ($model->save()) {
 
-                //                  if ($this->saveTags($model->id)) {
-                if ($fileQueue) {
-                    if ((new AudioFile)->saveAudio($model->id, $this->tags[0], $file)) {
-                        array_shift($fileQueue);
-                        //Yii::app()->user->setState('filesToProcess', $fileQueue);
-                        Yii::$app->session->set('filesToProcess', $fileQueue);
-                        $this->redirect(['view', 'id' => $model->id]);
+                    if ($this->saveTags($model->id)) {
+                        if ($fileQueue) {
+                            if ((new AudioFile)->saveAudio($model->id, $this->tags[0], $file)) {
+                                array_shift($fileQueue);
+                                //Yii::app()->user->setState('filesToProcess', $fileQueue);
+                                Yii::$app->session->set('filesToProcess', $fileQueue);
+                                $this->redirect(['view', 'id' => $model->id]);
+                            } else {
+                                // Yii::app()->user - setFlash('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
+                                Yii::$app->getSession()->setFlash('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
+                            }
+                        } else {
+                            $this->redirect(['view', 'id' => $model->id]);
+                        }
                     } else {
-                        // Yii::app()->user - setFlash('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
-                        Yii::$app->getSession()->setFlash('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
+                        //Yii::app()->user->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
+                        Yii::$app->getSession()->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
                     }
                 } else {
-                    $this->redirect(['view', 'id' => $model->id]);
+                    //Yii::app()->user->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
+                    Yii::$app->getSession()->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
                 }
             } else {
-                //Yii::app()->user->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
-                Yii::$app->getSession()->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
+                //Yii::app()->user->setFlash('error', "De steekwoorden zijn ongeldig. Probeert u het alstublieft nog eens.");
+                Yii::$app->getSession()->setFlash('error', "De steekwoorden zijn ongeldig. Probeert u het alstublieft nog eens.");
             }
         } else {
-            //Yii::app()->user->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
-            Yii::$app->getSession()->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
+            Yii::$app->session->set('filesToProcess', []);
         }
-//            } else {
-//                //Yii::app()->user->setFlash('error', "De steekwoorden zijn ongeldig. Probeert u het alstublieft nog eens.");
-//                Yii::$app->getSession()->setFlash('error', "De steekwoorden zijn ongeldig. Probeert u het alstublieft nog eens.");
-//            }
-//        } else {
-//            Yii::$app->session->set('filesToProcess', []);
-//        }
         return $this->render('update', [
                     'model' => $model,
         ]);
@@ -239,12 +239,14 @@ class AudioController extends Controller {
                 if ($model->save()) {
 
                     if ($this->saveTags($model->id)) {
+
                         if (!$model->audios) {
+
                             if ((new AudioFile)->saveAudio($model->id, $this->tags[0], $file)) {
                                 array_shift($fileQueue);
                                 Yii::$app->session->set('filesToProcess', $fileQueue);
-
                                 if (!empty($fileQueue)) {
+
                                     $audioTempModel = AudioTemp::findOne($fileQueue[0]);
                                     $file = $audioTempModel->getAttributes(['file', 'format', 'location']);
                                 } else {
@@ -324,86 +326,63 @@ class AudioController extends Controller {
 
     protected function generateTags() {
         $request = Yii::$app->request;
-        $tags = [];
 
         if ($request->post('tags')) {
-            $newSlugs = [];
-            $newTags = [];
-            foreach ($request->post('tags') as $i => $newtag) {
-                $name = (string) $newtag;
+            $tags = [];
+            $tagArr = [];
+            foreach ($request->post('tags') as $i => $tag) {
+                $name = (string) $tag;
                 setlocale(LC_ALL, 'nl_NL');
                 $name = iconv('UTF-8', 'ASCII//TRANSLIT', $name);
                 $name = preg_replace('/[^ \w]+/', '-', $name);
                 $name = mb_strtolower($name);
                 $name = trim($name, '-');
 
-                $newSlugs[$i] = $name;
-                $newTags[$i] = mb_strtolower($newtag);
+                $tags[$name] = mb_strtolower((string) $tag);
             }
-            //   $f = new Tag();
-            $selectedTags = (new Tag)->check($newSlugs); //Moet nog naar gekeken worden
-            $remainingTags = [];
-            $remainingSlugs = [];
+            $existingTags = (new Tag)->check($tags);
+            foreach ($existingTags as $i => $tag) {
+                $tagArr[] = $tag->id;
+                unset($tags[$tag->slug]);
+            }
 
-
-            if (isset($selectedTags)) {
-                $compareTags = [];
-                foreach ($selectedTags as $t) {
-                    $compareTags[$t->slug] = $t->id;
-                }
-                foreach ($newSlugs as $i => $newslug) {
-                    if (!array_key_exists($newslug, $compareTags)) {
-                        if (!in_array($newslug, $remainingSlugs)) {
-                            $remainingTags[] = $newTags[$i];
-                            $remainingSlugs[] = $newslug;
-                        }
-                    }
+            if (isset($tags) && sizeof($tags)) {
+                $addedTags = (new Tag)->add($tags);
+                foreach ($addedTags as $i) {
+                    $tagArr[] = $i;
                 }
             } else {
-                $remainingTags = $newTags;
+                $errorOccured = true;
             }
 
-            if (isset($remainingTags) && sizeof($remainingTags)) {
-                if ($addedTags = (new Tag)->add($remainingTags, $remainingSlugs)) {
-                    foreach ($addedTags as $i) {
-                        $tags[] = $i;
-                    }
-                } else {
-                    $errorOccured = true;
-                }
-            }
+            $this->tags = $tagArr;
 
-            if (isset($compareTags) && sizeof($compareTags)) {
-                foreach ($compareTags as $i) {
-                    $tags[] = $i;
-                }
+            if (sizeof($tagArr)) {
+                return true;
             }
-        }
-        $this->tags = $tags;
-
-        if (sizeof($tags)) {
-            return true;
         }
     }
 
     protected function saveTags($audio_id) {
+        $request = Yii::$app->request;
         $errorOccured = false;
-
+        (new AudioTag)->add($audio_id, array_unique($this->tags));
+        
         if (!(new AudioTag)->add($audio_id, array_unique($this->tags))) {
             $errorOccured = true;
         }
-        $prevTags = explode(',', $_POST['Audio']['tags']);
+        $prevTags = explode(',', $request->post('Audio')['tags_previous']);
         $prevTagsArr = [];
         foreach ($prevTags as $i) {
             if ((int) $i) {
                 $prevTagsArr[] = (int) $i;
             }
         }
-        $deleteTagsArr = array_dif($prevTagsArr, $this->tags);
+        $deleteTagsArr = array_diff($prevTagsArr, $this->tags);
+        
         if (sizeof($deleteTagsArr) && sizeof($prevTagsArr)) {
-            if (!(new AudioTag)->deleteTags($audio_id, $deleteTagsArr)) {
-                $errorOccured = true;
-            }
+            AudioTag::deleteAll(['audio_id' => $audio_id, 'tag_id' => $deleteTagsArr, 'state' => 1]);
+         
         }
         if (!$errorOccured) {
             return true;

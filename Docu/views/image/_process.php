@@ -2,9 +2,9 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yii\widgets\dropzone\DropZone;
 use yii\helpers\Url;
-use yii\widgets\imperavi\src\Widget;
+use vova07\imperavi\Widget;
+use xj\tagit\Tagit;
 
 $form = ActiveForm::begin([
             'id' => 'images-form',
@@ -36,27 +36,24 @@ echo Widget::widget([
 ]);
 ?>
 
-<?=
+<?php
 $tags = '';
 $values = [];
 foreach ($model->tags as $i => $tag) {
-    $tags .= $tag->name . ', ';
-    $values[$i]['id'] = $tag->id;
-    $values[$i]['tag'] = $tag->name;
-    $tags = substr($tags, 0, -1);
+    $tags .= $tag->id . ',';
+    $values[$i] = $tag->id;
+    // $values[$i]['tag'] = $tag->name;
 }
+$tags = substr($tags, 0, -1);
 ?>
-
+<?= $form->field($model, 'tags_previous')->hiddenInput(['value' => $tags]); ?>
 <?php
-//$this->widget('ext.tagIt.ETagIt', [
-//    'id' => 'Image_tags',
-//    'url' => Url::to('tag/search'),
-//    'options' => [],
-//    'values' => $values,
-//]);
+echo Tagit::widget([
+    'id' => 'Image_tags',
+    'name' => 'tags',
+    'value' => $values,
+]);
 ?>
-
-<?php //  $form->field($model, 'tags_previous')->textInput(['value' => $tags])  ?>
 
 <?php //$form->field($model, 'collection')->label(['Collection']);  ?>	
 
@@ -81,7 +78,7 @@ if (isset($file)) {
 <?= $form->field($model, 'published')->dropDownList(['1' => 'Ja', '0' => 'Nee']); ?>
 
 <div class="form-actions">
-<?= Html::submitButton(sizeof(Yii::$app->session->get('filesToProcess')) > 1 ? 'Volgende' : 'Bewaar', ['class' => 'btn btn-primary']) ?>
+    <?= Html::submitButton(sizeof(Yii::$app->session->get('filesToProcess')) > 1 ? 'Volgende' : 'Bewaar', ['class' => 'btn btn-primary']) ?>
 </div>
 
 <?php ActiveForm::end(); ?>

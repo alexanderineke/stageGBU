@@ -32,6 +32,7 @@ class Tag extends \yii\db\ActiveRecord {
         return [
             [['name'], 'required'],
             [['state'], 'integer'],
+            [['slug'], 'unique'],
             [['name', 'slug'], 'string', 'max' => 32],
             [['id', 'name', 'slug', 'state'], 'safe'],
         ];
@@ -87,52 +88,36 @@ class Tag extends \yii\db\ActiveRecord {
 
     // Warning: Please modify the following code to remove attributes that
     // should not be searched.
-    public function add($tagArr, $slugArr) {
-        $addedTags = [];
-
+    public function add($tagArr) {
+        //       $addedSlugs = [];
+//        foreach ($tagArr as $slug => $name) {
+//            $addedSlugs[] = $slug;
+//        }
         foreach ($tagArr as $i => $tag) {
             Yii::$app->db->createCommand()
                     ->insert('tbl_tag', [
                         'name' => $tag,
-                        'slug' => $slugArr[$i],
+                        'slug' => $i,
                         'state' => 1])
                     ->execute();
             $addedTags[] = Yii::$app->db->getLastInsertID();
         }
-        print_r($addedTags);
+      //  print_r($addedTags);
         if (sizeof($addedTags) == sizeof($tagArr)) {
             return $addedTags;
-            
         }
-
-//        foreach (Tag::find()
-//                ->where(['name' => $tagArr])
-//                ->andFilterWhere(['slug' => $slugArr])
-//                ->exists() as $i) {
-//            $addedTags[] = $i->tag_id;
-//        }
-//        $notInDB = array_diff($tagArr, $addedTags);
-//        $v = 0;
-//        foreach ($addedTags as $i) {
-//            $sql->createCommand()
-//                    ->insert('tbl_tag', [
-//                        'name' => $tagArr,
-//                        'slug' => $slugArr,
-//                        'state' => 1])
-//                    ->execute();
-//            $v++;
-//            if ($v == sizeof($notInDB)) {
-//                return true;
-//            }
-//        }
     }
 
-    public function check($slugArr) {
+    public function check($tags) {
+        $slugs = [];
+        foreach ($tags as $slug => $name) {
+            $slugs[] = $slug;
+        }
         $query = Tag::find()
-                ->select(['id'])
+                ->select(['id', 'slug'])
                 // ->andFilterWhere(['id' => $id])
-                ->andFilterWhere(['slug' => $slugArr])
-                ->andFilterWhere(['state' => 1])
+                ->where(['slug' => $slugs])
+                ->andWhere(['state' => 1])
                 ->all();
 //        $dataProvider = new ActiveDataProvider([
 //            'query' => $query,
@@ -145,14 +130,16 @@ class Tag extends \yii\db\ActiveRecord {
         return $query;
     }
 
-    public function findTags($term) {
-        $query = Tag::find()
-                ->andFilterWhere(['id' => $id])
-                ->andFilterWhere(['name' => $name])
-                ->andWhere(['state' => 1])
-                ->andWhere(['slug' => $term])
-                ->limit(10)
-                ->all();
+    public function findTags($slugArr) {
+        foreach ($slugArr as $i => $tag) {
+            $query = Tag::find()
+                    ->select(['id'])
+                    //    ->andFilterWhere(['id' => $id])
+                    //    ->andFilterWhere(['name' => $name])
+                    ->andWhere(['state' => 1])
+                    ->andWhere(['slug' => $i])
+                    ->all();
+        }
         return $query;
     }
 

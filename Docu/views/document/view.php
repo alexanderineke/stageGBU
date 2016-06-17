@@ -65,7 +65,7 @@ echo DetailView::widget([
         ['label' => 'Jaar', 'value' => !empty($model->year) ? $model->year : "Niet opgegeven"],
         ['label' => 'Eigenaar', 'value' => !empty($model->owner) ? $model->owner : "Niet opgegeven"],
         ['label' => 'Aanmaakdatum', 'value' => ($model->created_on !== "0000-00-00 00:00:00" ? $model->created_on : "Niet beschikbaar")],
-        ['label' => 'Laatste wijzigingsdatum', 'value' => ($model->created_on !== "0000-00-00 00:00:00" ? $model->created_on : "Niet beschikbaar")],
+        ['label' => 'Laatste wijzigingsdatum', 'value' => ($model->modified_on !== "0000-00-00 00:00:00" ? $model->modified_on : "Niet beschikbaar")],
         ['label' => 'Bestand', 'value' => $button, 'format' => 'raw'],
         ['label' => 'Gepubliceerd', 'label' => 'Gepubliceerd', 'value' => $model->published ? "Ja" : "Nee"]
     ],

@@ -35,11 +35,11 @@ echo Widget::widget([
 ]);
 
 $tags = '';
-$values = array();
+$values = [];
 foreach ($model->tags as $i => $tag) {
     $tags .= $tag->id . ',';
-    $values[$i]['id'] = $tag->id;
-    $values[$i]['tag'] = $tag->name;
+    $values[$i] = $tag->id;
+    // $values[$i]['tag'] = $tag->name;
 }
 $tags = substr($tags, 0, -1);
 ?>
@@ -49,13 +49,6 @@ echo Tagit::widget([
     'id' => 'Audio_tags',
     'name' => 'tags',
     'value' => $values,
-    'clientOptions' => [
-        'tagSource' => Url::to(['tag/get-autocomplete']),
-        'autocomplete' => [
-            'delay' => 0,
-            'minLength' => 1,
-        ],
-    ]
 ]);
 ?>
 <?= $form->field($model, 'year')->textInput(['class' => 'span5']) ?>

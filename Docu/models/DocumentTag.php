@@ -76,46 +76,29 @@ class DocumentTag extends \yii\db\ActiveRecord {
         $notInDB = array_diff($tagIds, $inDB);
 
         $v = 0;
-        foreach ($notInDB as $i) {
-            $connection->createCommand()->insert('tbl_document_tag', [
-                'document_id' => $document_id,
-                'tag_id' => $i,
-            ])->execute();
-            if ($connection->queryAll()) {
-                $v++;
+         foreach ($notInDB as $i) {
+            Yii::$app->db->createCommand()
+                    ->insert('tbl_document_tag', [
+                        'document_id' => $document_id,
+                        'tag_id' => $i,
+                        'state' => 1])
+                    ->execute();
+            $v++;
+            if ($v == sizeof($notInDB)) {
+                return true;
             }
         }
-        if ($v == sizeof($notInDB)) {
-            return true;
-        }
     }
-
+    
     public function check($document_id, $tagIds) {
-        $query = DocumentTag::find()
-                ->select(['tag_id'])
-                ->andFilterWhere(['document_id' => $document_id])
-                ->andFilterWhere(['tag_id' => $tagIds])
-                ->andFilterWhere(['state' => 1])
-                ->all()
-                ->execute();
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
-        if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
-            return $dataProvider;
+        foreach ($tagIds as $i => $tag) {
+            $query = DocumentTag::find()
+                    ->select(['tag_id'])
+                    ->where(['document_id' => $document_id])
+                    ->andWhere(['tag_id' => $i])
+                    ->andWhere(['state' => 1])
+                    ->all();
         }
-        return $dataProvider;
-    }
-
-    public function deleteTags($document_id, $tagIds) {
-        $query = DocumentTag::find()
-                ->andFilterWhere(['document_id' => $document_id])
-                ->andFilterWhere(['tag_id' => $tagIds])
-                ->andFilterWhere(['state' => 1])
-                ->all()
-                ->delete();
         return $query;
     }
 
