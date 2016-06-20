@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "604068a808dd20531f01ca2a0110fcd8",
-    "content-hash": "2cc779179f84c805c4cb3ca729606492",
+    "hash": "2e9581d034cca1fbd87de96c14a38452",
+    "content-hash": "f22cc20d176bcac3b042633f4579a808",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -551,6 +551,41 @@
             "time": "2015-12-10 21:16:23"
         },
         {
+            "name": "weotch/phpthumb",
+            "version": "1.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/weotch/PHPThumb.git",
+                "reference": "f5c1d2ef2e9de3bded7483778618bf8cac2511c3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/weotch/PHPThumb/zipball/f5c1d2ef2e9de3bded7483778618bf8cac2511c3",
+                "reference": "f5c1d2ef2e9de3bded7483778618bf8cac2511c3",
+                "shasum": ""
+            },
+            "replace": {
+                "dannytrue/phpthumb": "dev-master#2d8898f62e75a743e248dd5906a038d574e0dfe0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Robert Reinhard"
+                }
+            ],
+            "description": "Fork of PHPThumb that adds auto-image rotation based on EXIF data and composer support",
+            "time": "2015-05-12 22:56:19"
+        },
+        {
             "name": "xj/yii2-tagit-widget",
             "version": "1.0.4",
             "source": {
@@ -598,7 +633,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/38d2f94432a04b012265f939ab35cc13c480348f",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/c6154ee21ec4fb5fb797299f4e81fd1af8bfe13e",
                 "reference": "38d2f94432a04b012265f939ab35cc13c480348f",
                 "shasum": ""
             },

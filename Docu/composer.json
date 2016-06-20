@@ -21,7 +21,8 @@
 		"yiisoft/yii2-jui": "^2.0",
         "xj/yii2-tagit-widget": "^1.0",
         "vova07/yii2-imperavi-widget": "^1.2",
-        "devgroup/yii2-dropzone": "^1.0"
+        "devgroup/yii2-dropzone": "^1.0",
+        "weotch/phpthumb": "^1.0"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

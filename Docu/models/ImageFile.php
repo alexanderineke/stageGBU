@@ -6,6 +6,8 @@ use Yii;
 use yii\helpers\BaseFileHelper;
 use yii\data\ActiveDataProvider;
 use app\models\Tag;
+use PhpThumbFactory;
+
 /**
  * This is the model class for table "{{%image_file}}".
  *
@@ -86,43 +88,34 @@ class ImageFile extends \yii\db\ActiveRecord {
 
             //Map voor afbeeldingen
             if (!is_dir(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'afbeeldingen' . DIRECTORY_SEPARATOR)) {
-               BaseFileHelper::createDirectory(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'afbeeldingen' . DIRECTORY_SEPARATOR);
+                BaseFileHelper::createDirectory(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'afbeeldingen' . DIRECTORY_SEPARATOR);
             }
 
             //Map voor de normale versie (max: 750x500)
-            if (!is_dir(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR. 'afbeeldingen' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR)) {
-                BaseFileHelper::createDirectory(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR. 'afbeeldingen' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR);
+            if (!is_dir(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'afbeeldingen' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR)) {
+                BaseFileHelper::createDirectory(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'afbeeldingen' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR);
             }
 
             //Map voor de thumbnail (fixed: 100x100)
-            if (!is_dir(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR. 'afbeeldingen' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . 'thumb' . DIRECTORY_SEPARATOR)) {
-                BaseFileHelper::createDirectory(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR. 'afbeeldingen' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . 'thumb' . DIRECTORY_SEPARATOR);
+            if (!is_dir(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'afbeeldingen' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . 'thumb' . DIRECTORY_SEPARATOR)) {
+                BaseFileHelper::createDirectory(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'afbeeldingen' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . 'thumb' . DIRECTORY_SEPARATOR);
             }
 
             //Map voor de full versie
-            if (!is_dir(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR. 'afbeeldingen' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . 'full' . DIRECTORY_SEPARATOR)) {
-                BaseFileHelper::createDirectory(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR. 'afbeeldingen' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . 'full' . DIRECTORY_SEPARATOR);
+            if (!is_dir(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'afbeeldingen' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . 'full' . DIRECTORY_SEPARATOR)) {
+                BaseFileHelper::createDirectory(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'afbeeldingen' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . 'full' . DIRECTORY_SEPARATOR);
             }
-            $fileContents = file_get_contents(Yii::$app->basePath . DIRECTORY_SEPARATOR .  'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $file['location'] . DIRECTORY_SEPARATOR . $file['file']);
-            file_put_contents(Yii::$app->basePath . DIRECTORY_SEPARATOR .  'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'afbeeldingen' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $fileInfo['filename'] . '.jpg', $fileContents);
-            $this->updateAll(['state' => 0], 'image_id=' . $image_id);
-//            //Genereer normale versie 
-//            $thumb = \Yii::$app->phpThumb->create(\Yii::getAlias('uploads/' . $file['location'] . '/' . $file['file']));
-//            $thumb->resize(750, 500);
-//            if (!$thumb->save(\Yii::getAlias('uploads/afbeeldingen/' . $folder_name . '/' . $fileInfo['filename'] . '.jpg', 'JPG'))) {
-//                $errorOccured = true;
-//            }
-//            //Genereer thumbnail versie
-//            $thumb = \Yii::$app->phpThumb->create(\Yii::getAlias('uploads/' . $file['location'] . '/' . $file['file']));
-//            $thumb->adaptiveResize(100, 100);
-//            if (!$thumb->save(\Yii::getAlias('uploads/afbeeldingen/' . $folder_name . '/thumb/' . $fileInfo['filename'] . '.jpg', 'JPG'))) {
-//                $errorOccured = true;
-//            }
-//            //Genereer full versie
-//            $thumb = \Yii::$app->phpThumb->create(\Yii::getAlias('uploads/' . $file['location'] . '/' . $file['file']));
-//            if (!$thumb->save(\Yii::getAlias('uploads/afbeeldingen/' . $folder_name . '/full/' . $fileInfo['filename'] . '.jpg', 'JPG'))) {
-//                $errorOccured = true;
-//            }
+
+            $thumb = PhpThumbFactory::create(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $file['location'] . DIRECTORY_SEPARATOR . $file['file']);
+            $thumb->resize(750, 500);
+            $thumb->save(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'afbeeldingen' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $fileInfo['filename'] . '.jpg', 'JPG');
+
+            $thumb = PhpThumbFactory::create(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $file['location'] . DIRECTORY_SEPARATOR . $file['file']);
+            $thumb->adaptiveResize(100, 100);
+            $thumb->save(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'afbeeldingen' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . 'thumb' . DIRECTORY_SEPARATOR . $fileInfo['filename'] . '.jpg', 'JPG');
+
+            $thumb = PhpThumbFactory::create(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $file['location'] . DIRECTORY_SEPARATOR . $file['file']);
+            $thumb->save(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'afbeeldingen' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . 'full' . DIRECTORY_SEPARATOR . $fileInfo['filename'] . '.jpg', 'JPG');
 
             $this->updateAll(['state' => 0], 'image_id=' . $image_id);
 
@@ -146,4 +139,5 @@ class ImageFile extends \yii\db\ActiveRecord {
     public function getImage() {
         return $this->Belongs_to(Image::className(), ['id' => 'image_id']);
     }
+
 }
