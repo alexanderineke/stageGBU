@@ -161,7 +161,7 @@ class DocumentFile extends \yii\db\ActiveRecord {
                 BaseFileHelper::createDirectory(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR. 'documenten' . DIRECTORY_SEPARATOR . $folder_name . '/');
             }
 
-            $this->genThumbs($file, $folder_name, $file_name);
+          //  $this->genThumbs($file, $folder_name, $file_name);
        //     if (!$this->genThumbs($file, $folder_name, $file_name)) {
        //        return false;
        //   }
@@ -170,7 +170,7 @@ class DocumentFile extends \yii\db\ActiveRecord {
             
            
             
-            file_put_contents(Yii::$app->basePath . DIRECTORY_SEPARATOR .  'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'audio' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $fileInfo['filename'] . '.mp3', $fileContents);
+            file_put_contents(Yii::$app->basePath . DIRECTORY_SEPARATOR .  'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $fileInfo['filename'] . '.pdf', $fileContents);
       
 
             

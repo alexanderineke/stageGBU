@@ -225,42 +225,42 @@ class DocumentController extends Controller {
 
             if ($this->generateTags()) {
 
-                //              if ($this->getDocumentContent($model, $file)) {
+                if ($this->getDocumentContent($model, $file)) {
 
-                if ($model->save()) {
+                    if ($model->save()) {
 
-                    if ($this->saveTags($model->id)) {
+                        if ($this->saveTags($model->id)) {
 
-                        //       if (isset($_POST['Document']['collection'])) {
-                        //           $collection = (int) $_POST['Document']['collection'];
-                        //          if ($collection > 0) {
-                        //                if (!CollectionDocument::add($model->id, $collection)) {
-                        //                    Yii::$app->session->setFlash('warning', "Het document kon niet aan de door u geselecteerde collectie worden toegevoegd.");
-                        //                }
+                            //       if (isset($_POST['Document']['collection'])) {
+                            //           $collection = (int) $_POST['Document']['collection'];
+                            //          if ($collection > 0) {
+                            //                if (!CollectionDocument::add($model->id, $collection)) {
+                            //                    Yii::$app->session->setFlash('warning', "Het document kon niet aan de door u geselecteerde collectie worden toegevoegd.");
+                            //                }
 
 
-                        if (!$model->documents) {
+                            if (!$model->documents) {
 
-                            if ((new DocumentFile)->saveDocument($model->id, $this->tags[0], $file)) {
-                                array_shift($fileQueue);
-                                Yii::$app->session->set('filesToProcess', $fileQueue);
+                                if ((new DocumentFile)->saveDocument($model->id, $this->tags[0], $file)) {
+                                    array_shift($fileQueue);
+                                    Yii::$app->session->set('filesToProcess', $fileQueue);
 
-                                if (!empty($fileQueue)) {
-                                    $documentTempModel = DocumentTemp::findOne($fileQueue[0]);
-                                    $file = $documentTempModel->getAttributes(['file', 'format', 'location']);
+                                    if (!empty($fileQueue)) {
+                                        $documentTempModel = DocumentTemp::findOne($fileQueue[0]);
+                                        $file = $documentTempModel->getAttributes(['file', 'format', 'location']);
+                                    } else {
+                                        Yii::$app->session->setFlash('succes', "Document(en) met succes toegevoegd.");
+                                    }
                                 } else {
-                                    Yii::$app->session->setFlash('succes', "Document(en) met succes toegevoegd.");
+                                    Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
+                                    $this->redirect(['process', 'id' => $model->id]);
                                 }
-                            } else {
-                                Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
-                                $this->redirect(['process', 'id' => $model->id]);
+                                //          
                             }
-                            //          
+                        } else {
+                            Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
+                            $this->redirect(['process', 'id' => $model->id]);
                         }
-//                        } else {
-//                            Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
-//                            $this->redirect(['process', 'id' => $model->id]);
-//                        }
                     } else {
                         Yii::$app->session->setFlash('error', "Er is een fout opgetreden bij het opslaan. Probeert u het alstublieft nog eens.");
                     }
@@ -311,16 +311,6 @@ class DocumentController extends Controller {
                     'model' => new Document(),
                     'dataProvider' => $dataProvider,
         ]);
-
-        /*
-          $searchModel = new Search();
-          $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-          return $this->render('index', [
-          'searchModel' => $searchModel,
-          'dataProvider' => $dataProvider,
-          ]);
-         */
     }
 
     public function actionAdmin() {
@@ -436,8 +426,22 @@ class DocumentController extends Controller {
         }
 
         if (file_exists($file)) {
-            //importeer pdf parser
-        }
+            $parser = new \Smalot\PdfParser\Parser();
+            $pdf = $parser->parseFile($file);
+            $pages = $pdf->getPages();
+
+            $text = '';
+            foreach ($pages as $page) {
+                $text .= $page->getText();
+            }
+            //setlocale(LC_ALL, 'nl_NL'); //Nodig voor iconv
+            //$text = iconv('UTF-8', 'ASCII//TRANSLIT', $text);
+            $text = preg_replace('/[^0-9a-zA-Z ]/', ' ', $text);
+            $text = preg_replace(array('/\b\w{1,2}\b/', '/\s+/'), array('', ' '), $text);
+            $model->setAttribute('content', $text);
+            return true;
+        } else
+            return false;
     }
 
 }
