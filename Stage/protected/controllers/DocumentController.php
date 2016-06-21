@@ -544,7 +544,6 @@ class DocumentController extends Controller
 			$text = preg_replace(array('/\b\w{1,2}\b/','/\s+/'),array('',' '),$text);
 
 			echo $text;
-			exit;
 			$model->setAttribute('content', $text);
 			return true;
 		} else

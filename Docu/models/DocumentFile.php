@@ -88,16 +88,19 @@ class DocumentFile extends \yii\db\ActiveRecord {
         }
 
         $original = [];
-        $thumb = new Imagick(Yii::$app->basePath . DIRECTORY_SEPARATOR .  'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $file['location'] . DIRECTORY_SEPARATOR . $file['file'] . '[0]');
-    //    $thumb = PhpThumbFactory::create(Yii::$app->basePath . DIRECTORY_SEPARATOR .  'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $file['location'] . DIRECTORY_SEPARATOR . $file['file']);
+        $pdf = file_get_contents(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $file['location'] . DIRECTORY_SEPARATOR . $file['file']);
+        $thumb = new Imagick(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $file['location'] . DIRECTORY_SEPARATOR . $file['file']);
         $original['height'] = $thumb->getimageheight();
         $original['width'] = $thumb->getimagewidth();
-
         $original['aspectRatio'] = $original['width'] / $original['height'];
         $thumb->clear();
 
         $dimensions = calcDimensions(1024, $original);
-        exec('gswin32c -q -o "' . dirname(Yii::$app->request->scriptFile) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $file_name . '_b.jpg" -dLastPage=1 -sDEVICE=jpeg -dJPEGQ=100 -dPDFFitPage -g' . $dimensions['width'] . 'x' . $dimensions['height'] . ' -dGraphicsAlphaBits=4 -dTextAlphaBits=4 "' . dirname(Yii::$app->request->scriptFile) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $file['location'] . DIRECTORY_SEPARATOR . $file['file'] . '"', $output);
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            exec('gswin32c -q -o "' . dirname(Yii::$app->request->scriptFile) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $file_name . '_b.jpg" -dLastPage=1 -sDEVICE=jpeg -dJPEGQ=100 -dPDFFitPage -g' . $dimensions['width'] . 'x' . $dimensions['height'] . ' -dGraphicsAlphaBits=4 -dTextAlphaBits=4 "' . dirname(Yii::$app->request->scriptFile) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $file['location'] . DIRECTORY_SEPARATOR . $file['file'] . '"', $output);
+        } else {
+            exec('gs -q -o "' . dirname(Yii::$app->request->scriptFile) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $file_name . '_b.jpg" -dLastPage=1 -sDEVICE=jpeg -dJPEGQ=100 -dPDFFitPage -g' . $dimensions['width'] . 'x' . $dimensions['height'] . ' -dGraphicsAlphaBits=4 -dTextAlphaBits=4 "' . dirname(Yii::$app->request->scriptFile) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $file['location'] . DIRECTORY_SEPARATOR . $file['file'] . '"', $output);
+        }       
 
         $dimensions = calcDimensions(800, $original);
         $thumb = new Imagick(dirname(Yii::$app->request->scriptFile) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $file_name . '_b.jpg');
@@ -108,28 +111,25 @@ class DocumentFile extends \yii\db\ActiveRecord {
         $thumb->resizeImage($dimensions['width'], $dimensions['height'], Imagick::FILTER_LANCZOS, 1);
         $thumb->writeImage(dirname(Yii::$app->request->scriptFile) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $file_name . '_z.jpg');
 
-        
 
         $dimensions = calcDimensions(500, $original);
         $thumb->resizeImage($dimensions['width'], $dimensions['height'], Imagick::FILTER_LANCZOS, 1);
-        $thumb->writeImage(dirname(Yii::$app->request->scriptFile) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $file_name . '.jpg'); 
-  
+        $thumb->writeImage(dirname(Yii::$app->request->scriptFile) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $file_name . '.jpg');
+
 
         $dimensions = calcDimensions(320, $original);
         $thumb->resizeImage($dimensions['width'], $dimensions['height'], Imagick::FILTER_LANCZOS, 1);
-        $thumb->writeImage(dirname(Yii::$app->request->scriptFile) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $file_name . '_n.jpg'); 
+        $thumb->writeImage(dirname(Yii::$app->request->scriptFile) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $file_name . '_n.jpg');
 
 
         $dimensions = calcDimensions(240, $original);
         $thumb->resizeImage($dimensions['width'], $dimensions['height'], Imagick::FILTER_LANCZOS, 1);
-        $thumb->writeImage(dirname(Yii::$app->request->scriptFile) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $file_name . '_m.jpg'); 
+        $thumb->writeImage(dirname(Yii::$app->request->scriptFile) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $file_name . '_m.jpg');
 
 
         $dimensions = calcDimensions(100, $original);
         $thumb->resizeImage($dimensions['width'], $dimensions['height'], Imagick::FILTER_LANCZOS, 1);
         $thumb->writeImage(dirname(Yii::$app->request->scriptFile) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $file_name . '_t.jpg');
-
-        
 
         $thumb->clear();
 
@@ -137,62 +137,61 @@ class DocumentFile extends \yii\db\ActiveRecord {
     }
 
     public function saveDocument($document_id, $tag_id, $file) {
-           $errorOccured = false;
-        
+        $errorOccured = false;
+
         if ($file) {
             $tags = Tag::find()->where(['id' => $tag_id])->one();
             $folder_name = preg_replace('/[^a-z0-9-_\.]/', '', strtolower($tags->name));
-            $fileInfo = pathinfo(Yii::$app->basePath . DIRECTORY_SEPARATOR .  'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $file['location'] . DIRECTORY_SEPARATOR . $file['file']);
+            $fileInfo = pathinfo(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $file['location'] . DIRECTORY_SEPARATOR . $file['file']);
             $file_name = $fileInfo['filename'];
 
-           if (!is_dir(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR)) {
+            if (!is_dir(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR)) {
                 BaseFileHelper::createDirectory(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR);
             }
 
-           if (!is_dir(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR. 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR)) {
-                BaseFileHelper::createDirectory(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR. 'documenten' . DIRECTORY_SEPARATOR . $folder_name . '/');
+            if (!is_dir(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR)) {
+                BaseFileHelper::createDirectory(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR);
             }
 
             $this->genThumbs($file, $folder_name, $file_name);
-       //     if (!$this->genThumbs($file, $folder_name, $file_name)) {
-       //        return false;
-       //   }
-            
-            $fileContents = file_get_contents(Yii::$app->basePath . DIRECTORY_SEPARATOR .  'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $file['location'] . DIRECTORY_SEPARATOR . $file['file']);
-            
-           
-            
-            file_put_contents(Yii::$app->basePath . DIRECTORY_SEPARATOR .  'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $fileInfo['filename'] . '.pdf', $fileContents);
-      
+            //     if (!$this->genThumbs($file, $folder_name, $file_name)) {
+            //        return false;
+            //   }
 
-            
-            
-            if (!$fileContents || !file_put_contents(Yii::$app->basePath . DIRECTORY_SEPARATOR .  'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $fileInfo['filename'] . '.pdf', $fileContents)) {
+            $fileContents = file_get_contents(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $file['location'] . DIRECTORY_SEPARATOR . $file['file']);
+
+
+
+            file_put_contents(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $fileInfo['filename'] . '.pdf', $fileContents);
+
+
+
+
+            if (!$fileContents || !file_put_contents(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $fileInfo['filename'] . '.pdf', $fileContents)) {
                 return false;
             }
             echo 'sweet';
 
             $this->updateAll(['state' => 0], 'document_id=' . $document_id);
 
-          /*  $attributes['document_id'] = $document_id;
-            $attributes['file'] = $file_name;
-            $attributes['location'] = $folder_name;
-            $attributes['format'] = '.pdf';
-            $attributes['state'] = 1;*/
-            
+            /*  $attributes['document_id'] = $document_id;
+              $attributes['file'] = $file_name;
+              $attributes['location'] = $folder_name;
+              $attributes['format'] = '.pdf';
+              $attributes['state'] = 1; */
+
             $this->document_id = $document_id;
             $this->file = $fileInfo['filename'];
             $this->location = $folder_name;
             $this->format = '.pdf';
             $this->state = 1;
             $this->setIsNewRecord(true);
-           // $this->attributes = $attributes;
-            if (!$this->insert()){
-               $errorOccured = false;
-        }
-        
+            // $this->attributes = $attributes;
+            if (!$this->insert()) {
+                $errorOccured = false;
             }
-         if (!$errorOccured) {
+        }
+        if (!$errorOccured) {
             return true;
         }
     }

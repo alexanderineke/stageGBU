@@ -126,7 +126,6 @@ class DocumentFile extends CActiveRecord
 
         $dimensions = calcDimensions(1024, $original);
         exec('gs -q -o "'.dirname(Yii::app()->request->scriptFile).'/uploads/documenten/'.$folder_name.'/'.$file_name.'_b.jpg" -dLastPage=1 -sDEVICE=jpeg -dJPEGQ=100 -dPDFFitPage -g'.$dimensions['width'].'x'.$dimensions['height'].' -dGraphicsAlphaBits=4 -dTextAlphaBits=4 "'.dirname(Yii::app()->request->scriptFile).'/uploads/'.$file['location'].'/'.$file['file'].'"', $output);
-
         // Yii::app()->user->setFlash('info', Yii::app()->user->getFlash('info', '').'<br>'.date('H:i:s') . '-> Na inlezen, resize en converteer actie #1 <br/>');
 
         // Yii::app()->user->setFlash('info', Yii::app()->user->getFlash('info', '').'<br>'.date('H:i:s') . '-> Resize en schrijf actie #1 <br/>');
