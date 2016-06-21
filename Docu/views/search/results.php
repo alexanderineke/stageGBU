@@ -70,14 +70,15 @@ if ($imageSearch->getTotalCount() != 0) {
 
 if (($documentSearch->getTotalCount() != 0)) { //&& !Yii::$app->request->isAjaxRequest) || Yii::$app->request->isAjaxRequest) {
     $this->registerCssFile(Yii::getAlias('@web/themes/dcu') . '/assets/css/justifiedGallery.min.css');
+    $this->registerCssFile(Yii::$app->basePath . DIRECTORY_SEPARATOR .  'web' . DIRECTORY_SEPARATOR . 'themes' . 'dcu' . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR .'css' . DIRECTORY_SEPARATOR . 'justifiedGallery.min.css');
     $this->registerCssFile(Yii::getAlias('@web/themes/dcu') . '/assets/css/swipebox.min.css');
     $this->registerJs(Yii::getAlias('@web/themes/dcu') . '/assets/js/jquery.swipebox.min.js', View::POS_END);
     // $cs = Yii::$app->getClientScript();
     if ($documentSearch->getTotalCount() < 3) {
-        //     $cs->registerScript('document-gallery', '$(".documentList").find("a.swipebox").swipebox();');
+        //     $this->registerJs('document-gallery', '$(".documentList").find("a.swipebox").swipebox();');
     } else {
         $this->registerJs(Yii::getAlias('@web/themes/dcu') . '/assets/js/jquery.justifiedGallery.min.js', View::POS_END);
-        //     $cs->registerScript('document-gallery', '$(".documentList").justifiedGallery({rowHeight : 240, margins: 2, cssAnimation: true }).on("jg.complete", function () { $(this).find("a.swipebox").swipebox(); });');
+     //        $this->registerJs('document-gallery', '$(".documentList").justifiedGallery({rowHeight : 240, margins: 2, cssAnimation: true }).on("jg.complete", function () { $(this).find("a.swipebox").swipebox(); });');
     }
 
     $results[] = [

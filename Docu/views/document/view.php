@@ -39,10 +39,10 @@ echo Menu::widget([
 
 <?php
 $tags = '';
-foreach ($model->tags as $i => $tag) {
+foreach ($model->tags as $i => $tag)
     $tags .= $tag->name . ', ';
-    $tags = substr($tags, 0, -2);
-}
+$tags = substr($tags, 0, -2);
+
 
 $user = User::findIdentity($model->id);
 ?>
@@ -59,6 +59,7 @@ if (isset($model->documents[0]->location) && isset($model->documents[0]->file) &
 echo DetailView::widget([
     'model' => $model,
     'attributes' => [
+        ['label' => 'Titel', 'value' => $model->title],
         ['label' => 'Uploader', 'value' => !empty($user->username) ? $user->username : "Niet opgegeven"],
         'description:html',
         ['label' => 'Steekwoorden', 'value' => $tags],

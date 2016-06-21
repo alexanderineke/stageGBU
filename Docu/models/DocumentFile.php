@@ -74,8 +74,7 @@ class DocumentFile extends \yii\db\ActiveRecord {
     }
 
     public function genThumbs($file, $folder_name, $file_name) {
-        phpinfo();
-        exit;
+
         function calcDimensions($max, $original) {
             if ($original['height'] > $original['width']) {
                 $dimensions = ['width' => ceil($max * $original['aspectRatio']), 'height' => $max];
@@ -93,51 +92,44 @@ class DocumentFile extends \yii\db\ActiveRecord {
     //    $thumb = PhpThumbFactory::create(Yii::$app->basePath . DIRECTORY_SEPARATOR .  'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $file['location'] . DIRECTORY_SEPARATOR . $file['file']);
         $original['height'] = $thumb->getimageheight();
         $original['width'] = $thumb->getimagewidth();
-        $original['aspectRatio'] = $original['width'] / $original['heigth'];
+
+        $original['aspectRatio'] = $original['width'] / $original['height'];
         $thumb->clear();
 
         $dimensions = calcDimensions(1024, $original);
-        exec('gs -q -o "' . dirname(Yii::$app->request->scriptFile) . '/uploads/documenten/' . $folder_name . '/' . $file_name . '_b.jpg" -dLastPage=1 -sDEVICE=jpeg -dJPEGQ=100 -dPDFFitPage -g' . $dimensions['width'] . 'x' . $dimensions['height'] . ' -dGraphicsAlphaBits=4 -dTextAlphaBits=4 "' . dirname(Yii::$app->request->scriptFile) . '/uploads/' . $file['location'] . '/' . $file['file'] . '"', $output);
+        exec('gswin32c -q -o "' . dirname(Yii::$app->request->scriptFile) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $file_name . '_b.jpg" -dLastPage=1 -sDEVICE=jpeg -dJPEGQ=100 -dPDFFitPage -g' . $dimensions['width'] . 'x' . $dimensions['height'] . ' -dGraphicsAlphaBits=4 -dTextAlphaBits=4 "' . dirname(Yii::$app->request->scriptFile) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $file['location'] . DIRECTORY_SEPARATOR . $file['file'] . '"', $output);
 
         $dimensions = calcDimensions(800, $original);
-        $thumb = new Imagick(dirname(Yii::$app->request->scriptFile) . '/uploads/documenten/' . $folder_name . '/' . $file_name . '_b.jpg');
-     //   $thumb = PhpThumbFactory::create(Yii::$app->basePath . DIRECTORY_SEPARATOR .  'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $file_name . '_b.jpg');
-     //   $thumb->resize($dimensions['width'], $dimensions['height']);
+        $thumb = new Imagick(dirname(Yii::$app->request->scriptFile) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $file_name . '_b.jpg');
         $thumb->resizeImage($dimensions['width'], $dimensions['height'], Imagick::FILTER_LANCZOS, 1);
-     //   $thumb->save(Yii::$app->basePath . DIRECTORY_SEPARATOR .  'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $file_name . '_c.jpg');
-        if (!$thumb->writeImage(dirname(Yii::$app->request->scriptFile) . '/uploads/documenten/' . $folder_name . '/' . $file_name . '_c.jpg')) {
-            return false;
-        }
+        $thumb->writeImage(dirname(Yii::$app->request->scriptFile) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $file_name . '_c.jpg');
 
         $dimensions = calcDimensions(640, $original);
         $thumb->resizeImage($dimensions['width'], $dimensions['height'], Imagick::FILTER_LANCZOS, 1);
-        if (!$thumb->writeImage(dirname(Yii::$app->request->scriptFile) . '/uploads/documenten/' . $folder_name . '/' . $file_name . '_z.jpg')) {
-            return false;
-        }
+        $thumb->writeImage(dirname(Yii::$app->request->scriptFile) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $file_name . '_z.jpg');
+
+        
 
         $dimensions = calcDimensions(500, $original);
         $thumb->resizeImage($dimensions['width'], $dimensions['height'], Imagick::FILTER_LANCZOS, 1);
-        if (!$thumb->writeImage(dirname(Yii::$app->request->scriptFile) . '/uploads/documenten/' . $folder_name . '/' . $file_name . '.jpg')) {
-            return false;
-        }
+        $thumb->writeImage(dirname(Yii::$app->request->scriptFile) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $file_name . '.jpg'); 
+  
 
         $dimensions = calcDimensions(320, $original);
         $thumb->resizeImage($dimensions['width'], $dimensions['height'], Imagick::FILTER_LANCZOS, 1);
-        if (!$thumb->writeImage(dirname(Yii::$app->request->scriptFile) . '/uploads/documenten/' . $folder_name . '/' . $file_name . '_n.jpg')) {
-            return false;
-        }
+        $thumb->writeImage(dirname(Yii::$app->request->scriptFile) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $file_name . '_n.jpg'); 
+
 
         $dimensions = calcDimensions(240, $original);
         $thumb->resizeImage($dimensions['width'], $dimensions['height'], Imagick::FILTER_LANCZOS, 1);
-        if (!$thumb->writeImage(dirname(Yii::$app->request->scriptFile) . '/uploads/documenten/' . $folder_name . '/' . $file_name . '_m.jpg')) {
-            return false;
-        }
+        $thumb->writeImage(dirname(Yii::$app->request->scriptFile) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $file_name . '_m.jpg'); 
+
 
         $dimensions = calcDimensions(100, $original);
         $thumb->resizeImage($dimensions['width'], $dimensions['height'], Imagick::FILTER_LANCZOS, 1);
-        if (!$thumb->writeImage(dirname(Yii::$app->request->scriptFile) . '/uploads/documenten/' . $folder_name . '/' . $file_name . '_t.jpg')) {
-            return false;
-        }
+        $thumb->writeImage(dirname(Yii::$app->request->scriptFile) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $file_name . '_t.jpg');
+
+        
 
         $thumb->clear();
 
@@ -161,7 +153,7 @@ class DocumentFile extends \yii\db\ActiveRecord {
                 BaseFileHelper::createDirectory(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR. 'documenten' . DIRECTORY_SEPARATOR . $folder_name . '/');
             }
 
-          //  $this->genThumbs($file, $folder_name, $file_name);
+            $this->genThumbs($file, $folder_name, $file_name);
        //     if (!$this->genThumbs($file, $folder_name, $file_name)) {
        //        return false;
        //   }

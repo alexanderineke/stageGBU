@@ -40,47 +40,23 @@ class UserController extends Controller {
             ],
         ];
     }
-
-    /**
-     * Lists all User models.
-     * @return mixed
-     */
     public function actionIndex() {
         $condition = '';
         $dataProvider = new ActiveDataProvider([
             'query' => User::find()
                  ->where($condition)
                 ]);
-       /* */
         return $this->render('index', [
             'model' => new User(),
             'dataProvider' => $dataProvider,
         ]);
-         /* $searchModel = new Search();
-          $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-          return $this->render('index', [
-          'searchModel' => $searchModel,
-          'dataProvider' => $dataProvider,
-          ]); */
     }
 
-    /**
-     * Displays a single User model.
-     * @param integer $id
-     * @return mixed
-     */
     public function actionView($id) {
         return $this->render('view', [
                     'model' => $this->findModel($id),
         ]);
-    }
-
-    /**
-     * Creates a new User model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
+    } 
     public function actionCreate() {
         $model = new User();
 
@@ -92,13 +68,6 @@ class UserController extends Controller {
             ]);
         }
     }
-
-    /**
-     * Updates an existing User model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
     public function actionUpdate($id) {
         $model = $this->findModel($id);
 
@@ -110,13 +79,6 @@ class UserController extends Controller {
             ]);
         }
     }
-
-    /**
-     * Deletes an existing User model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
     public function actionDelete($id) {
         $this->findModel($id)->delete();
 
@@ -133,25 +95,8 @@ class UserController extends Controller {
         return $this->render('admin', [
             'model' => new User(),
             'dataProvider' => $dataProvider,
-        ]);/*
-        
-        $model = new User('search');
-        $model->unsetAttributes();  // clear any default values
-        if (isset($_GET['User'])) {
-            $model->attributes = $_GET['User'];
-        }
-        $this->render('admin', [
-            'model' => $model,
-        ]);*/
+        ]);      
     }
-
-    /**
-     * Finds the User model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return User the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id) {
         if (($model = User::findOne($id)) !== null) {
             return $model;

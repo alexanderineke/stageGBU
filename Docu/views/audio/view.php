@@ -25,10 +25,10 @@ echo Menu::widget([
 ]);
 
 $tags = '';
-foreach ($model->tags as $i => $tag) {
-    $tags .= $tag->name. ', ';
-    $tags = substr($tags, 0, -2);
-}
+foreach ($model->tags as $i => $tag)
+    $tags .= $tag->name . ', ';
+$tags = substr($tags, 0, -2);
+
 $user = User::findIdentity($model->user_id);
 ?>
 
@@ -46,6 +46,7 @@ if (isset($model->audios->location) && isset($model->audios->file) && isset($mod
 echo DetailView::widget([
     'model' => $model,
     'attributes' => [
+        ['label' => 'Titel', 'value' => $model->title],
         ['label' => 'Uploader', 'value' => $user->username],
         'description:html',
         ['label' => 'Steekwoorden', 'value' => $tags],
