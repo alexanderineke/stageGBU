@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yii\widgets\imperavi\src\Widget;
+use vova07\imperavi\Widget;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Collection */
@@ -18,7 +18,7 @@ use yii\widgets\imperavi\src\Widget;
     <?= $form->field($model, 'description')->hiddenInput() ?>
    
     <?= Widget::widget([
-    'name' => 'Document[description]',
+    'name' => 'Collection[description]',
     'value' => $model->description,
     'settings' => [
         'lang' => 'nl',

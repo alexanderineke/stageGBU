@@ -188,7 +188,7 @@ AppAsset::register($this);
                 ['label' => 'Afbeeldingen', 'icon' => 'picture white', 'url' => ['/image']],
                 ['label' => 'Documenten', 'icon' => 'file white', 'url' => ['/document']],
                 ['label' => 'Audio', 'icon' => 'headphones white', 'url' => ['/audio']],
-               // ['label' => 'Collecties', 'icon' => 'folder-open white', 'url' => ['/collection']],
+                ['label' => 'Collecties', 'icon' => 'folder-open white', 'url' => ['/collection']],
             ],
             'options' => ['class' => 'navbar-nav'],
         ]);

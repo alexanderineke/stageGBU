@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Menu;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\Search */
@@ -14,7 +15,7 @@ echo Menu::widget([
     'items' => [
         ['label' => 'Acties', 'visible' => Yii::$app->user->getIdentity('moderator')],
         ['label' => 'Maak collectie aan', 'url' => ['create'], 'icon' => 'file', 'visible' => !Yii::$app->user->isGuest],
-        ['label' => 'Uitgelichte collecties', 'icon' => 'eye-open', 'url' => ['view&id=17'], 'visible' => !Yii::$app->user->isGuest],
+        ['label' => 'Uitgelichte collecties', 'icon' => 'eye-open', 'url' => Url::to("@web/index.php?r=collection%2Fview&id=17"), 'visible' => !Yii::$app->user->isGuest],
 ]]);
 ?>
 <div class="collection-index">
@@ -22,7 +23,7 @@ echo Menu::widget([
     
 <h1><?= Html::encode($this->title) ?></h1>
 
-<?= Html::a('Geavanceerd zoeken', '#', ['class' => 'btn btn-primary']) ?>
+<?php // Html::a('Geavanceerd zoeken', '#', ['class' => 'btn btn-primary']) ?>
 <div class="search-form" style="display: none">
     <?php $this->render('_search', ['model' => $model], true); ?>
 </div>

@@ -64,10 +64,17 @@ class CollectionController extends Controller
      */
     public function actionCreate()
     {
+        $request = Yii::$app->request;
         $model = new Collection();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($request->post('Collection')){
+            $model->attributes = $request->post('Collection');
+            $model->setAttribute('user_id', Yii::$app->user->identity->id);
+            $model->setAttribute('created_on', date("Y-m-d H:i:s"));
+            $model->setAttribute('modified_on', date("Y-m-d H:i:s"));
+            if($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         } else {
             return $this->render('create', [
                 'model' => $model,
