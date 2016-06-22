@@ -78,23 +78,14 @@ class Collection extends \yii\db\ActiveRecord {
         return $dataProvider;
     }
 
-    public function checkOwnership($params) {
-        $query = Collection::find();
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
+    public function checkOwnership() {
+        $query = Collection::find()
+                ->where(['id', $this->id])
+                ->where(['user_id', Yii::$app->user->identity->id]);
 
-        $this->load($params);
-        if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
-            return $dataProvider;
+        if (!empty($query)) {
+            return true;
         }
-        $query
-                ->Where(['like', 'id', $this->id])
-                ->Where(['like', 'user_id', $this->user_id]);
-
-        return $dataProvider;
     }
 
     /**
@@ -103,8 +94,6 @@ class Collection extends \yii\db\ActiveRecord {
      * @param string $className active record class name.
      * @return Collection the static model class
      */
-  
-
     public function getCollection_images() {
         return $this->hasMany(CollectionImage::className(), ['id' => 'collection_id']);
     }

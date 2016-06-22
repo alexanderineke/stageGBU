@@ -5,6 +5,7 @@ use yii\widgets\DetailView;
 use yii\widgets\Menu;
 use app\models\User;
 use yii\helpers\Url;
+use app\ECollection\ECollection;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Audio */
@@ -59,6 +60,9 @@ echo DetailView::widget([
     ],
 ]);
 
-//Hier moet een ext. widget voor Ecollection komen
+//echo ECollection::widget([
+//    'file_id' => $model->id,
+//    'file_type' => 'collection',
+//]);
 ?>
 <hr />

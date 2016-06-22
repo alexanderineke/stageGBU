@@ -208,7 +208,7 @@ class AudioController extends Controller {
         $fileQueue = Yii::$app->session->get('filesToProcess');
 
         if (!$fileQueue) {
-            $this->redirect(['index']);
+           return $this->redirect(['index']);
         }
 
         if (!$id && $request->post('Audio')) {

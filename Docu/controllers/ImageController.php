@@ -193,8 +193,8 @@ class ImageController extends Controller {
         }
 
         $fileQueue = Yii::$app->session->get('filesToProcess');
-        if (!$fileQueue) {
-            $this->redirect(['index']);
+        if (empty($fileQueue)) {
+           return $this->redirect(['index']);
         }
 
         if (!$id && $request->post('Image')) {

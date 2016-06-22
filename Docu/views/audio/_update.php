@@ -77,7 +77,6 @@ echo DropZone::widget([
     //'acceptedFiles' => ['audio/mpeg3', 'audio/x-mpeg-3', 'audio/mpeg', 'audio/mp3'],
     ]
 ]);
-//Hier moet een variant komen van ETagIt
 ?>
 
 <?= Html::submitButton($model->isNewRecord ? 'Maak aan' : 'Bewaar', ['class' => 'btn btn-primary']) ?>

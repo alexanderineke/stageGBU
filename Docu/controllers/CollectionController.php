@@ -9,19 +9,35 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
+use app\models\CollectionImage;
+use app\models\CollectionDocument;
+use app\models\CollectionCollection;
+use yii\web\HttpException;
 
 /**
  * CollectionController implements the CRUD actions for Collection model.
  */
-class CollectionController extends Controller
-{
-    public function behaviors()
-    {
+class CollectionController extends Controller {
+
+    public function behaviors() {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
+            'acces' => [
+                'class' => AccessControl::className(),
+                'only' => ['index', 'add', 'update', 'create', 'process', 'deleteimage', 'deletedocument', 'deletecollection', 'delete', 'view'],
+                'rules' => [
+                    [
+                        'allow' => ['true'],
+                        'actions' => ['view'],
+                        'roles' => ['?'],
+                    ],
+                    ['allow' => ['true'],
+                        'actions' => ['index', 'create', 'update', 'add', 'delete', 'deleteimage', 'deletedocument', 'deletecollection', 'view'],
+                        'roles' => ['@'],
+                    ],
+                    ['allow' => ['false'],
+                        'roles' => ['?'],
+                    ],
                 ],
             ],
         ];
@@ -31,29 +47,26 @@ class CollectionController extends Controller
      * Lists all Collection models.
      * @return mixed
      */
-    public function actionIndex()
-    {
-        $condition = '';
-        $dataProvider = new ActiveDataProvider([
-            'query' => Collection::find()
-                 ->where($condition)
-                ]);
-       /* */
+    public function actionIndex() {
+        $model = new Collection('search');
+        $request = Yii::$app->request;
+
+        if ($request->get('Collection')) {
+            $model->attributes = $request->get('Collection');
+        }
         return $this->render('index', [
-            'model' => new Collection(),
-            'dataProvider' => $dataProvider,
+                    'model' => $model,
         ]);
-       }
+    }
 
     /**
      * Displays a single Collection model.
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
-    {
+    public function actionView($id) {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+                    'model' => $this->loadModel($id),
         ]);
     }
 
@@ -62,22 +75,21 @@ class CollectionController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
+    public function actionCreate() {
         $request = Yii::$app->request;
         $model = new Collection();
 
-        if ($request->post('Collection')){
+        if ($request->post('Collection')) {
             $model->attributes = $request->post('Collection');
             $model->setAttribute('user_id', Yii::$app->user->identity->id);
             $model->setAttribute('created_on', date("Y-m-d H:i:s"));
             $model->setAttribute('modified_on', date("Y-m-d H:i:s"));
-            if($model->save()) {
+            if ($model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
             return $this->render('create', [
-                'model' => $model,
+                        'model' => $model,
             ]);
         }
     }
@@ -88,15 +100,19 @@ class CollectionController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
+    public function actionUpdate($id) {
+        $model = $this->loadModel($id);
+        $request = Yii::$app->request;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($request->post('Collection')) {
+            $model->attributes = $request->post('Collection');
+            $model->setAttribute('modified_on', date("Y-m-d H:i:s"));
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         } else {
             return $this->render('update', [
-                'model' => $model,
+                        'model' => $model,
             ]);
         }
     }
@@ -108,22 +124,13 @@ class CollectionController extends Controller
      * @return mixed
      */
     public function actionDelete($id) {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
-    }
-
-    public function actionAdmin() {
-        $condition = '';
-        $dataProvider = new ActiveDataProvider([
-            'query' => Collection::find()
-                    ->where($condition)
-        ]);
-
-        return $this->render('admin', [
-                    'model' => new Collection(),
-                    'dataProvider' => $dataProvider,
-        ]);
+        $request = Yii::$app->request;
+        if ($request->isPost) {
+            $this->actionDeleteCollection(null, $id);
+            $this->loadModel($id)->delete();
+            return $this->redirect(['index']);
+        } else
+            throw new HttpException(400, 'Ongeldig verzoek. Probeer dit a.u.b. niet nog eens.');
     }
 
     /**
@@ -133,12 +140,118 @@ class CollectionController extends Controller
      * @return Collection the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
-    {
+    protected function loadModel($id) {
         if (($model = Collection::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    public function actionAdmin() {
+        $model = new Collection('search');
+        $request = Yii::$app->request;
+        if ($request->get('Collection')) {
+            $model->attributes = $request->get('Collection');
+        }
+        return $this->render('index', [
+                    'model' => $model,
+        ]);
+    }
+
+    public function actionAdd() {
+        $request = Yii::$app->request;
+        if ($request->post('type')) {
+            if ($request->post('type') == 'image') {
+                $model = new CollectionImage();
+            } else if ($request->post('type') == 'document') {
+                $model = new CollectionDocument();
+            } else if ($request->post('type') == 'collection') {
+                $model = new CollectionCollection();
+            } else {
+                throw new CHttpException(404, 'The requested page does not exist.');
+            }
+            if ($model->add((int) $request->post('id'), (int) $request->post('collection'))) {
+                $this->redirect(['view', 'id' => (int) $request->post('collection')]);
+            } else {
+                throw new HttpException(404, 'The requested page does not exist.');
+            }
+        } else {
+            throw new HttpException(404, 'The requested page does not exist.');
+        }
+    }
+
+    public function actionDeleteImage($id, $image) {
+        if (!empty($id)) {
+            $model = $this->loadModel($id);
+
+            if ($model->checkOwnership()) {
+                $model = new CollectionImage;
+                if ($model->deleteImage($image, $id)) {
+                    Yii::$app->session->setFlash('success', "Afbeelding met succes uit collectie verwijderd");
+                    $this->redirect(['view', 'id' => $id]);
+                } else {
+                    throw new HttpException(401, 'Ongeldig verzoek. Probeer dit a.u.b. niet nog eens.');
+                }
+            } else {
+                throw new HttpException(400, 'Ongeldig verzoek. Probeer dit a.u.b. niet nog eens.');
+            }
+        } else {
+            $model = new CollectionImage;
+            if ($model->deleteImage($image)) {
+                Yii::$app->session->setFlash('success', "Afbeelding met succes uit collectie verwijderd");
+                $this->redirect(['image/index']);
+            } else {
+                throw new HttpException(401, 'Ongeldig verzoek. Probeer dit a.u.b. niet nog eens.');
+            }
+        }
+    }
+
+    public function actionDeleteDocument($id, $document) {
+        $model = $this->loadModel($id);
+        if ($model->checkOwnership()) {
+            $model = new CollectionDocument;
+            if ($model->deleteDocument($document, $id)) {
+                Yii::$app->session->setFlash('success', "Document met succes uit collectie verwijderd");
+                $this->redirect(['view', 'id' => $id]);
+            } else {
+                throw new HttpException(400, 'Ongeldig verzoek. Probeer dit a.u.b. niet nog eens.');
+            }
+        } else {
+            throw new HttpException(400, 'Ongeldig verzoek. Probeer dit a.u.b. niet nog eens.');
+        }
+    }
+
+    public function actionDeleteCollection($id, $collection) {
+        if (!empty($id)) {
+            $model = $this->loadModel($id);
+            if ($model->checkOwnership()) {
+                $model = new CollectionCollection;
+                if ($model->deleteCollection($collection, $id)) {
+                    Yii::$app->session->setFlash('success', "Collectie met succes uit collecties verwijderd");
+                    $this->redirect(['view', 'id' => $id]);
+                } else {
+                    throw new HttpException(400, 'Ongeldig verzoek. Probeer dit a.u.b. niet nog eens.');
+                }
+            } else {
+                throw new HttpException(400, 'Ongeldig verzoek. Probeer dit a.u.b. niet nog eens.');
+            }
+        } else {
+            $model = new CollectionCollection;
+            if ($model->deleteCollection($collection, null)) {
+                Yii::$app->session->setFlash('success', "Collectie met succes uit collecties verwijderd");
+            } else {
+                throw new HttpException(400, 'Ongeldig verzoek. Probeer dit a.u.b. niet nog eens.');
+            }
+        }
+    }
+
+    public function performAjaxValidation($model) {
+        $request = Yii::$app->request;
+        if ($request->post('ajax') && $request->post('ajax') === 'collection-form') {
+            echo \yii\bootstrap\ActiveForm::validate($model);
+            Yii::$app->end();
+        }
+    }
+
 }
