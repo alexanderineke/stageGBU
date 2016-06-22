@@ -55,7 +55,7 @@ echo Menu::widget([
                                 }
                                 ?>
                                 <?php if (!Yii::$app->user->isGuest) { ?>
-                                    <?php echo Html::a("<i class=\"icon-trash icon-white\"></i>", Url::to("collection/deletecollection", ["id" => $_GET["id"], "collection" => $collection->id]), ["class" => "btn btn-primary"]); ?>
+                                    <?php echo Html::a("<i class=\"icon-trash icon-white\"></i>", Url::to("docu/web/index.php?r=collection/deletecollection", ["id" => $_GET["id"], "collection" => $collection->id]), ["class" => "btn btn-primary"]); ?>
                                 <?php } ?>
                             </div>
                         <?php } ?>

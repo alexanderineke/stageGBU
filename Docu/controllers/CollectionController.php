@@ -48,14 +48,14 @@ class CollectionController extends Controller {
      * @return mixed
      */
     public function actionIndex() {
-        $model = new Collection('search');
-        $request = Yii::$app->request;
-
-        if ($request->get('Collection')) {
-            $model->attributes = $request->get('Collection');
-        }
+        $condition = '';
+        $dataProvider = new ActiveDataProvider([
+            'query' => Collection::find()
+                    ->where($condition)
+        ]);
         return $this->render('index', [
-                    'model' => $model,
+                    'model' => new Collection(),
+                    'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -149,13 +149,15 @@ class CollectionController extends Controller {
     }
 
     public function actionAdmin() {
-        $model = new Collection('search');
-        $request = Yii::$app->request;
-        if ($request->get('Collection')) {
-            $model->attributes = $request->get('Collection');
-        }
+        $condition = '';
+        $dataProvider = new ActiveDataProvider([
+            'query' => Collection::find()
+                    ->where($condition)
+        ]);
+
         return $this->render('index', [
-                    'model' => $model,
+                    'model' => new Collection(),
+                    'dataProvider' => $dataProvider,
         ]);
     }
 
