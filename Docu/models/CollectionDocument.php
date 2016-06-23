@@ -66,35 +66,40 @@ class CollectionDocument extends \yii\db\ActiveRecord {
     }
 
     public static function add($document_id, $collection_id) {
-        $model = $sql_document->createCommand("INSERT INTO tbl_collection_document (document_id, collection_id, state) VALUES (:document_id, :collection_id, 1)");
-        $model->bindParam(":document_id", $document_id, ":collection_id", $collection_id);
-        $model->execute();
+        Yii::$app->db->createCommand()
+                ->insert('tbl_collection_document', [
+                    'document_id' => $document_id,
+                    'collection_id' => $collection_id,
+                    'state' => 1])
+                ->execute();
 
-        $model = $sql_collection->createCommand("UPDATE tbl_collection SET modified_on = NOW() WHERE id = :collection_id");
-        $model->bindParam(":collection_id", $collection_id);
-        $model->execute();
+
+        Yii::$app->db->createCommand("UPDATE tbl_collection SET modified_on = :date WHERE id = :collection_id")
+                ->bindValue(':date', date("Y-m-d H:i:s"), ':collection_id', $collection_id)
+                ->execute();
         return true;
     }
 
     public function deleteDocument($document_id, $collection_id) {
 
         if (!empty($collection_id)) {
-            $model = $sql_document->createCommand("DELETE FROM tbl_collection_document WHERE document_id = :document_id AND collection_id = :collection_id");
-            $model->bindParam(":document_id", $document_id, ":collection_id", $collection_id);
-            $model->execute();
+            Yii::$app->db->createCommand("DELETE FROM tbl_collection_document WHERE document_id = :document_id AND collection_id = :collection_id")
+                    ->bindValue(":document_id", $document_id, ":collection_id", $collection_id)
+                    ->execute();
 
-            $model = $sql_collection->createCommand("UPDATE tbl_collection SET modified_on = NOW() WHERE id = :collection_id");
-            $model->bindParam(":collection_id", $collection_id);
-            $model->execute();
+            Yii::$app->db->createCommand("UPDATE tbl_collection SET modified_on = :date WHERE id = :collection_id")
+                    ->bindValue(':date', date("Y-m-d H:i:s"), ":collection_id", $collection_id)
+                    ->execute();
+
             return true;
         } else {
-            $model = $sql_document->createCommand("DELETE FROM tbl_collection_document WHERE document_id = :document_id");
-            $model->bindParam(":document_id", $document_id);
-            $model->execute();
+            Yii::$app->db->createCommand("DELETE FROM tbl_collection_document WHERE document_id = :document_id")
+                    ->bindValue(":document_id", $document_id)
+                    ->execute();
 
-            $model->$sql_collection = "UPDATE tbl_collection SET modified_on = NOW() WHERE id IN (:collection_id)";
-            $model->bindParam(":collection_id", $collection_id);
-            $model->execute();
+            Yii::$app->db->createCommand("UPDATE tbl_collection SET modified_on = :date WHERE id = :collection_id")
+                    ->bindValue(':date', date("Y-m-d H:i:s"), ":collection_id", $collection_id)
+                    ->execute();
 
             return true;
         }

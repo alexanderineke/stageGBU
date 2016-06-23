@@ -4,6 +4,9 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\widgets\Menu;
 use app\models\User;
+use app\controllers\CollectionController;
+use yii\bootstrap\Modal;
+use app\components\ECollection;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Image */
@@ -51,5 +54,10 @@ echo Menu::widget([
             ['label' => 'Gepubliceerd', 'label' => 'Gepubliceerd', 'value' => $model->published ? "Ja" : "Nee"],
         ],
     ]);
+    echo ECollection::widget([
+        'file_id' => $model->id,
+        'file_type' => 'image',
+    ]);
     ?>
 </div>
+<hr />

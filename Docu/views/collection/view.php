@@ -6,6 +6,7 @@ use yii\widgets\Menu;
 use yii\helpers\Url;
 use yii\data\ArrayDataProvider;
 use yii\grid\GridView;
+use app\components\ECollection;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Collection */
@@ -55,7 +56,8 @@ echo Menu::widget([
                                 }
                                 ?>
                                 <?php if (!Yii::$app->user->isGuest) { ?>
-                                    <?php echo Html::a("<i class=\"icon-trash icon-white\"></i>", Url::to("docu/web/index.php?r=collection/deletecollection", ["id" => $_GET["id"], "collection" => $collection->id]), ["class" => "btn btn-primary"]); ?>
+                                    <?php echo Html::a("<i class=\"icon-trash icon-white\"></i>", Url::to(["collection/deletecollection", ["id" => $_GET["id"], "collection" => $collection->id]]), ["class" => "btn btn-primary"]); ?>
+                                 <?php echo Html::a("<i class=\"icon-trash icon-white\"></i>",  Url::to(["collection/deletecollection"],array("id"=>$_GET["id"], "collection"=>$collection->id)), ["class" => "btn btn-primary"]); ?>
                                 <?php } ?>
                             </div>
                         <?php } ?>
@@ -118,7 +120,6 @@ echo Menu::widget([
     foreach ($model->images as $key => $value) {
         $arr[] = $value;
     }
-
     $dataProv = new ArrayDataProvider($arr);
 
     echo GridView::widget([
@@ -151,6 +152,10 @@ echo Menu::widget([
             ]
                 ]
         ),
+    ]);
+    echo ECollection::widget([
+        'file_id' => $model->id,
+        'file_type' => 'collection',
     ]);
     ?>
 </div>

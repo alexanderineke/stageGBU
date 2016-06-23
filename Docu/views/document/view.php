@@ -6,6 +6,7 @@ use yii\widgets\Menu;
 use app\models\User;
 use yii\helpers\Url;
 use yii\bootstrap\Button;
+use app\components\ECollection;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Document */
@@ -72,7 +73,10 @@ echo DetailView::widget([
     ],
 ]);
 
-//Hier moet een ext. widget voor Ecollection komen
+echo ECollection::widget([
+        'file_id' => $model->id,
+        'file_type' => 'document',
+    ]);
 ?>
 
 <hr />

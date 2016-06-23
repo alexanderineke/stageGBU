@@ -5,7 +5,7 @@ use yii\widgets\DetailView;
 use yii\widgets\Menu;
 use app\models\User;
 use yii\helpers\Url;
-use app\ECollection\ECollection;
+use app\components\ECollection;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Audio */
@@ -60,9 +60,9 @@ echo DetailView::widget([
     ],
 ]);
 
-//echo ECollection::widget([
-//    'file_id' => $model->id,
-//    'file_type' => 'collection',
-//]);
+echo ECollection::widget([
+        'file_id' => $model->id,
+        'file_type' => 'audio',
+    ]);
 ?>
 <hr />

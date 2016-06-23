@@ -66,35 +66,39 @@ class CollectionImage extends \yii\db\ActiveRecord {
     }
 
     public static function add($image_id, $collection_id) {
-        $model = $sql_image->createCommand("INSERT INTO tbl_collection_document (document_id, collection_id, state) VALUES (:document_id, :collection_id, 1)");
-        $model->bindParam(":image_id", $image_id, ":collection_id", $collection_id);
-        $model->execute();
+        Yii::$app->db->createCommand()
+                ->insert('tbl_collection_image', [
+                    'image_id' => $image_id,
+                    'collection_id' => $collection_id,
+                    'state' => 1])
+                ->execute();
 
-        $model = $sql_collection->createCommand("UPDATE tbl_collection SET modified_on = NOW() WHERE id = :collection_id");
-        $model->bindParam(":collection_id", $collection_id);
-        $model->execute();
+
+        Yii::$app->db->createCommand("UPDATE tbl_collection SET modified_on = :date WHERE id = :collection_id")
+                ->bindValue(':date', date("Y-m-d H:i:s"), ':collection_id', $collection_id)
+                ->execute();
         return true;
     }
 
     public function deleteImage($image_id, $collection_id) {
 
         if (!empty($collection_id)) {
-            $model = $sql_image->createCommand("DELETE FROM tbl_collection_image WHERE image_id = :image_id AND collection_id = :collection_id");
-            $model->bindParam(":image_id", $image_id, ":collection_id", $collection_id);
-            $model->execute();
+            Yii::$app->db->createCommand("DELETE FROM tbl_collection_image WHERE image_id = :image_id AND collection_id = :collection_id")
+                    ->bindValue(":image_id", $image_id, ":collection_id", $collection_id)
+                    ->execute();
 
-            $model = $sql_collection->createCommand("UPDATE tbl_collection SET modified_on = NOW() WHERE id = :collection_id");
-            $model->bindParam(":collection_id", $collection_id);
-            $model->execute();
+            Yii::$app->db->createCommand("UPDATE tbl_collection SET modified_on = :date WHERE id = :collection_id")
+                    ->bindValue(':date', date("Y-m-d H:i:s"), ":collection_id", $collection_id)
+                    ->execute();
             return true;
         } else {
-            $model = $sql_image->createCommand("DELETE FROM tbl_collection_image WHERE image_id = :image_id");
-            $model->bindParam(":image_id", $image_id);
-            $model->execute();
+            Yii::$app->db->createCommand("DELETE FROM tbl_collection_image WHERE image_id = :image_id")
+                    ->bindValue(":image_id", $image_id)
+                    ->execute();
 
-            $model->$sql_collection = "UPDATE tbl_collection SET modified_on = NOW() WHERE id IN (:collection_id)";
-            $model->bindParam(":collection_id", $collection_id);
-            $model->execute();
+            Yii::$app->db->createCommand("UPDATE tbl_collection SET modified_on = :date WHERE id = :collection_id")
+                    ->bindValue(':date', date("Y-m-d H:i:s"), ":collection_id", $collection_id)
+                    ->execute();
 
             return true;
         }

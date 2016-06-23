@@ -14,11 +14,16 @@ use app\models\CollectionImage;
 use app\models\CollectionDocument;
 use app\models\CollectionCollection;
 use yii\web\HttpException;
+use yii\bootstrap\Button;
+use yii\helpers\ArrayHelper;
 
 /**
  * CollectionController implements the CRUD actions for Collection model.
  */
 class CollectionController extends Controller {
+
+    public $file_type = false;
+    public $file_id = false;
 
     public function behaviors() {
         return [
@@ -171,7 +176,7 @@ class CollectionController extends Controller {
             } else if ($request->post('type') == 'collection') {
                 $model = new CollectionCollection();
             } else {
-                throw new CHttpException(404, 'The requested page does not exist.');
+                throw new HttpException(404, 'The requested page does not exist.');
             }
             if ($model->add((int) $request->post('id'), (int) $request->post('collection'))) {
                 $this->redirect(['view', 'id' => (int) $request->post('collection')]);
@@ -255,5 +260,30 @@ class CollectionController extends Controller {
             Yii::$app->end();
         }
     }
+
+//    public function runModal($type, $id) {
+//        if (!Yii::$app->user->isGuest) {
+//            echo Button::widget([
+//                'label' => 'Voeg toe aan collectie',
+//                    //  'type' => 'primary',
+//                    //   'data' => [
+//                    //     'toggle' => 'modal',
+//                    //      'target' => '#collection_modal'
+//                    //  ],
+//            ]);
+//
+//            $list = ArrayHelper::map(Collection::find()
+//                                    ->where(['user_id' => \Yii::$app->user->id])
+//                                    ->andWhere(['published' => 1])
+//                                    ->orWhere(['id' => 17]), 'id', 'title'
+//            );
+//
+//            $this->render('_modal', [
+//                'type' => $type,
+//                'id' => $id,
+//                'list' => $list,
+//            ]);
+//        }
+//    }
 
 }
