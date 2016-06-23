@@ -112,6 +112,10 @@ class Collection extends \yii\db\ActiveRecord {
         return $this->hasMany(CollectionDocument::className(), ['id' => 'collection_id']);
     }
 
+    public function getCollection_audios() {
+        return $this->hasMany(CollectionAudio::className(), ['id' => 'collection_id']);
+    }
+
     public function getDocuments() {
         return $this->hasMany(Document::className(), ['id' => 'document_id'])
                         ->viaTable('tbl_collection_document', ['collection_id' => 'id']);
@@ -124,6 +128,11 @@ class Collection extends \yii\db\ActiveRecord {
     public function getCollections() {
         return $this->hasMany(Collection::className(), ['id' => 'collection_col_id'])
                         ->viaTable('tbl_collection_collection', ['collection_id' => 'id']);
+    }
+
+    public function getAudios() {
+        return $this->hasMany(Audio::className(), ['id' => 'audio_id'])
+                        ->viaTable('tbl_collection_audio', ['collection_id' => 'id']);
     }
 
 }

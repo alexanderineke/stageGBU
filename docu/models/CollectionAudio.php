@@ -12,13 +12,13 @@ use Yii;
  * @property integer $image_id
  * @property integer $state
  */
-class CollectionImage extends \yii\db\ActiveRecord {
+class CollectionAudio extends \yii\db\ActiveRecord {
 
     /**
      * @inheritdoc
      */
     public static function tableName() {
-        return '{{%collection_image}}';
+        return '{{%collection_audio}}';
     }
 
     /**
@@ -26,9 +26,9 @@ class CollectionImage extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-            [['collection_id', 'image_id', 'state'], 'required'],
-            [['collection_id', 'image_id', 'state'], 'integer'],
-            [['id', 'collection_id', 'image_id', 'state'], 'safe']
+            [['collection_id', 'audio_id', 'state'], 'required'],
+            [['collection_id', 'audio_id', 'state'], 'integer'],
+            [['id', 'collection_id', 'audio_id', 'state'], 'safe']
         ];
     }
 
@@ -39,13 +39,13 @@ class CollectionImage extends \yii\db\ActiveRecord {
         return [
             'id' => 'ID',
             'collection_id' => 'Collectie',
-            'image_id' => 'Afbeelding',
+            'audio_id' => 'Audio',
             'state' => 'State',
         ];
     }
 
     public function search() {
-        $query = CollectionImage::find();
+        $query = CollectionAudio::find();
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -59,16 +59,16 @@ class CollectionImage extends \yii\db\ActiveRecord {
         $query
                 ->andFilterWhere([['like', 'id', $this->id],
                     ['like', 'collection_id', $this->collection_id],
-                    ['like', 'image_id', $this->image_id],
+                    ['like', 'audio_id', $this->audio_id],
                     ['like', 'state', $this->state]]);
 
         return $dataProvider;
     }
 
-    public static function add($image_id, $collection_id) {
+    public static function add($audio_id, $collection_id) {
         Yii::$app->db->createCommand()
-                ->insert('tbl_collection_image', [
-                    'image_id' => $image_id,
+                ->insert('tbl_collection_audio', [
+                    'audio_id' => $audio_id,
                     'collection_id' => $collection_id,
                     'state' => 1])
                 ->execute();
@@ -81,11 +81,11 @@ class CollectionImage extends \yii\db\ActiveRecord {
         return true;
     }
 
-    public function deleteImage($image_id, $collection_id) {
+    public function deleteAudio($audio_id, $collection_id) {
 
         if (!empty($collection_id)) {
-            Yii::$app->db->createCommand("DELETE FROM tbl_collection_image WHERE image_id = :image_id AND collection_id = :collection_id")
-                    ->bindValue(":image_id", $image_id)
+            Yii::$app->db->createCommand("DELETE FROM tbl_collection_audio WHERE audio_id = :audio_id AND collection_id = :collection_id")
+                    ->bindValue(":audio_id", $audio_id)
                     ->bindValue(":collection_id", $collection_id)
                     ->execute();
 
@@ -95,8 +95,8 @@ class CollectionImage extends \yii\db\ActiveRecord {
                     ->execute();
             return true;
         } else {
-            Yii::$app->db->createCommand("DELETE FROM tbl_collection_image WHERE image_id = :image_id")
-                    ->bindValue(":image_id", $image_id)
+            Yii::$app->db->createCommand("DELETE FROM tbl_collection_audio WHERE audio_id = :audio_id")
+                    ->bindValue(":audio_id", $audio_id)
                     ->execute();
 
             Yii::$app->db->createCommand("UPDATE tbl_collection SET modified_on = :date WHERE id = :collection_id")
@@ -109,8 +109,8 @@ class CollectionImage extends \yii\db\ActiveRecord {
         return true;
     }
 
-    public function getImage() {
-        return $this->hasMany(Image::className(), ['id' => 'image_id']);
+    public function getAudio() {
+        return $this->hasMany(Audio::className(), ['id' => 'audio_id']);
     }
 
 }

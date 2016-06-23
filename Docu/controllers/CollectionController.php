@@ -12,6 +12,7 @@ use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use app\models\CollectionImage;
 use app\models\CollectionDocument;
+use app\models\CollectionAudio;
 use app\models\CollectionCollection;
 use yii\web\HttpException;
 use yii\bootstrap\Button;
@@ -173,6 +174,8 @@ class CollectionController extends Controller {
                 $model = new CollectionImage();
             } else if ($request->post('type') == 'document') {
                 $model = new CollectionDocument();
+            } else if ($request->post('type') == 'audio') {
+                $model = new CollectionAudio();
             } else if ($request->post('type') == 'collection') {
                 $model = new CollectionCollection();
             } else {
@@ -220,6 +223,21 @@ class CollectionController extends Controller {
             $model = new CollectionDocument;
             if ($model->deleteDocument($document, $id)) {
                 Yii::$app->session->setFlash('success', "Document met succes uit collectie verwijderd");
+                $this->redirect(['view', 'id' => $id]);
+            } else {
+                throw new HttpException(400, 'Ongeldig verzoek. Probeer dit a.u.b. niet nog eens.');
+            }
+        } else {
+            throw new HttpException(400, 'Ongeldig verzoek. Probeer dit a.u.b. niet nog eens.');
+        }
+    }
+    
+        public function actionDeleteAudio($id, $audio) {
+        $model = $this->loadModel($id);
+        if ($model->checkOwnership()) {
+            $model = new CollectionAudio;
+            if ($model->deleteAudio($audio, $id)) {
+                Yii::$app->session->setFlash('success', "Audio bestand met succes uit collectie verwijderd");
                 $this->redirect(['view', 'id' => $id]);
             } else {
                 throw new HttpException(400, 'Ongeldig verzoek. Probeer dit a.u.b. niet nog eens.');

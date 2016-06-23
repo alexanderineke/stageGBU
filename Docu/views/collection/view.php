@@ -42,7 +42,7 @@ echo Menu::widget([
     </div>
 
 
-    <?php if ($model->collections) { ?>
+    <?php if ($model->collections) {?>
         <h2>Subcollecties</h2>
         <div class="row">
             <?php foreach ($model->collections as $collection) { ?>
@@ -52,7 +52,7 @@ echo Menu::widget([
                             <div class="span1">
                                 <?php
                                 if ($collection->thumb) {
-                                    echo Html::img('uploads/afbeeldingen/' . $collection->thumb->location . '/thumb/' . $collection->thumb->file . $collection->thumb->format, $collection->title, ['class' => 'img-polaroid collection-thumb-img']);
+                                    echo Html::img('uploads/afbeeldingen/' . $collection->thumb->location . '/thumb/' . $collection->thumb->file . $collection->thumb->format, ['class' => 'img-polaroid collection-thumb-img']);
                                 }
                                 ?>
                                 <?php if (!Yii::$app->user->isGuest) { ?>
@@ -99,85 +99,135 @@ echo Menu::widget([
                 'header' => 'Titel',
                 'format' => 'raw',
                 'value' => function($data) {
-                    return Html::a($data->title, Url::to('document/view', ["id" => $data->id]));
+                    return Html::a($data->title, Url::to('@web/index.php?r=document%2Fview&id=' . $data->id));
                 },
-                    ],
-                    [
-                        'header' => 'Acties',
-                        'format' => 'raw',
-                        'contentOptions' => [
-                            'style' => 'width: 100px; text-align: center;',
-                        ],
-                        'value' => function($data) {
-                    return Html::a("<i class=\"icon-trash icon-white\"></i>", Url::to('collection/deletedocument', ['id' => $_GET['id'], 'document' => $data->id]));
+            ],
+            [
+                'header' => 'Acties',
+                'format' => 'raw',
+                'contentOptions' => [
+                    'style' => 'width: 100px; text-align: center;',
+                ],
+                'value' => function($data) {
+            return Html::a("<i class=\"icon-trash icon-white\"></i>", Url::to('collection/deletedocument', ['id' => $_GET['id'], 'document' => $data->id]));
+        },
+            ]
+                ] :
+                [ //Niet ingelogd
+            [
+                'header' => 'Titel',
+                'format' => 'raw',
+                'value' => function($data) {
+                    return Html::a($data->title, Url::to('@web/index.php?r=document%2Fview&id=' . $data->id));
                 },
-                    ]
-                        ] :
-                        [ //Niet ingelogd
-                    [
-                        'header' => 'Titel',
-                        'format' => 'raw',
-                        'value' => function($data) {
-                            return Html::a($data->title, Url::to('document/view', ['id' => $data->id]));
-                        },
-                            ]
-                                ]
-                        ),
-                    ]);
-                    ?>            
-                    <h3>Afbeeldingen</h3>
-                    <?php
-                    $dataProv = new ArrayDataProvider([
-                        'allModels' => $model->images,
-                        'sort' => [
-                            'attributes' => ['id', 'title'],
-                        ],
-                        'pagination' => [
-                            'pageSize' => 25,
-                        ],
-                    ]);
+            ]
+                ]
+        ),
+    ]);
+    ?>            
+    <h3>Afbeeldingen</h3>
+    <?php
+    $dataProv = new ArrayDataProvider([
+        'allModels' => $model->images,
+        'sort' => [
+            'attributes' => ['id', 'title'],
+        ],
+        'pagination' => [
+            'pageSize' => 25,
+        ],
+    ]);
 
-                    echo GridView::widget([
-                        'dataProvider' => $dataProv,
-                        'pager' => [
-                            'prevPageLabel' => '&laquo;',
-                            'nextPageLabel' => '&raquo;',
-                        ],
-                        'columns' => (!Yii::$app->user->isGuest ?
-                                [ //Ingelogd
-                            [
-                                'header' => 'Titel',
-                                'format' => 'raw',
-                                'value' => function($data) {
-                                    return Html::a($data->title, Url::to('image/view', ['id' => $data->id]));
-                                },
-                                    ],
-                                    [
-                                        'header' => 'Acties',
-                                        'format' => 'raw',
-                                        'contentOptions' => [
-                                            'style' => 'width: 100px; text-align: center;',
-                                        ],
-                                        'value' => function($data) {
-                                    return Html::a("<i class=\"icon-trash icon-white\"></i>", Url::to('collection/deleteimage', ['id' => $_GET['id'], 'image' => $data->id]));
-                                },
-                                    ]
-                                        ] :
-                                        [ //Niet ingelogd
-                                    [
-                                        'header' => 'Titel',
-                                        'format' => 'raw',
-                                        'value' => function($data) {
-                                            return Html::a($data->title, Url::to('image/view', ['id' => $data->id]));
-                                        }
-                                            ]
-                                                ]
-                                        ),
-                                    ]);
+    echo GridView::widget([
+        'dataProvider' => $dataProv,
+        'pager' => [
+            'prevPageLabel' => '&laquo;',
+            'nextPageLabel' => '&raquo;',
+        ],
+        'columns' => (!Yii::$app->user->isGuest ?
+                [ //Ingelogd
+            [
+                'header' => 'Titel',
+                'format' => 'raw',
+                'value' => function($data) {
+                    return Html::a($data->title, Url::to('@web/index.php?r=image%2Fview&id=' . $data->id));
+                },
+            ],
+            [
+                'header' => 'Acties',
+                'format' => 'raw',
+                'contentOptions' => [
+                    'style' => 'width: 100px; text-align: center;',
+                ],
+                'value' => function($data) {
+            return Html::a("<i class=\"icon-trash icon-white\"></i>", Url::to('collection/deleteimage', ['id' => $_GET['id'], 'image' => $data->id]));
+        },
+            ]
+                ] :
+                [ //Niet ingelogd
+            [
+                'header' => 'Titel',
+                'format' => 'raw',
+                'value' => function($data) {
+                    return Html::a($data->title, Url::to('@web/index.php?r=image%2Fview&id=' . $data->id));
+                }
+            ]
+                ]
+        ),
+    ]);
+    ?>
 
-                                    echo ECollection::widget([
-                                        'file_id' => $model->id,
-                                        'file_type' => 'collection',
-                                    ]);
-                                    ?>
+    <h3>Audio bestanden</h3>
+    <?php
+    $dataProv = new ArrayDataProvider([
+        'allModels' => $model->audios,
+        'sort' => [
+            'attributes' => ['id', 'title'],
+        ],
+        'pagination' => [
+            'pageSize' => 25,
+        ],
+    ]);
+
+    echo GridView::widget([
+        'dataProvider' => $dataProv,
+        'pager' => [
+            'prevPageLabel' => '&laquo;',
+            'nextPageLabel' => '&raquo;',
+        ],
+        'columns' => (!Yii::$app->user->isGuest ?
+                [ //Ingelogd
+            [
+                'header' => 'Titel',
+                'format' => 'raw',
+                'value' => function($data) {
+                    return Html::a($data->title, Url::to('@web/index.php?r=audio%2Fview&id=' . $data->id));
+                },
+            ],
+            [
+                'header' => 'Acties',
+                'format' => 'raw',
+                'contentOptions' => [
+                    'style' => 'width: 100px; text-align: center;',
+                ],
+                'value' => function($data) {
+            return Html::a("<i class=\"icon-trash icon-white\"></i>", Url::to('collection/deleteaudio', ['id' => $_GET['id'], 'audio' => $data->id]));
+        },
+            ]
+                ] :
+                [ //Niet ingelogd
+            [
+                'header' => 'Titel',
+                'format' => 'raw',
+                'value' => function($data) {
+                    return Html::a($data->title, Url::to('@web/index.php?r=audio%2Fview&id=' . $data->id));
+                }
+            ]
+                ]
+        ),
+    ]);
+    echo ECollection::widget([
+        'file_id' => $model->id,
+        'file_type' => 'collection',
+    ]);
+    ?>
 </div>
