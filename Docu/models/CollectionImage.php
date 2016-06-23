@@ -75,7 +75,8 @@ class CollectionImage extends \yii\db\ActiveRecord {
 
 
         Yii::$app->db->createCommand("UPDATE tbl_collection SET modified_on = :date WHERE id = :collection_id")
-                ->bindValue(':date', date("Y-m-d H:i:s"), ':collection_id', $collection_id)
+                ->bindValue(':date', date("Y-m-d H:i:s"))
+                ->bindValue(':collection_id', $collection_id)
                 ->execute();
         return true;
     }
@@ -84,11 +85,13 @@ class CollectionImage extends \yii\db\ActiveRecord {
 
         if (!empty($collection_id)) {
             Yii::$app->db->createCommand("DELETE FROM tbl_collection_image WHERE image_id = :image_id AND collection_id = :collection_id")
-                    ->bindValue(":image_id", $image_id, ":collection_id", $collection_id)
+                    ->bindValue(":image_id", $image_id)
+                    ->bindValue(":collection_id", $collection_id)
                     ->execute();
 
             Yii::$app->db->createCommand("UPDATE tbl_collection SET modified_on = :date WHERE id = :collection_id")
-                    ->bindValue(':date', date("Y-m-d H:i:s"), ":collection_id", $collection_id)
+                    ->bindValue(':date', date("Y-m-d H:i:s"))
+                    ->bindValue(":collection_id", $collection_id)
                     ->execute();
             return true;
         } else {
@@ -97,7 +100,8 @@ class CollectionImage extends \yii\db\ActiveRecord {
                     ->execute();
 
             Yii::$app->db->createCommand("UPDATE tbl_collection SET modified_on = :date WHERE id = :collection_id")
-                    ->bindValue(':date', date("Y-m-d H:i:s"), ":collection_id", $collection_id)
+                    ->bindValue(':date', date("Y-m-d H:i:s"))
+                    ->bindValue(":collection_id", $collection_id)
                     ->execute();
 
             return true;

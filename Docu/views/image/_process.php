@@ -41,8 +41,8 @@ $tags = '';
 $values = [];
 foreach ($model->tags as $i => $tag) {
     $tags .= $tag->id . ',';
-    $values[$i] = $tag->id;
-    // $values[$i]['tag'] = $tag->name;
+    //$values[$i] = $tag->id;
+    $values[$i] = $tag->name;
 }
 $tags = substr($tags, 0, -1);
 ?>

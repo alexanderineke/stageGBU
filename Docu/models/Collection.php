@@ -32,7 +32,7 @@ class Collection extends \yii\db\ActiveRecord {
     public function rules() {
         return [
             [['user_id', 'published'], 'integer'],
-            [['title', 'description', 'published'], 'required'],
+            [['title', 'published'], 'required'],
             [['description'], 'string'],
             [['id', 'user_id', 'title', 'description', 'created_on', 'modified_on', 'published'], 'safe'],
             [['title'], 'string', 'max' => 64]

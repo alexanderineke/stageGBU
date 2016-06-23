@@ -84,11 +84,13 @@ class CollectionCollection extends \yii\db\ActiveRecord {
 
         if (!empty($collection_id)) {
             Yii::$app->db->createCommand("DELETE FROM tbl_collection_collection WHERE collection_col_id = :collection_col_id AND collection_id = :collection_col_id")
-                    ->bindValue(":collection_col_id", $collection_col_id, ":collection_id", $collection_id)
+                    ->bindValue(":collection_col_id", $collection_col_id)
+                    ->bindValue(":collection_id", $collection_id)
                     ->execute();
 
             Yii::$app->db->createCommand("UPDATE tbl_collection SET modified_on = :date WHERE id = :collection_id")
-                    ->bindValue(':date', date("Y-m-d H:i:s"), ":collection_id", $collection_id)
+                    ->bindValue(':date', date("Y-m-d H:i:s"))
+                    ->bindValue(":collection_id", $collection_id)
                     ->execute();
 
             return true;
@@ -98,7 +100,8 @@ class CollectionCollection extends \yii\db\ActiveRecord {
                     ->execute();
 
             Yii::$app->db->createCommand("UPDATE tbl_collection SET modified_on = :date WHERE id = :collection_id")
-                    ->bindValue(':date', date("Y-m-d H:i:s"), ":collection_id", $collection_id)
+                    ->bindValue(':date', date("Y-m-d H:i:s"))
+                    ->bindValue(":collection_id", $collection_id)
                     ->execute();
 
             return true;

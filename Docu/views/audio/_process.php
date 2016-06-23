@@ -38,8 +38,7 @@ $tags = '';
 $values = [];
 foreach ($model->tags as $i => $tag) {
     $tags .= $tag->id . ',';
-    $values[$i] = $tag->id;
-    // $values[$i]['tag'] = $tag->name;
+     $values[$i] = $tag->name;
 }
 $tags = substr($tags, 0, -1);
 ?>
@@ -51,6 +50,12 @@ echo Tagit::widget([
     'value' => $values,
 ]);
 ?>
+<?php // $form->field($model, 'collection')->label() ?>
+
+<?php 
+//Html::dropDownList('Audio[collection]', null, $collection_list, array('empty' => Yii::t('none', 'Geen collectie')));
+?>
+
 <?= $form->field($model, 'year')->textInput(['class' => 'span5']) ?>
 
 <?= $form->field($model, 'owner')->textInput(['class' => 'span5', 'maxlength' => 45]) ?>

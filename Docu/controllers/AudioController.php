@@ -208,7 +208,7 @@ class AudioController extends Controller {
         $fileQueue = Yii::$app->session->get('filesToProcess');
 
         if (!$fileQueue) {
-           return $this->redirect(['index']);
+            return $this->redirect(['index']);
         }
 
         if (!$id && $request->post('Audio')) {
@@ -273,16 +273,14 @@ class AudioController extends Controller {
             $this->redirect(['index']);
         }
 
-//        $list = ArrayHelper::map(Collection::model()->findAll(
-//                                ['order' => 'title',
-//                                    'condition' => 'user_id=:id AND published=1',
-//                                    'params' => array(':id' => Yii::$app->user->getId())
-//                                ]
-//                        ), 'id', 'title');
+//        $list = ArrayHelper::map(Collection::find()
+//                                    ->where(['user_id' => \Yii::$app->user->id])
+//                                    ->andWhere(['published' => 1])
+//                                    ->all(), 'id', 'title');
         return $this->render('process', [
                     'model' => $model,
                     'file' => $file,
-                        //      'collection_list' => $list,
+               //     'collection_list' => $list,
         ]);
     }
 
@@ -367,7 +365,7 @@ class AudioController extends Controller {
         $request = Yii::$app->request;
         $errorOccured = false;
         (new AudioTag)->add($audio_id, array_unique($this->tags));
-        
+
         if (!(new AudioTag)->add($audio_id, array_unique($this->tags))) {
             $errorOccured = true;
         }
@@ -379,10 +377,9 @@ class AudioController extends Controller {
             }
         }
         $deleteTagsArr = array_diff($prevTagsArr, $this->tags);
-        
+
         if (sizeof($deleteTagsArr) && sizeof($prevTagsArr)) {
             AudioTag::deleteAll(['audio_id' => $audio_id, 'tag_id' => $deleteTagsArr, 'state' => 1]);
-         
         }
         if (!$errorOccured) {
             return true;
