@@ -78,41 +78,30 @@ class AudioFile extends \yii\db\ActiveRecord {
 
     public function saveAudio($audio_id, $tag_id, $file) {
         $errorOccured = false;
-        
+
         if ($file) {
             //Bestandsnamen, bestandslocaties
             $tags = Tag::find()->where(['id' => $tag_id])->one();
             $folder_name = preg_replace('/[^a-z0-9-_\.]/', '', strtolower($tags->name));
-            $fileInfo = pathinfo(Yii::$app->basePath . DIRECTORY_SEPARATOR .  'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $file['location'] . DIRECTORY_SEPARATOR . $file['file']);
+            $fileInfo = pathinfo(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $file['location'] . DIRECTORY_SEPARATOR . $file['file']);
 
             //Map voor audio files
             if (!is_dir(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'audio' . DIRECTORY_SEPARATOR)) {
                 BaseFileHelper::createDirectory(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'audio' . DIRECTORY_SEPARATOR);
             }
-            
-            
+
+
             //Map voor normale versie
-            if (!is_dir(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR. 'audio' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR)) {
-                BaseFileHelper::createDirectory(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR. 'audio' . DIRECTORY_SEPARATOR . $folder_name . '/');
+            if (!is_dir(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'audio' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR)) {
+                BaseFileHelper::createDirectory(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'audio' . DIRECTORY_SEPARATOR . $folder_name . '/');
             }
 
             //Schrijf bestand weg
-            $fileContents = file_get_contents(Yii::$app->basePath . DIRECTORY_SEPARATOR .  'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $file['location'] . DIRECTORY_SEPARATOR . $file['file']);
-            
-           // file_put_contents(Yii::$app->basePath . '/../uploads/audio/' . $folder_name . '/' . $fileInfo['filename'] . '.mp3', $fileContents);
-            file_put_contents(Yii::$app->basePath . DIRECTORY_SEPARATOR .  'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'audio' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $fileInfo['filename'] . '.mp3', $fileContents);
+            $fileContents = file_get_contents(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $file['location'] . DIRECTORY_SEPARATOR . $file['file']);
+
+            file_put_contents(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'audio' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $fileInfo['filename'] . '.mp3', $fileContents);
             $this->updateAll(['state' => 0], 'audio_id=' . $audio_id);
 
-            //Insert de nieuwe doucment
-            /*
-              $attributes['audio_id'] = $audio_id;
-              $attributes['file'] = $fileInfo['filename'];
-              $attributes['location'] = $folder_name;
-              $attributes['format'] = '.mp3';
-              $attributes['state'] = 1;
-              $this->setIsNewRecord(true);
-              $this->attributes = $attributes;
-             */
             $this->audio_id = $audio_id;
             $this->file = $fileInfo['filename'];
             $this->location = $folder_name;

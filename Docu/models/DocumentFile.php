@@ -73,8 +73,10 @@ class DocumentFile extends \yii\db\ActiveRecord {
         return $dataProvider;
     }
 
+    //genereert de thumbs die bij het document horen
     public function genThumbs($file, $folder_name, $file_name) {
 
+        //berekent de hoogte en breedte van het pdf bestand
         function calcDimensions($max, $original) {
             if ($original['height'] > $original['width']) {
                 $dimensions = ['width' => ceil($max * $original['aspectRatio']), 'height' => $max];
@@ -95,12 +97,13 @@ class DocumentFile extends \yii\db\ActiveRecord {
         $original['aspectRatio'] = $original['width'] / $original['height'];
         $thumb->clear();
 
+        //maakt allemaal verschillende versies aan en voegt deze toe 
         $dimensions = calcDimensions(1024, $original);
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
             exec('gswin32c -q -o "' . dirname(Yii::$app->request->scriptFile) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $file_name . '_b.jpg" -dLastPage=1 -sDEVICE=jpeg -dJPEGQ=100 -dPDFFitPage -g' . $dimensions['width'] . 'x' . $dimensions['height'] . ' -dGraphicsAlphaBits=4 -dTextAlphaBits=4 "' . dirname(Yii::$app->request->scriptFile) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $file['location'] . DIRECTORY_SEPARATOR . $file['file'] . '"', $output);
         } else {
             exec('gs -q -o "' . dirname(Yii::$app->request->scriptFile) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $file_name . '_b.jpg" -dLastPage=1 -sDEVICE=jpeg -dJPEGQ=100 -dPDFFitPage -g' . $dimensions['width'] . 'x' . $dimensions['height'] . ' -dGraphicsAlphaBits=4 -dTextAlphaBits=4 "' . dirname(Yii::$app->request->scriptFile) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $file['location'] . DIRECTORY_SEPARATOR . $file['file'] . '"', $output);
-        }       
+        }
 
         $dimensions = calcDimensions(800, $original);
         $thumb = new Imagick(dirname(Yii::$app->request->scriptFile) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $file_name . '_b.jpg');
@@ -111,21 +114,17 @@ class DocumentFile extends \yii\db\ActiveRecord {
         $thumb->resizeImage($dimensions['width'], $dimensions['height'], Imagick::FILTER_LANCZOS, 1);
         $thumb->writeImage(dirname(Yii::$app->request->scriptFile) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $file_name . '_z.jpg');
 
-
         $dimensions = calcDimensions(500, $original);
         $thumb->resizeImage($dimensions['width'], $dimensions['height'], Imagick::FILTER_LANCZOS, 1);
         $thumb->writeImage(dirname(Yii::$app->request->scriptFile) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $file_name . '.jpg');
-
 
         $dimensions = calcDimensions(320, $original);
         $thumb->resizeImage($dimensions['width'], $dimensions['height'], Imagick::FILTER_LANCZOS, 1);
         $thumb->writeImage(dirname(Yii::$app->request->scriptFile) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $file_name . '_n.jpg');
 
-
         $dimensions = calcDimensions(240, $original);
         $thumb->resizeImage($dimensions['width'], $dimensions['height'], Imagick::FILTER_LANCZOS, 1);
         $thumb->writeImage(dirname(Yii::$app->request->scriptFile) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $file_name . '_m.jpg');
-
 
         $dimensions = calcDimensions(100, $original);
         $thumb->resizeImage($dimensions['width'], $dimensions['height'], Imagick::FILTER_LANCZOS, 1);
@@ -136,6 +135,7 @@ class DocumentFile extends \yii\db\ActiveRecord {
         return true;
     }
 
+    //slaat het document bestand op
     public function saveDocument($document_id, $tag_id, $file) {
         $errorOccured = false;
 
@@ -154,18 +154,10 @@ class DocumentFile extends \yii\db\ActiveRecord {
             }
 
             $this->genThumbs($file, $folder_name, $file_name);
-            //     if (!$this->genThumbs($file, $folder_name, $file_name)) {
-            //        return false;
-            //   }
 
             $fileContents = file_get_contents(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $file['location'] . DIRECTORY_SEPARATOR . $file['file']);
 
-
-
             file_put_contents(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $fileInfo['filename'] . '.pdf', $fileContents);
-
-
-
 
             if (!$fileContents || !file_put_contents(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'documenten' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $fileInfo['filename'] . '.pdf', $fileContents)) {
                 return false;
@@ -173,12 +165,6 @@ class DocumentFile extends \yii\db\ActiveRecord {
             echo 'sweet';
 
             $this->updateAll(['state' => 0], 'document_id=' . $document_id);
-
-            /*  $attributes['document_id'] = $document_id;
-              $attributes['file'] = $file_name;
-              $attributes['location'] = $folder_name;
-              $attributes['format'] = '.pdf';
-              $attributes['state'] = 1; */
 
             $this->document_id = $document_id;
             $this->file = $fileInfo['filename'];

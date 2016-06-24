@@ -77,6 +77,7 @@ class ImageFile extends \yii\db\ActiveRecord {
         return $dataProvider;
     }
 
+    //slaat het document bestand op
     public function saveImage($image_id, $tag_id, $file) {
         $errorOccured = false;
 
@@ -106,6 +107,7 @@ class ImageFile extends \yii\db\ActiveRecord {
                 BaseFileHelper::createDirectory(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'afbeeldingen' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . 'full' . DIRECTORY_SEPARATOR);
             }
 
+            //maakt de verschillende thumbs aan
             $thumb = PhpThumbFactory::create(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $file['location'] . DIRECTORY_SEPARATOR . $file['file']);
             $thumb->resize(750, 500);
             $thumb->save(Yii::$app->basePath . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'afbeeldingen' . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $fileInfo['filename'] . '.jpg', 'JPG');

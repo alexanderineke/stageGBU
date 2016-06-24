@@ -14,19 +14,6 @@ echo Menu::widget([
         ['label' => 'Lijst van gebruikers', 'icon' => 'list', 'url' => ['index'], 'visible' => Yii::$app->user->getIdentity('moderator')],
         ['label' => 'Maak gebruiker aan', 'icon' => 'file', 'url' => ['create'], 'visible' => Yii::$app->user->getIdentity('moderator')],
 ]]);
-/*
-Yii::$app->clientScript->registerScript('search', "
-$('.search-button').click(function(){
-	$('.search-form').toggle();
-	return false;
-});
-$('.search-form form').submit(function(){
-	$.fn.yiiGridView.update('audio-grid', {
-		data: $(this).serialize()
-	});
-	return false;
-});
-");*/
 ?>
 
 <h1><?= Html::encode($this->title) ?></h1>

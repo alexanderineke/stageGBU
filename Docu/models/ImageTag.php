@@ -72,6 +72,7 @@ class ImageTag extends \yii\db\ActiveRecord {
         return $dataProvider;
     }
 
+    //voegt Imagetag toe aan de database
     public function add($image_id, $tagIds) {
         $inDB = [];
         foreach ($this->check($image_id, $tagIds) as $i) {
@@ -94,6 +95,7 @@ class ImageTag extends \yii\db\ActiveRecord {
         }
     }
 
+    //checkt of de model al de tag bevat
     public function check($image_id, $tagIds) {
         foreach ($tagIds as $i => $tag) {
             $query = ImageTag::find()
@@ -106,8 +108,8 @@ class ImageTag extends \yii\db\ActiveRecord {
         return $query;
     }
 
+    //haalt alle tags op van het document
     public function getTag($image_id) {
-
         $query = ImageTag::find()
                 ->select(['tag_id'])
                 ->andFilterWhere(['image_id' => $image_id])

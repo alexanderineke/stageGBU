@@ -73,6 +73,7 @@ class AudioTag extends \yii\db\ActiveRecord {
         return $dataProvider;
     }
 
+    //voegt AudioTag toe aan de database
     public function add($audio_id, $tagIds) {
         $inDB = [];
         foreach ($this->check($audio_id, $tagIds) as $i) {
@@ -95,6 +96,7 @@ class AudioTag extends \yii\db\ActiveRecord {
         }
     }
 
+    //checkt of de model al de tag bevat
     public function check($audio_id, $tagIds) {
         foreach ($tagIds as $i => $tag) {
             $query = AudioTag::find()
@@ -107,6 +109,7 @@ class AudioTag extends \yii\db\ActiveRecord {
         return $query;
     }
 
+    //haalt alle tags op van het audio bestand 
     public function getTagg($audio_id) {
         $query = AudioTag::find()
                 ->select(['tag_id'])

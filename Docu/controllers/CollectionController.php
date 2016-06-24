@@ -26,6 +26,7 @@ class CollectionController extends Controller {
     public $file_type = false;
     public $file_id = false;
 
+    //Geeft rechten aan gebruikers
     public function behaviors() {
         return [
             'acces' => [
@@ -49,10 +50,7 @@ class CollectionController extends Controller {
         ];
     }
 
-    /**
-     * Lists all Collection models.
-     * @return mixed
-     */
+    // loads index page
     public function actionIndex() {
         $condition = '';
         $dataProvider = new ActiveDataProvider([
@@ -154,6 +152,7 @@ class CollectionController extends Controller {
         }
     }
 
+    // Renders Admin page
     public function actionAdmin() {
         $condition = '';
         $dataProvider = new ActiveDataProvider([
@@ -167,6 +166,7 @@ class CollectionController extends Controller {
         ]);
     }
 
+    //voegt collectie toe
     public function actionAdd() {
         $request = Yii::$app->request;
         if ($request->post('type')) {
@@ -231,8 +231,8 @@ class CollectionController extends Controller {
             throw new HttpException(400, 'Ongeldig verzoek. Probeer dit a.u.b. niet nog eens.');
         }
     }
-    
-        public function actionDeleteAudio($id, $audio) {
+
+    public function actionDeleteAudio($id, $audio) {
         $model = $this->loadModel($id);
         if ($model->checkOwnership()) {
             $model = new CollectionAudio;
@@ -247,7 +247,7 @@ class CollectionController extends Controller {
         }
     }
 
-    public function actionDeleteCollection($id, $collection) {
+    public function actionDeletecollection($id, $collection) {
         if (!empty($id)) {
             $model = $this->loadModel($id);
             if ($model->checkOwnership()) {
@@ -278,30 +278,5 @@ class CollectionController extends Controller {
             Yii::$app->end();
         }
     }
-
-//    public function runModal($type, $id) {
-//        if (!Yii::$app->user->isGuest) {
-//            echo Button::widget([
-//                'label' => 'Voeg toe aan collectie',
-//                    //  'type' => 'primary',
-//                    //   'data' => [
-//                    //     'toggle' => 'modal',
-//                    //      'target' => '#collection_modal'
-//                    //  ],
-//            ]);
-//
-//            $list = ArrayHelper::map(Collection::find()
-//                                    ->where(['user_id' => \Yii::$app->user->id])
-//                                    ->andWhere(['published' => 1])
-//                                    ->orWhere(['id' => 17]), 'id', 'title'
-//            );
-//
-//            $this->render('_modal', [
-//                'type' => $type,
-//                'id' => $id,
-//                'list' => $list,
-//            ]);
-//        }
-//    }
 
 }

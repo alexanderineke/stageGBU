@@ -65,6 +65,7 @@ class CollectionDocument extends \yii\db\ActiveRecord {
         return $dataProvider;
     }
 
+    //voegt een document aan een collectie toe
     public static function add($document_id, $collection_id) {
         Yii::$app->db->createCommand()
                 ->insert('tbl_collection_document', [
@@ -81,6 +82,7 @@ class CollectionDocument extends \yii\db\ActiveRecord {
         return true;
     }
 
+    //verwijderd een document uit een collectie
     public function deleteDocument($document_id, $collection_id) {
 
         if (!empty($collection_id)) {

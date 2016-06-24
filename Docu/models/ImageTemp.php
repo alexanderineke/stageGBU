@@ -78,6 +78,7 @@ class ImageTemp extends \yii\db\ActiveRecord {
         return $dataProvider;
     }
 
+    //voegt het Tempfile toe aan de database
     public function addTempFile($filename, $location) {
         Yii::$app->db->createCommand()
                 ->insert('tbl_image_temp', [

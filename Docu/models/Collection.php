@@ -78,6 +78,7 @@ class Collection extends \yii\db\ActiveRecord {
         return $dataProvider;
     }
 
+    //kijkt van wie de collectie is
     public function checkOwnership() {
         $query = Collection::find()
                 ->where(['id', $this->id])

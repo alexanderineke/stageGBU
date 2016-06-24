@@ -14,7 +14,7 @@ use app\assets\AppAsset;
 use app\models\LoginForm;
 use yii\web\View;
 use Yii;
-use app\assets\ThemeAsset; 
+use app\assets\ThemeAsset;
 
 AppAsset::register($this);
 ?>
@@ -26,10 +26,10 @@ AppAsset::register($this);
         <meta name="language" content="en" />
         <?= Html::csrfMetaTags() ?>
         <title><?php echo Html::encode($this->title); ?></title>
-      
+
         <link rel="shortcut icon" href="<?php echo Yii::getAlias('@web/themes/dcu') ?>/assets/images/favicon.png" type="image/x-icon" />
-      
-    <?php $this->head()?>
+
+        <?php $this->head() ?>
     </head>
     <body>
         <?php $this->beginBody() ?>
@@ -47,11 +47,7 @@ AppAsset::register($this);
                                 $form = ActiveForm::begin([
                                             'action' => yii\helpers\Url::to(['site/login']),
                                             'id' => 'login-form',
-                                            //   'type' => 'inline',
                                             'enableClientValidation' => true,
-                                                // 'clientOptions' => [
-                                                //      'validateOnSubmit' => true,
-                                                // ],
                                 ]);
                                 ?>
 
@@ -66,17 +62,7 @@ AppAsset::register($this);
                             <ul class="inline">
                                 <li>Je bent inlogd als: <?php echo Yii::$app->user->identity->username; ?> </li>
                                 <li>
-                                    <?php
-//                                          echo Button::Widget([
-//                                             'label' => 'Uitloggen',
-//                                             'options' => ['class' => 'btn btn-primary'],
-//                                                 'url' => Url::to(['site/logout']),
-//                                      'icon' => 'off white',
-//                                         ]);
-                                        
-                                      echo Html::a('Uitloggen', Url::to(['site/logout']), ['class' => 'btn btn-primary']);
-                                    ?>
-                                    <?php // Html::a('Logout', ['site/logout'], ['data' => ['method' => 'post']]) ?>               
+                                    <?= Html::a('Uitloggen', Url::to(['site/logout']), ['class' => 'btn btn-primary']); ?>            
                                 </li>
                             </ul>
                         <?php endif; ?>
@@ -105,16 +91,7 @@ AppAsset::register($this);
                         </div>
                     </div>
                 </div>
-
-                <?php
-//Warnings
-                ////            echo Alert::widget([
-                //               'block' => true,
-                //               'fade' => true,
-                //          ]);
-                ?>
-
-                <?php echo $content; //Pagina zelf          ?>
+                <?php echo $content; //Pagina zelf    ?>
 
             </div>
 
@@ -173,15 +150,7 @@ AppAsset::register($this);
             </div>
         </div>
         <?php
-
-        //   if (!Yii::$app->user->isGuest) {
-            //   NavBar::begin();
         echo Nav::widget([
-             //   'type' => 'inverse',
-            //    'brand' => 'Beheer',
-            //   'brandUrl' => 'index.php',
-             //  'collapse' => true,
-            //   'fixed' => 'bottom',
             'items' => [
                 ['label' => 'Zoeken', 'icon' => 'search white', 'url' => ['/']],
                 ['label' => 'Gebruikers', 'icon' => 'user white', 'url' => ['/user']],
@@ -192,12 +161,8 @@ AppAsset::register($this);
             ],
             'options' => ['class' => 'navbar-nav'],
         ]);
-             
-        //  }
-       
         ?> 
-       <?php // NavBar::end();  ?> 
-   </body>
-        <?php $this->endBody() ?>
+    </body>
+    <?php $this->endBody() ?>
 </html>
 <?php $this->endPage() ?>

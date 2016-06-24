@@ -29,11 +29,13 @@ class Document extends ActiveRecord {
             [['owner'], 'string', 'max' => 45]
         ];
     }
-/*
-    public function getUser() {
-        return $this->Belongs_to(User::className(), ['id' => 'user_id']);
-    }
-*/
+
+    /*
+      public function getUser() {
+      return $this->Belongs_to(User::className(), ['id' => 'user_id']);
+      }
+     */
+
     public function getTags() {
         return $this->hasMany(Tag::className(), ['id' => 'tag_id'])
                         ->viaTable('tbl_document_tag', ['document_id' => 'id']);

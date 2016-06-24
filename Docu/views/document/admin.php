@@ -15,21 +15,6 @@ echo Menu::widget([
         ['label' => 'Maak Documenten aan', 'icon' => 'file', 'url' => ['create'], 'visible' => !Yii::$app->user->isGuest], //'visible' => Yii::$app->user->getIdentity('user')],
     ],
 ]);
-
-/*
-  Yii::$app->clientScript->registerScript('search', "
-  $('.search-button').click(function(){
-  $('.search-form').toggle();
-  return false;
-  });
-  $('.search-form form').submit(function(){
-  $.fn.yiiGridView.update('document-grid', {
-  data: $(this).serialize()
-  });
-  return false;
-  });
-  ");
- */
 ?>
 
 <h1>Beheer documenten</h1>
@@ -39,7 +24,6 @@ echo Menu::widget([
     of <b>=</b>) gebruiken in uw zoekopdracht.
 </p>
 
-<?php // Html::a('Geavanceerd zoeken', '#', ['class' => 'btn btn-default']); ?>
 <div class="search-form" style="display:none">
     <?php
     $this->render('_search', [
@@ -52,14 +36,12 @@ echo Menu::widget([
 GridView::widget([
     'id' => 'document-grid',
     'dataProvider' => $model->search(),
-   // 'filterModel' => $model,
     'columns' => [
         ['class' => 'yii\grid\SerialColumn'],
         'title',
         'created_on',
         'modified_on',
         ['class' => 'yii\grid\ActionColumn'],
-    //   ['class' => 'btn btn-default'],
     ],
 ])
 ?>

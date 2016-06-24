@@ -16,8 +16,6 @@ echo Menu::widget([
     ]
 ]);
 
-
-//Hier moet registerscript komen
 ?>
 
 <h1><?= Html::encode($this->title) ?></h1>

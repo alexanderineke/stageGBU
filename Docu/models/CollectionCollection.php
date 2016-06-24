@@ -64,6 +64,7 @@ class CollectionCollection extends \yii\db\ActiveRecord {
         return $dataProvider;
     }
 
+    //voegt een collectie aan een collectie toe
     public function add($collection_col_id, $collection_id) {
         Yii::$app->db->createCommand()
                 ->insert('tbl_collection_collection', [
@@ -80,6 +81,7 @@ class CollectionCollection extends \yii\db\ActiveRecord {
         return true;
     }
 
+    //verwijderd een collectie uit een collectie
     public function deleteCollection($collection_col_id, $collection_id) {
 
         if (!empty($collection_id)) {

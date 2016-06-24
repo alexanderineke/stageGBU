@@ -15,6 +15,7 @@ use yii\data\ActiveDataProvider;
  */
 class UserController extends Controller {
 
+    //Geeft rechten aan gebruikers
     public function behaviors() {
         return [
             'acces' => [
@@ -40,15 +41,16 @@ class UserController extends Controller {
             ],
         ];
     }
+
     public function actionIndex() {
         $condition = '';
         $dataProvider = new ActiveDataProvider([
             'query' => User::find()
-                 ->where($condition)
-                ]);
+                    ->where($condition)
+        ]);
         return $this->render('index', [
-            'model' => new User(),
-            'dataProvider' => $dataProvider,
+                    'model' => new User(),
+                    'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -56,7 +58,8 @@ class UserController extends Controller {
         return $this->render('view', [
                     'model' => $this->findModel($id),
         ]);
-    } 
+    }
+
     public function actionCreate() {
         $model = new User();
 
@@ -68,6 +71,7 @@ class UserController extends Controller {
             ]);
         }
     }
+
     public function actionUpdate($id) {
         $model = $this->findModel($id);
 
@@ -79,6 +83,7 @@ class UserController extends Controller {
             ]);
         }
     }
+
     public function actionDelete($id) {
         $this->findModel($id)->delete();
 
@@ -89,14 +94,15 @@ class UserController extends Controller {
         $condition = '';
         $dataProvider = new ActiveDataProvider([
             'query' => User::find()
-                 ->where($condition)
-                ]);
-       /* */
+                    ->where($condition)
+        ]);
+        /* */
         return $this->render('admin', [
-            'model' => new User(),
-            'dataProvider' => $dataProvider,
-        ]);      
+                    'model' => new User(),
+                    'dataProvider' => $dataProvider,
+        ]);
     }
+
     protected function findModel($id) {
         if (($model = User::findOne($id)) !== null) {
             return $model;

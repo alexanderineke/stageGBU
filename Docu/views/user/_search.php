@@ -20,10 +20,10 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'email')->textInput(['class' => 'span5', 'maxlength' => 128]) ?>
 
     <div class="form-group">
-         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
     </div>
 
-        <?php ActiveForm::end(); ?>
+    <?php ActiveForm::end(); ?>
 
 </div>

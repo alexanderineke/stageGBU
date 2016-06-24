@@ -24,8 +24,6 @@ $form = ActiveForm::begin([
 
 <?= $form->field($model, 'description')->hiddenInput(); ?>		
 <?php
-// Hier moet een ImperaviRedactorWidget komen
-
 echo Widget::widget([
     'name' => 'Image[description]',
     'value' => $model->description,
@@ -41,7 +39,6 @@ $tags = '';
 $values = [];
 foreach ($model->tags as $i => $tag) {
     $tags .= $tag->id . ',';
-  //  $values[$i] = $tag->id;
     $values[$i] = $tag->name;
 }
 $tags = substr($tags, 0, -1);
@@ -68,7 +65,6 @@ echo DropZone::widget([
     'storedFiles' => [],
     'url' => 'index.php?r=image/upload',
     'options' => [
-  //'acceptedFiles' => ['image/jpeg', 'image/png', 'image/gif'],
   'maxFilesize' => '2000',
   'dictDefaultMessage' => 'Plaats hier het bestand dat u wilt uploaden',
   'dictFallbackMessage' => 'Uw browser wordt niet ondersteund',
@@ -78,7 +74,6 @@ echo DropZone::widget([
     ]
 ]);
 ?>
-
 
 <div class="form-actions">
 <?= Html::submitButton($model->isNewRecord ? 'Maak aan' : 'Bewaar', ['class' => 'btn btn-primary']) ?>

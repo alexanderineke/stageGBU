@@ -29,14 +29,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'owner')->textInput(['class' => 'span5', 'maxlength' => 45]) ?>
 
-    <?php // echo $form->field($model, 'owner') ?>
-
-    <?php // echo $form->field($model, 'created_on') ?>
-
-    <?php // echo $form->field($model, 'modified_on') ?>
-
-    <?php // echo $form->field($model, 'published')  ?>
-
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
     </div>

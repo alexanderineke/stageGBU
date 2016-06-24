@@ -68,8 +68,6 @@ if (isset($file)) {
     echo $button = '<span class="null">Niet opgegeven</span>';
 }
 ?>
-<?php //$form->field($model, 'file')->label('File'); ?>
-
 
 <?= $form->field($model, 'published')->dropDownList(['1' => 'Ja', '0' => 'Nee']); ?>
 

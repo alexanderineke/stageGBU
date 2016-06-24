@@ -86,13 +86,8 @@ class Tag extends \yii\db\ActiveRecord {
         return $dataProvider;
     }
 
-    // Warning: Please modify the following code to remove attributes that
-    // should not be searched.
+    //voegt tag toe aan de database
     public function add($tagArr) {
-        //       $addedSlugs = [];
-//        foreach ($tagArr as $slug => $name) {
-//            $addedSlugs[] = $slug;
-//        }
         foreach ($tagArr as $i => $tag) {
             Yii::$app->db->createCommand()
                     ->insert('tbl_tag', [
@@ -102,12 +97,13 @@ class Tag extends \yii\db\ActiveRecord {
                     ->execute();
             $addedTags[] = Yii::$app->db->getLastInsertID();
         }
-      //  print_r($addedTags);
+        //  print_r($addedTags);
         if (sizeof($addedTags) == sizeof($tagArr)) {
             return $addedTags;
         }
     }
 
+    //kijkt of de tags al bestaan in de database
     public function check($tags) {
         $slugs = [];
         foreach ($tags as $slug => $name) {
@@ -119,17 +115,10 @@ class Tag extends \yii\db\ActiveRecord {
                 ->where(['slug' => $slugs])
                 ->andWhere(['state' => 1])
                 ->all();
-//        $dataProvider = new ActiveDataProvider([
-//            'query' => $query,
-//        ]);
-//        if (!$this->validate()) {
-//            // uncomment the following line if you do not want to return any records when validation fails
-//            // $query->where('0=1');
-//            return $dataProvider;
-//        }
         return $query;
     }
 
+    //zoekt tags
     public function findTags($slugArr) {
         foreach ($slugArr as $i => $tag) {
             $query = Tag::find()

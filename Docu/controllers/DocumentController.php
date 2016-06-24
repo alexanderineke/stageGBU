@@ -21,6 +21,7 @@ class DocumentController extends Controller {
 
     protected $tags = [516];
 
+    //Geeft rechten aan gebruikers
     public function behaviors() {
         return [
             'acces' => [
@@ -128,30 +129,24 @@ class DocumentController extends Controller {
                         if ($fileQueue) {
                             if ((new DocumentFile)->saveDocument($model->id, $this->tags[0], $file)) {
                                 array_shift($fileQueue);
-                                //Yii::app()->user->setState('filesToProcess', $fileQueue);
                                 Yii::$app->session->set('filesToProcess', $fileQueue);
                                 $this->redirect(['view', 'id' => $model->id]);
                             } else {
-                                // Yii::app()->user - setFlash('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
                                 Yii::$app->getSession()->setFlash('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
                             }
                         } else {
                             $this->redirect(['view', 'id' => $model->id]);
                         }
                     } else {
-                        //Yii::app()->user->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
                         Yii::$app->getSession()->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
                     }
                 } else {
-                    //Yii::app()->user->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
                     Yii::$app->getSession()->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
                 }
             } else {
-                //Yii::app()->user->setFlash('error', "De steekwoorden zijn ongeldig. Probeert u het alstublieft nog eens.");
                 Yii::$app->getSession()->setFlash('error', "De steekwoorden zijn ongeldig. Probeert u het alstublieft nog eens.");
             }
         } else {
-            //Yii::app()->user->setState('filesToProcess', array());
             Yii::$app->getSession()->setFlash('filesToProcess', array());
         }
         return $this->render('update', [
@@ -218,6 +213,7 @@ class DocumentController extends Controller {
         }
 
         if (isset($request->post('Document')['included_file'])) {
+            //geeft attributen aan model mee
             $model->setAttribute('user_id', Yii::$app->user->identity->id);
             $model->setAttribute('created_on', date("Y-m-d H:i:s"));
             $model->setAttribute('modified_on', date("Y-m-d H:i:s"));
@@ -298,13 +294,6 @@ class DocumentController extends Controller {
             'query' => Document::find()
                     ->where($condition)
                     ->orderBy('title ASC'),
-                //    'pagination' => [
-                //    'pageSize' => 20,
-                // ],
-                //      'criteria' => [
-                //         'condition' => $condition,
-                //         'order' => 'title ASC',
-                //     ],
         ]);
 
         return $this->render('index', [
@@ -316,7 +305,6 @@ class DocumentController extends Controller {
     public function actionAdmin() {
         $request = Yii::$app->request;
         $model = new Document();
-        // $model->unsetAttributes(); // Functie bestaat niet, dus moet naar gekeken worden
         if ($request->get('Document')) {
             $model->attributes = $_GET['Document'];
         }
@@ -334,6 +322,7 @@ class DocumentController extends Controller {
         }
     }
 
+    //voegt de text uit de pdf bestanden aan de database toe
     protected function actionBatchdocs() {
         Document::find()
                 ->where(['state' => 1])
@@ -354,6 +343,7 @@ class DocumentController extends Controller {
         }
     }
 
+    //haalt tags op
     protected function generateTags() {
         $request = Yii::$app->request;
 
@@ -370,6 +360,7 @@ class DocumentController extends Controller {
 
                 $tags[$name] = mb_strtolower((string) $tag);
             }
+            //checkt of de tags al bestaan
             $existingTags = (new Tag)->check($tags);
             foreach ($existingTags as $i => $tag) {
                 $tagArr[] = $tag->id;
@@ -377,6 +368,7 @@ class DocumentController extends Controller {
             }
 
             if (isset($tags) && sizeof($tags)) {
+                //voegt de nieuwe tags toe aan de database
                 $addedTags = (new Tag)->add($tags);
                 foreach ($addedTags as $i) {
                     $tagArr[] = $i;
@@ -393,6 +385,7 @@ class DocumentController extends Controller {
         }
     }
 
+    //koppelt de tags aan Document
     protected function saveTags($document_id) {
         $request = Yii::$app->request;
         $errorOccured = false;
@@ -411,6 +404,7 @@ class DocumentController extends Controller {
         $deleteTagsArr = array_diff($prevTagsArr, $this->tags);
 
         if (sizeof($deleteTagsArr) && sizeof($prevTagsArr)) {
+            //verwijderd de tags die niet meer bij Document horen
             DocumentTag::deleteAll(['document_id' => $document_id, 'tag_id' => $deleteTagsArr, 'state' => 1]);
         }
         if (!$errorOccured) {
@@ -418,6 +412,7 @@ class DocumentController extends Controller {
         }
     }
 
+    //haalt de text uit de pdf bestanden
     public function getDocumentContent($model, $file, $existing = false) {
         if ($existing) {
             $file = Yii::getAlias('uploads/documenten/' . $file['location'] . '/' . $file['file'] . $file['format']);
@@ -434,8 +429,6 @@ class DocumentController extends Controller {
             foreach ($pages as $page) {
                 $text .= $page->getText();
             }
-            //setlocale(LC_ALL, 'nl_NL'); //Nodig voor iconv
-            //$text = iconv('UTF-8', 'ASCII//TRANSLIT', $text);
             $text = preg_replace('/[^0-9a-zA-Z ]/', ' ', $text);
             $text = preg_replace(array('/\b\w{1,2}\b/', '/\s+/'), array('', ' '), $text);
             $model->setAttribute('content', $text);

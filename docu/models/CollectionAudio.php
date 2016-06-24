@@ -65,6 +65,7 @@ class CollectionAudio extends \yii\db\ActiveRecord {
         return $dataProvider;
     }
 
+    //voegt een audio bestand aan een collectie toe
     public static function add($audio_id, $collection_id) {
         Yii::$app->db->createCommand()
                 ->insert('tbl_collection_audio', [
@@ -81,6 +82,7 @@ class CollectionAudio extends \yii\db\ActiveRecord {
         return true;
     }
 
+    //verwijderd een audio bestand uit de collectie
     public function deleteAudio($audio_id, $collection_id) {
 
         if (!empty($collection_id)) {

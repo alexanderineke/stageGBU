@@ -65,6 +65,7 @@ class CollectionImage extends \yii\db\ActiveRecord {
         return $dataProvider;
     }
 
+    //voegt een image aan een collectie toe
     public static function add($image_id, $collection_id) {
         Yii::$app->db->createCommand()
                 ->insert('tbl_collection_image', [
@@ -81,6 +82,7 @@ class CollectionImage extends \yii\db\ActiveRecord {
         return true;
     }
 
+    //verwijderd een image uit een collectie
     public function deleteImage($image_id, $collection_id) {
 
         if (!empty($collection_id)) {

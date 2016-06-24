@@ -27,15 +27,13 @@ use yii\widgets\dropzone\RemoveAction;
  */
 class AudioController extends Controller {
 
-    //  public $layout = '@app/views/layouts/column2.php';
     protected $tags = [];
-
-    // public $layout='/column2';
 
     public function filters() {
         return ['accesControl'];
     }
 
+    //Geeft rechten aan gebruikers
     public function behaviors() {
         return [
             'acces' => [
@@ -62,6 +60,7 @@ class AudioController extends Controller {
         ];
     }
 
+    //returns view
     public function actionView($id) {
         return $this->render('view', [
                     'model' => $this->loadModel($id),
@@ -75,6 +74,7 @@ class AudioController extends Controller {
         $folderName = date("d M Y");
         $fileName = "{$rnd}_{$uploadedFile}";
         if (!is_dir(Yii::getAlias('uploads/' . $folderName))) {
+            //maakt folder aan
             BaseFileHelper::createDirectory(Yii::getAlias('uploads/' . $folderName));
         }
         if ($uploadedFile->saveAs(Yii::getAlias('uploads/' . $folderName . '/' . $fileName))) {
@@ -94,10 +94,11 @@ class AudioController extends Controller {
         $folderName = date("d M Y");
         $fileName = "{$rnd}_{$uploadedFile}";
 
-
         if (!is_dir(Yii::getAlias('uploads/' . $folderName))) {
+            //maakt folder aan
             BaseFileHelper::createDirectory(Yii::getAlias('uploads/' . $folderName));
         }
+        
         if ($uploadedFile->saveAs(Yii::getAlias('uploads/' . $folderName . '/' . $fileName))) {
             $id = $model->addTempFile($fileName, $folderName);
             if ($id) {
@@ -117,21 +118,17 @@ class AudioController extends Controller {
 
         $model = $this->loadModel($id);
         if ($request->post('Audio')) {
-            // $fileQueue = Yii::app()->user->getState('filesToProcess');
             $fileQueue = Yii::$app->session->get('filesToProcess');
 
             if ($fileQueue) {
                 $audioTempModel = AudioTemp::findOne($fileQueue[0]);
                 $file = $audioTempModel->getAttributes(['file', 'format', 'location']);
             }
-
+            //geeft attributen aan model mee
             $model->setAttribute('user_id', \Yii::$app->user->identity->id);
             $model->setAttribute('modified_on', date("Y-m-d H:i:s"));
             $model->attributes = $request->post('Audio');
 
-            //           $modelTag = new Tag;
-            //           $this->generateAllTags($modelTag->tags, $request->post('tags'));
-//            
             if ($this->generateTags()) {
 
                 if ($model->save()) {
@@ -140,26 +137,21 @@ class AudioController extends Controller {
                         if ($fileQueue) {
                             if ((new AudioFile)->saveAudio($model->id, $this->tags[0], $file)) {
                                 array_shift($fileQueue);
-                                //Yii::app()->user->setState('filesToProcess', $fileQueue);
                                 Yii::$app->session->set('filesToProcess', $fileQueue);
                                 $this->redirect(['view', 'id' => $model->id]);
                             } else {
-                                // Yii::app()->user - setFlash('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
                                 Yii::$app->getSession()->setFlash('error', "Er is een fout opgetreden bij het opslaan van het bestand. Probeert u het alstublieft nog eens.");
                             }
                         } else {
                             $this->redirect(['view', 'id' => $model->id]);
                         }
                     } else {
-                        //Yii::app()->user->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
                         Yii::$app->getSession()->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
                     }
                 } else {
-                    //Yii::app()->user->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
                     Yii::$app->getSession()->setFlash('error', "Er is een fout opgetreden bij het opslaan van de steekwoorden. Probeert u het alstublieft nog eens.");
                 }
             } else {
-                //Yii::app()->user->setFlash('error', "De steekwoorden zijn ongeldig. Probeert u het alstublieft nog eens.");
                 Yii::$app->getSession()->setFlash('error', "De steekwoorden zijn ongeldig. Probeert u het alstublieft nog eens.");
             }
         } else {
@@ -229,6 +221,7 @@ class AudioController extends Controller {
         }
 
         if (isset($request->post('Audio')['included_file'])) {
+            //geeft attributen aan model
             $model->setAttribute('user_id', Yii::$app->user->identity->id);
             $model->setAttribute('created_on', date("Y-m-d H:i:s"));
             $model->setAttribute('modified_on', date("Y-m-d H:i:s"));
@@ -280,7 +273,7 @@ class AudioController extends Controller {
         return $this->render('process', [
                     'model' => $model,
                     'file' => $file,
-               //     'collection_list' => $list,
+                        //     'collection_list' => $list,
         ]);
     }
 
@@ -305,7 +298,6 @@ class AudioController extends Controller {
 
     public function actionAdmin() {
         $model = new Audio();
-        // $model->unsetAttributes(); // Bestaat niet!
         if (isset($_GET['Audio'])) {
             $model->attributes = $_GET['Audio'];
         }
@@ -322,6 +314,7 @@ class AudioController extends Controller {
         }
     }
 
+    //haalt tags op
     protected function generateTags() {
         $request = Yii::$app->request;
 
@@ -338,12 +331,14 @@ class AudioController extends Controller {
 
                 $tags[$name] = mb_strtolower((string) $tag);
             }
+            //checkt of de tags al bestaan
             $existingTags = (new Tag)->check($tags);
             foreach ($existingTags as $i => $tag) {
                 $tagArr[] = $tag->id;
                 unset($tags[$tag->slug]);
             }
 
+            //maakt nieuwe tags aan
             if (isset($tags) && sizeof($tags)) {
                 $addedTags = (new Tag)->add($tags);
                 foreach ($addedTags as $i) {
@@ -360,7 +355,7 @@ class AudioController extends Controller {
             }
         }
     }
-
+    //slaat tags in tbl_audio_tags op
     protected function saveTags($audio_id) {
         $request = Yii::$app->request;
         $errorOccured = false;
@@ -379,6 +374,7 @@ class AudioController extends Controller {
         $deleteTagsArr = array_diff($prevTagsArr, $this->tags);
 
         if (sizeof($deleteTagsArr) && sizeof($prevTagsArr)) {
+            //verwidjerd tags uit tbl_audio_tags
             AudioTag::deleteAll(['audio_id' => $audio_id, 'tag_id' => $deleteTagsArr, 'state' => 1]);
         }
         if (!$errorOccured) {

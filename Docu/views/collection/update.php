@@ -17,7 +17,6 @@ echo Menu::widget([
 	['label'=>'Beheer collecties','url'=>['admin'],'icon'=>'list-alt','visible'=>Yii::$app->user->getIdentity('admin')],
 ]]);
 
-
 ?>
 <div class="collection-update">
 

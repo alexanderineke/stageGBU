@@ -26,6 +26,7 @@ class ImageController extends Controller {
         return ['accesControl'];
     }
 
+    //Geeft rechten aan gebruikers
     public function behaviors() {
         return [
             'acces' => [
@@ -147,8 +148,6 @@ class ImageController extends Controller {
                 Yii::$app->session->setFlash('error', "De steekwoorden zijn ongeldig. Probeert u het alstublieft nog eens.");
             }
         } else {
-            // Yii::$app->session->setState('filesToProcess', []);
-
             Yii::$app->session->set('filesToProcess', []);
         }
 
@@ -194,7 +193,7 @@ class ImageController extends Controller {
 
         $fileQueue = Yii::$app->session->get('filesToProcess');
         if (empty($fileQueue)) {
-           return $this->redirect(['index']);
+            return $this->redirect(['index']);
         }
 
         if (!$id && $request->post('Image')) {
@@ -217,7 +216,6 @@ class ImageController extends Controller {
             $model->setAttribute('user_id', Yii::$app->user->identity->id);
             $model->setAttribute('created_on', date("Y-m-d H:i:s"));
             $model->setAttribute('modified_on', date("Y-m-d H:i:s"));
-            //     $model->setAttribute('title', "ja");
             $model->setAttribute('published', 1);
 
             if ($this->generateTags()) {
@@ -305,6 +303,7 @@ class ImageController extends Controller {
         }
     }
 
+    //haalt tags op    
     protected function generateTags() {
         $request = Yii::$app->request;
         if ($request->post('tags')) {
@@ -343,6 +342,7 @@ class ImageController extends Controller {
         }
     }
 
+    //koppelt de tags aan Image
     protected function saveTags($image_id) {
         $request = Yii::$app->request;
         $errorOccured = false;
@@ -359,7 +359,7 @@ class ImageController extends Controller {
             }
         }
         $deleteTagsArr = array_diff($prevTagsArr, $this->tags);
-        
+
         if (sizeof($deleteTagsArr) && sizeof($prevTagsArr)) {
             ImageTag::deleteAll(['image_id' => $image_id, 'tag_id' => $deleteTagsArr, 'state' => 1]);
         }

@@ -12,8 +12,7 @@ class Audio extends \yii\db\ActiveRecord {
     public $tag_search, $count, $tagName;
 
     public function getTagsHelper() {
-      //  $array = ArrayHelper::map(Audio::find()->all(), 'id', 'name');
-        return implode(', ', array_values(Html::listData($this->tags, 'id', 'name')));        
+        return implode(', ', array_values(Html::listData($this->tags, 'id', 'name')));
     }
 
     public static function tableName() {
@@ -45,11 +44,7 @@ class Audio extends \yii\db\ActiveRecord {
             'file' => 'Bestand',
         ];
     }
-/*
-    public function getUser() {
-        return $this->Belongs_to(\yii\web\User::className(), ['id' => 'user_id']);
-    }
-*/
+
     public function getTags() {
         return $this->hasMany(Tag::className(), ['id' => 'tag_id'])
                         ->viaTable('tbl_audio_tag', ['audio_id' => 'id']);
@@ -82,4 +77,5 @@ class Audio extends \yii\db\ActiveRecord {
 
         return $dataProvider;
     }
+
 }

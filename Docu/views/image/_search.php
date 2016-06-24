@@ -15,7 +15,6 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-
     <?= $form->field($model, 'id')->textinput(['class' => 'span5', 'maxlength' => 10]) ?>
 
     <?= $form->field($model, 'user_id')->textinput(['class' => 'span5']) ?>

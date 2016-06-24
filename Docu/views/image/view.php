@@ -20,7 +20,6 @@ echo Menu::widget([
         ['label' => 'Acties', 'visible' => Yii::$app->user->getIdentity('moderator')],
         ['label' => 'Lijst van afbeeldingen', 'url' => ['index'], 'icon' => 'list', 'visible' => Yii::$app->user->getIdentity('moderator')],
         ['label' => 'Maak afbeeldingen aan', 'url' => ['create'], 'icon' => 'file', 'visible' => Yii::$app->user->getIdentity('user')], ['label' => 'Bewerk afbeelding', 'url' => ['update', 'id' => $model->id], 'pencil' => 'eye-open', 'visible' => Yii::$app->user->getIdentity('moderator')],
-        //['label' => 'Verwijder afbeelding', 'url' => ['delete'], 'icon' => 'trash', 'linkOptions' => ['submit' => ['delete', 'id' => $model->id]], 'confirm' => 'Weet je zeker dat je deze afbeelding wilt verwijderen?'],
         ['label' => 'Beheer afbeeldingen', 'url' => ['admin'], 'icon' => 'list-alt', 'visible' => Yii::$app->user->getIdentity('admin')],
     ],
 ]);

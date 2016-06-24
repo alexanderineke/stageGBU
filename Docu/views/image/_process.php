@@ -41,7 +41,6 @@ $tags = '';
 $values = [];
 foreach ($model->tags as $i => $tag) {
     $tags .= $tag->id . ',';
-    //$values[$i] = $tag->id;
     $values[$i] = $tag->name;
 }
 $tags = substr($tags, 0, -1);
@@ -71,9 +70,7 @@ if (isset($file)) {
 } else {
     echo $button = '<span class="null">Niet opgegeven</span>';
 }
-?>
-
-<?php // $form->field($model, 'file')->label(['File']); ?>	
+?>	
 
 <?= $form->field($model, 'published')->dropDownList(['1' => 'Ja', '0' => 'Nee']); ?>
 

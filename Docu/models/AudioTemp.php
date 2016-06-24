@@ -84,6 +84,7 @@ class AudioTemp extends \yii\db\ActiveRecord {
         return $dataProvider;
     }
 
+    //voegt AudioTemp toe aan de database
     public function addTempFile($filename, $location) {
         Yii::$app->db->createCommand()
                 ->insert('tbl_audio_temp', [
