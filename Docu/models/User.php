@@ -4,7 +4,7 @@ namespace app\models;
 
 use Yii;
 
-class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface{
+class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
 
     public $repeat_password;
     //will hold the encrypted password for update actions.
@@ -20,24 +20,24 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface{
                 [['username'], 'unique'],
                 [['username', 'email', 'roles'], 'required'],
                 [['username', 'password', 'repeat_password', 'email'], 'string', 'min' => 5, 'max' => 128],
-                ['repeat_password', 'compare', 'compareAttribute'=>'password', 'skipOnEmpty' => false, 'message'=>"Passwords don't match"],
-                // The following rule is used by search().
-                // Please remove those attributes that should not be searched.
-                //[['id', 'username', 'email'], 'safe', 'on' => 'search']
+                ['repeat_password', 'compare', 'compareAttribute' => 'password', 'skipOnEmpty' => false, 'message' => "Passwords don't match"],
+                    // The following rule is used by search().
+                    // Please remove those attributes that should not be searched.
+                    //[['id', 'username', 'email'], 'safe', 'on' => 'search']
             ];
         } else {
             return [
                 [['username'], 'unique'],
                 [['username', 'password', 'repeat_password', 'email', 'roles'], 'required'],
                 [['username', 'password', 'repeat_password', 'email'], 'string', 'min' => 5, 'max' => 128],
-                ['repeat_password', 'compare', 'compareAttribute'=>'password', 'skipOnEmpty' => false, 'message'=>"Passwords don't match"],
-                // The following rule is used by search().
-                // Please remove those attributes that should not be searched.
-               // [['id', 'username', 'email'], 'safe', 'on' => 'search']
+                ['repeat_password', 'compare', 'compareAttribute' => 'password', 'skipOnEmpty' => false, 'message' => "Passwords don't match"],
+                    // The following rule is used by search().
+                    // Please remove those attributes that should not be searched.
+                    // [['id', 'username', 'email'], 'safe', 'on' => 'search']
             ];
         }
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -83,11 +83,11 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface{
         return $dataProvider;
     }
 
-   public function beforeSave($insert) {
-            $this->setPassword($this->password);
-            $this->generateAuthKey();
-              return true;
-    }  
+    public function beforeSave($insert) {
+        $this->setPassword($this->password);
+        $this->generateAuthKey();
+        return true;
+    }
 
     public function afterFind() {
         //reset the password to null because we don't want the hash to be shown.
@@ -99,8 +99,8 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface{
 
     public function saveModel($data = []) {
         //because the hashes needs to match
-         $hash = Yii::$app->getSecurity()->generatePasswordHash($password);
-       
+        $hash = Yii::$app->getSecurity()->generatePasswordHash($password);
+
         if (!empty($data['password']) && !empty($data['repeat_password'])) {
             $salt = $this->generateSalt(12);
             $data['password'] = $this->hashPassword($data['password'], $salt);
@@ -130,49 +130,39 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface{
         $salt .= strtr(substr(base64_encode($rand), 0, 22), ['+' => '.']);
         return $salt;
     }
-    
-     public static function findIdentity($id)
-    {
+
+    public static function findIdentity($id) {
         return static::findOne($id);
     }
-    
-    public static function findIdentityByAccessToken($token, $type = null)
-    {
-          return static::findOne(['access_token' => $token]);
+
+    public static function findIdentityByAccessToken($token, $type = null) {
+        return static::findOne(['access_token' => $token]);
     }
-    
+
     public static function findByUsername($username) {
-     return static::findOne(['username' => $username]);
+        return static::findOne(['username' => $username]);
     }
-    
-    public function getId()
-    {
+
+    public function getId() {
         return $this->getPrimaryKey();
     }
-    
-    public function getAuthKey()
-    {
-        return;// $this->auth_key;
+
+    public function getAuthKey() {
+        return; // $this->auth_key;
     }
 
-    public function validateAuthKey($authKey)
-    {
+    public function validateAuthKey($authKey) {
         return $this->getAuthKey() === $authKey;
     }
-    public function validatePassword($password)
-    {
-      return Yii::$app->getSecurity()->validatePassword($password, $this->initialPassword);
-    }
-    
-    public function setPassword($password)
-    {
-     $this->password = Yii::$app->getSecurity()->generatePasswordHash($password);
+
+    public function validatePassword($password) {
+        return Yii::$app->getSecurity()->validatePassword($password, $this->initialPassword);
     }
 
-    public function generateAuthKey()
-    {
-        return;// $this->auth_key = Security::generateRandomKey();
+    public function setPassword($password) {
+        $this->password = Yii::$app->getSecurity()->generatePasswordHash($password);
     }
+
     public function getDocuments() {
         return $this->hasMany(Document::className(), ['user_id' => 'id']);
     }
